@@ -9,7 +9,7 @@ int assetsLoad(){
         printf("ERROR FATAL, no se ha podido abrir el archivo 'assets'\n");
         return 1;
     }
-
+    
     return 0;
 }
 
