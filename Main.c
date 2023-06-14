@@ -3,7 +3,7 @@
 #include "libraries/colors.h"
 
 //esta función carga las configuraciones PRINCIPALES
-int assetsLoad(char petName[]){
+int assetsLoad(char petName[N]){
     char ruta[] = "../files/assets.txt"; //se vuelve una carpeta para atras para que el .exe pueda abrir el archivo
 	// el archivo assets contiene las configuraciones PRONCIPALES
     FILE *fileAssets = fopen(ruta, "r");
@@ -11,18 +11,18 @@ int assetsLoad(char petName[]){
         printf("ERROR FATAL, no se ha podido abrir el archivo 'assets'\n");
         return 1;
     }
-    printf("a");
+    
     return 0;
 }
-
+	
 int main(int argc, char *argv[]){
-    char petName[] = "Mojojo";
-    char userName[] = "LoKk";
-    int gameAvatar = 1;
-    int petInmortality = 1;
-    int gameDifficult = 0;
+    char petName[];
+    char userName[];
+    int gameAvatar;
+    int petInmortality;
+    int gameDifficult;
 
-    assetsLoad(petName);
+    assetsLoad(&petName);
     system("pause");
     return 0;
 }
