@@ -1,0 +1,5 @@
+userName = "LoKk"
+gamePetName = "Mojojo"
+gameAvatar = 1
+gameInmortality = 0
+gameDifficult = 0
