@@ -1,9 +1,7 @@
-#include <stdio.h>
-
- 
+#include <stdio.h>    
+#include "libraries/colors.h"
 
 int main(){
-    
-    printf("Hola mundo");       
+        
     return 0;
 }
