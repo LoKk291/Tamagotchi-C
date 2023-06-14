@@ -11,7 +11,7 @@ int assetsLoad(char petName[]){
         printf("ERROR FATAL, no se ha podido abrir el archivo 'assets'\n");
         return 1;
     }
-    
+    printf("a");
     return 0;
 }
 
