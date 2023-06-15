@@ -13,8 +13,10 @@ struct AssetsData
     int gameAvatar;
     int petInmortality;
     int gameDifficult;
+    int gameTryHard; //si esta opción es verdadera, una vez que la mascota muera no se podrá volver a jugar
 };
 
+//esta estructura almacena los datos de las barras de estado
 struct dataStateBars{
     int health;
     int mood;
@@ -36,12 +38,12 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
 
     //lee los datos del archivo y los carga en la estructura
     fflush(stdin);
-    fscanf(fileAssets, "%s%s%i%i%i", &(*ptrAssetsData)->userName, &(*ptrAssetsData)->petName, &(*ptrAssetsData)->gameAvatar, &(*ptrAssetsData)->petInmortality, &(*ptrAssetsData)->gameDifficult);
+    fscanf(fileAssets, "%s%s%i%i%i%i", &(*ptrAssetsData)->userName, &(*ptrAssetsData)->petName, &(*ptrAssetsData)->gameAvatar, &(*ptrAssetsData)->petInmortality, &(*ptrAssetsData)->gameDifficult, &(*ptrAssetsData)->gameTryHard);
     fclose(fileAssets); //terminada la carga del struct se ciera el archivo
     return 0;
 }
 
-
+//para hacer la actualizacion de las barras de estado usaré la librería time.h con su función "clock_t clock (void)"
 int stateBars(){
 
     return 0;
@@ -49,6 +51,11 @@ int stateBars(){
 
 int main()
 {
+    char optMenu;
+    
+    //time_t es un tipo de dato que permite guardar una "marca de tiempo"
+    time_t timeNow;
+
     struct AssetsData* ptrAssetsData = (struct AssetsData*)malloc(sizeof(struct AssetsData)); //se le asigna un espacio en memoria a la estructura
     struct dataStateBars* ptrDataStateBars = (struct dataStateBars*)malloc(sizeof(struct dataStateBars));
 
@@ -62,6 +69,20 @@ int main()
     time_t since1970 = time(NULL);
     printf("\n%ld\n", since1970);
     */
+    
+    do{
+        printf("Desea salir? (s/n): ");
+        scanf("%c", &optMenu);
+        
+        if(optMenu == 's'){
+            //captura la fecha de salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
+            timeNow = time(NULL);
+            /*
+            esto dara como resultado la cantidad de tiempo transcurridad desde el 1 de Enero de 1970
+            (conviertiendo esos numeros obtenemos la fecha actual)
+            */
+        }
+    }while(optMenu != 's');
     
     system("pause");
     return 0;
