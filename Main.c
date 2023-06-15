@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "libraries/colors.h"
 #define N 13
 
@@ -40,8 +41,9 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
     return 0;
 }
 
+
 int stateBars(){
-    
+
     return 0;
 }
 
@@ -55,6 +57,12 @@ int main()
         return 1;
     }
 
+    /*
+    //esteregg "time since 1970"
+    time_t since1970 = time(NULL);
+    printf("\n%ld\n", since1970);
+    */
+    
     system("pause");
     return 0;
 }
