@@ -75,12 +75,17 @@ int main()
         scanf("%c", &optMenu);
         
         if(optMenu == 's'){
-            //captura la fecha de salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
+            //captura el instante de salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
             timeNow = time(NULL);
             /*
             esto dara como resultado la cantidad de tiempo transcurridad desde el 1 de Enero de 1970
             (conviertiendo esos numeros obtenemos la fecha actual)
             */
+           
+            //guarda el instante de salida en el archivo "lastClose.txt"
+            FILE* fileLastClose = fopen("../files/lastClose.txt", "w");
+            fprintf(fileLastClose, "%i", timeNow);
+            fclose(fileLastClose);
         }
     }while(optMenu != 's');
     
