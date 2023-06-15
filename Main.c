@@ -14,7 +14,7 @@ struct AssetsData
 };
 
 // esta funci�n carga las configuraciones PRINCIPALES
-int assetsLoad(struct AssetsData **assetsData)
+int assetsLoad(struct AssetsData **ptrAssetsData)
 {
     char ruta[] = "../files/assets.txt"; // se vuelve una carpeta para atras para que el .exe pueda abrir el archivo
 
@@ -26,20 +26,19 @@ int assetsLoad(struct AssetsData **assetsData)
         return 1;
     }
 
-    while (feof(fileAssets) == 0)
-    {
-        fflush(stdin);
-        fscanf(fileAssets, "%c", &(*assetsData)->petName);
-    }
-    printf("%s", (*assetsData)->petName);
+    //lee los datos del archivo y los carga en la estructura
+    fflush(stdin);
+    fscanf(fileAssets, "%s%s%i%i%i", &(*ptrAssetsData)->userName, &(*ptrAssetsData)->petName, &(*ptrAssetsData)->gameAvatar, &(*ptrAssetsData)->petInmortality, &(*ptrAssetsData)->gameDifficult);
+    fclose(fileAssets); //terminada la carga del struct se ciera el archivo
+    
     return 0;
 }
 
 int main()
 {
-    struct AssetsData* assetsData = (struct AssetsData*)malloc(sizeof(struct AssetsData));
+    struct AssetsData* ptrAssetsData = (struct AssetsData*)malloc(sizeof(struct AssetsData)); //se le asigna un espacio en memoria a la estructura
 
-    assetsLoad(&assetsData);
+    assetsLoad(&ptrAssetsData);
     system("pause");
     return 0;
 }
