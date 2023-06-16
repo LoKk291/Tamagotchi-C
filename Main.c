@@ -7,21 +7,23 @@
 // esta estructura contiene la información PRINCIPAL en tiempo de ejecución
 struct AssetsData
 {
-    //tanto el nombre de la mascomo como de usuario seran de maximo 12 caracteres
+    // tanto el nombre de la mascomo como de usuario seran de maximo 12 caracteres
     char petName[N];
     char userName[N];
     int gameAvatar;
     int petInmortality;
     int gameDifficult;
-    int gameTryHard; //si esta opción es verdadera, una vez que la mascota muera no se podrá volver a jugar
+    int gameTryHard; // si esta opción es verdadera, una vez que la mascota muera no se podrá volver a jugar
 };
 
-//esta estructura almacena los datos de las barras de estado
-struct dataStateBars{
+// esta estructura almacena los datos de las barras de estado
+struct dataStateBars
+{
     int health;
     int mood;
     int hungry;
 };
+
 
 // esta funcion carga las configuraciones PRINCIPALES
 int assetsLoad(struct AssetsData **ptrAssetsData)
@@ -36,57 +38,38 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
         return 1;
     }
 
-    //lee los datos del archivo y los carga en la estructura
+    // lee los datos del archivo y los carga en la estructura
     fflush(stdin);
     fscanf(fileAssets, "%s%s%i%i%i%i", &(*ptrAssetsData)->userName, &(*ptrAssetsData)->petName, &(*ptrAssetsData)->gameAvatar, &(*ptrAssetsData)->petInmortality, &(*ptrAssetsData)->gameDifficult, &(*ptrAssetsData)->gameTryHard);
-    fclose(fileAssets); //terminada la carga del struct se ciera el archivo
+    fclose(fileAssets); // terminada la carga del struct se ciera el archivo
     return 0;
 }
 
-int timeConverter(time_t timeNow){
-    //struct para convertir los segundos obtenidos de time(NULL) a la fecha actual
-    struct tm *currentTime;
-    struct currentTimeFormated{
-        int day;
-        int month;
-        int year;
-        int hour;
-        int minute;
-        int second;
-    };
-    currentTime = localtime(&timeNow);
-
-    struct currentTimeFormated *ptrcurrentTimeFormated = (struct currentTimeFormated*)malloc(sizeof(struct currentTimeFormated));
-    ptrcurrentTimeFormated->day = currentTime->tm_mday;
-    ptrcurrentTimeFormated->month = currentTime->tm_mon + 1;
-    ptrcurrentTimeFormated->year = currentTime->tm_year + 1900;
-    ptrcurrentTimeFormated->hour = currentTime->tm_hour;
-    ptrcurrentTimeFormated->minute = currentTime->tm_min;
-    ptrcurrentTimeFormated->second = currentTime->tm_sec;
-    
-    //printf("Fecha actual: %02d/%02d/%d\n", fechaActual->tm_mday, fechaActual->tm_mon + 1, fechaActual->tm_year + 1900);
-    
-    return 0;
-}
-
-//para hacer la actualizacion de las barras de estado usaré la librería time.h con su función "clock_t clock (void)"
-int stateBars(){
+int timeConverter(time_t timeNow)
+{
 
     return 0;
 }
 
+// para hacer la actualizacion de las barras de estado usaré la librería time.h con su función "clock_t clock (void)"
+int stateBars()
+{
+
+    return 0;
+}
 
 int main()
 {
     char optMenu;
-    
-    //time_t es un tipo de dato que permite guardar una "marca de tiempo"
+
+    // time_t es un tipo de dato que permite guardar una "marca de tiempo"
     time_t timeNow;
 
-    struct AssetsData* ptrAssetsData = (struct AssetsData*)malloc(sizeof(struct AssetsData)); //se le asigna un espacio en memoria a la estructura
-    struct dataStateBars* ptrDataStateBars = (struct dataStateBars*)malloc(sizeof(struct dataStateBars));
+    struct AssetsData *ptrAssetsData = (struct AssetsData *)malloc(sizeof(struct AssetsData)); // se le asigna un espacio en memoria a la estructura
+    struct dataStateBars *ptrDataStateBars = (struct dataStateBars *)malloc(sizeof(struct dataStateBars));
 
-    if(assetsLoad(&ptrAssetsData)){
+    if (assetsLoad(&ptrAssetsData))
+    {
         printf("ERROR FATAL, NO SE CARGARON LOS DATOS PRINCIPALES...");
         return 1;
     }
@@ -96,26 +79,26 @@ int main()
     time_t since1970 = time(NULL);
     printf("\n%ld\n", since1970);
     */
-    
-    do{
+
+    do
+    {
         printf("Desea salir? (s/n): ");
         scanf("%c", &optMenu);
-        
-        if(optMenu == 's'){
-            //captura el instante de salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
-            timeNow = time(NULL);
-            /*
-            esto dara como resultado la cantidad de tiempo transcurridad desde el 1 de Enero de 1970
-            (conviertiendo esos numeros obtenemos la fecha actual)
-            */
-           
-            //guarda el instante de salida en el archivo "lastClose.txt"
-            FILE* fileLastClose = fopen("../files/lastClose.txt", "w");
-            fprintf(fileLastClose, "%i", timeNow);
-            fclose(fileLastClose);
-        }
-    }while(optMenu != 's');
+    } while (optMenu != 's');
+
+    // captura el instante de salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
+    timeNow = time(NULL);
+    /*    esto dara como resultado la cantidad de tiempo transcurridad desde el 1 de Enero de 1970
+          (conviertiendo esos numeros obtenemos la fecha actual)
+    */
+
     timeConverter(timeNow);
+
+    // guarda el instante de salida en el archivo "lastClose.txt"
+    FILE *fileLastClose = fopen("../files/lastClose.txt", "w");
+    fprintf(fileLastClose, "%i", timeNow);
+    fclose(fileLastClose);
+
     system("pause");
     return 0;
 }
