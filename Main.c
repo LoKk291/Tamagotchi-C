@@ -45,9 +45,27 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
 
 int timeConverter(time_t timeNow){
     //struct para convertir los segundos obtenidos de time(NULL) a la fecha actual
-    struct tm *fecha_actual;
-    fecha_actual = localtime(&timeNow);
-    //printf("Fecha actual: %02d/%02d/%d\n", fecha_actual->tm_mday, fecha_actual->tm_mon + 1, fecha_actual->tm_year + 1900);
+    struct tm *currentTime;
+    struct currentTimeFormated{
+        int day;
+        int month;
+        int year;
+        int hour;
+        int minute;
+        int second;
+    };
+    currentTime = localtime(&timeNow);
+
+    struct currentTimeFormated *ptrcurrentTimeFormated = (struct currentTimeFormated*)malloc(sizeof(struct currentTimeFormated));
+    ptrcurrentTimeFormated->day = currentTime->tm_mday;
+    ptrcurrentTimeFormated->month = currentTime->tm_mon + 1;
+    ptrcurrentTimeFormated->year = currentTime->tm_year + 1900;
+    ptrcurrentTimeFormated->hour = currentTime->tm_hour;
+    ptrcurrentTimeFormated->minute = currentTime->tm_min;
+    ptrcurrentTimeFormated->second = currentTime->tm_sec;
+    
+    //printf("Fecha actual: %02d/%02d/%d\n", fechaActual->tm_mday, fechaActual->tm_mon + 1, fechaActual->tm_year + 1900);
+    
     return 0;
 }
 
@@ -65,7 +83,6 @@ int main()
     //time_t es un tipo de dato que permite guardar una "marca de tiempo"
     time_t timeNow;
 
-    struct tm *fecha_actual;
     struct AssetsData* ptrAssetsData = (struct AssetsData*)malloc(sizeof(struct AssetsData)); //se le asigna un espacio en memoria a la estructura
     struct dataStateBars* ptrDataStateBars = (struct dataStateBars*)malloc(sizeof(struct dataStateBars));
 
