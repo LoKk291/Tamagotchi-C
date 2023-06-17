@@ -87,11 +87,12 @@ int lastOpenGetterAndSaver(int mode, time_t timeNow)
         FILE *fileLastClose = fopen("../files/lastClose.txt", "w");
         fprintf(fileLastClose, "%ld", timeNow);
         fclose(fileLastClose);
+        //printf("\nGuardado finalizado..\n");
     }
     else
     {
-        FILE *fileLastClose = fopen("../files/lastClose.txt", "r");
         // lee el contenido
+        FILE *fileLastClose = fopen("../files/lastClose.txt", "r");
         fscanf(fileLastClose, "%ld", &timeLast);
         fclose(fileLastClose);
 
@@ -99,6 +100,7 @@ int lastOpenGetterAndSaver(int mode, time_t timeNow)
         y devuelve el resultado (double) expresado en segundos.*/
         // guarda la diferencia entre la sesion anterior y el timeNow
         timeResult = difftime(timeNow, timeLast);
+        //printf("\nCarga finalizada..\n");
     }
 
     // printf("\nLa diferencia de tiempo es: %f \n", timeResult);
@@ -106,13 +108,29 @@ int lastOpenGetterAndSaver(int mode, time_t timeNow)
 }
 
 //carga los estados de la barra anterior y calcula el valor real en base al tiempo transcurrido
-int stateBarsLoad(struct dataStateBars** ptrDataStateBars)
+int stateBarsGetterAndSaver(int mode, struct dataStateBars** ptrDataStateBars)
 {
-    FILE *filelastStateBars = fopen("../files/lastStateBars.txt", "r");
-    fscanf(filelastStateBars, "%i %i %i", &(*ptrDataStateBars)->health, &(*ptrDataStateBars)->mood, &(*ptrDataStateBars)->hungry);
-    fclose(filelastStateBars);
+    if(mode){
+        //guarda los estados actuales
+        FILE *filelastStateBars = fopen("../files/lastStateBars.txt", "w");
+        fprintf(filelastStateBars, "%i %i %i", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry);
+        fclose(filelastStateBars);
 
-    //printf("\n%i%i%i\n", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry);
+        //printf("\n%i%i%i\n", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry);    //PRUEBAS
+        //printf("\nGuardado finalizado..\n");  //PRUEBAS
+    }else{
+        //lee los estados anteriores
+        FILE *filelastStateBars = fopen("../files/lastStateBars.txt", "r");
+        fscanf(filelastStateBars, "%i %i %i", &(*ptrDataStateBars)->health, &(*ptrDataStateBars)->mood, &(*ptrDataStateBars)->hungry);
+        //(*ptrDataStateBars)->health = 20; 
+        //(*ptrDataStateBars)->mood = 40;       //PRUEBAS
+        //(*ptrDataStateBars)->hungry = 30;
+        fclose(filelastStateBars);
+
+        //printf("\n%i%i%i\n", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry); //PRUEBAS
+        //printf("\nCarga finalizada..\n"); //PRUEBAS
+    }
+   
     return 0;
 }
 
@@ -138,7 +156,7 @@ int main()
     // lee y calcula la diferencia con la ultima sesion y lo guarda
     timeConverter(timeResult, &ptrElpasedTime);
 
-    stateBarsLoad(&ptrDataStateBars);
+    stateBarsGetterAndSaver(0, &ptrDataStateBars);
 
     /*
     //esteregg "time since 1970"
@@ -155,8 +173,9 @@ int main()
     // captura el instante de tiempo de la salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
     timeNow = time(NULL);
 
-    // guarda la salida de la ultima sesion
+    // guarda la salida de la ultima sesion y los estados de las barras
     lastOpenGetterAndSaver(1, timeNow);
+    stateBarsGetterAndSaver(1, &ptrDataStateBars);
 
     system("pause");
     return 0;
