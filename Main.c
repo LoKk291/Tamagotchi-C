@@ -24,6 +24,17 @@ struct dataStateBars
     int hungry;
 };
 
+//esta estructura almacena la fecha antes de que sea formateada (se usa para calcular la fecha actual a partir de los segundos) 
+struct tm *currentDate;
+
+struct currentDateFormated{
+    int day;
+    int month;
+    int year;
+    int hour;
+    int minute;
+    int second;
+};
 
 // esta funcion carga las configuraciones PRINCIPALES
 int assetsLoad(struct AssetsData **ptrAssetsData)
@@ -45,9 +56,12 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
     return 0;
 }
 
-int timeConverter(time_t timeNow)
+//convierte los segundos obtenidos en la variable "timeNow" en fecha y hora exacta
+int timeConverter(time_t timeNow, struct tm *currentDate, struct currentDateFormated* ptrCurrentDateFormated)
 {
+    currentDate= localtime(timeNow);
 
+    
     return 0;
 }
 
@@ -92,7 +106,8 @@ int main()
           (conviertiendo esos numeros obtenemos la fecha actual)
     */
 
-    timeConverter(timeNow);
+    struct currentDateFormated* ptrCurrentDateFormated;
+    timeConverter(timeNow, currentDate, &ptrCurrentDateFormated);
 
     // guarda el instante de salida en el archivo "lastClose.txt"
     FILE *fileLastClose = fopen("../files/lastClose.txt", "w");
