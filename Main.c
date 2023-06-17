@@ -53,10 +53,8 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
 
 //convierte los segundos de la variable timeResult de la funcion lastOpenGetter horas/minutos/segundos
 //y almacena los datos procesados en struct elapsedTime
-int timeConverter(double timeResult)
+int timeConverter(double timeResult, struct elpasedTime** ptrElpasedTime)
 {
-    struct elpasedTime* ptrElpasedTime = (struct elpasedTime*)malloc(sizeof(struct elpasedTime));
-
     int hours = 0;
     int minutes = 0;
     int seconds = timeResult;
@@ -64,14 +62,14 @@ int timeConverter(double timeResult)
     hours = seconds/3600;
     minutes = (seconds-hours*3600)/60;   
     seconds = seconds - (hours*3600+minutes*60);
-    //printf("\nla cantidad de segundos es: %i\n", seconds);
-    //printf("\n%i %i %i\n", hours, minutes, seconds);
+    printf("\nla cantidad de segundos es: %i\n", seconds);
+    printf("\n%i %i %i\n", hours, minutes, seconds);
 
-    ptrElpasedTime->hours = hours;
-    ptrElpasedTime->minutes = minutes;
-    ptrElpasedTime->seconds = seconds;
+    (*ptrElpasedTime)->hours = hours;
+    (*ptrElpasedTime)->minutes = minutes;
+    (*ptrElpasedTime)->seconds = seconds;
     
-    //printf("\n%i %i %i\n", ptrElpasedTime->hours, ptrElpasedTime->minutes, ptrElpasedTime->seconds);
+    printf("\n%i %i %i\n", (*ptrElpasedTime)->hours, (*ptrElpasedTime)->minutes, (*ptrElpasedTime)->seconds);
     return 0;
 }
 
@@ -100,23 +98,25 @@ int lastOpenGetter(int mode, time_t timeNow){
 
         /*Recibe dos variables de tipo time_t, calcula su diferencia
         y devuelve el resultado (double) expresado en segundos.*/
+        //guarda la diferencia entre la sesion anterior y el timeNow
         timeResult = difftime(timeNow, timeLast);
-        timeConverter(timeResult);
     }
     
     //printf("\nLa diferencia de tiempo es: %f \n", timeResult);
-    return 0;
+    return timeResult;
 }
 
-int main()
-{
-    char optMenu;
-
+int main(){
     // time_t es un tipo de dato que permite guardar una "marca de tiempo"
     time_t timeNow = time(NULL);
 
+    int timeResult = lastOpenGetter(0, timeNow); ;
+
+    char optMenu;
+
     struct AssetsData *ptrAssetsData = (struct AssetsData *)malloc(sizeof(struct AssetsData)); // se le asigna un espacio en memoria a la estructura
     struct dataStateBars *ptrDataStateBars = (struct dataStateBars *)malloc(sizeof(struct dataStateBars));
+    struct elpasedTime* ptrElpasedTime = (struct elpasedTime*)malloc(sizeof(struct elpasedTime));
 
     if (assetsLoad(&ptrAssetsData))
     {
@@ -124,8 +124,9 @@ int main()
         return 1;
     }
     
-    //lee y calcula la diferencia con la ultima sesion
-    lastOpenGetter(0, timeNow); 
+    //lee y calcula la diferencia con la ultima sesion y lo guarda
+    
+    timeConverter(timeResult, &ptrElpasedTime);
 
     /*
     //esteregg "time since 1970"
