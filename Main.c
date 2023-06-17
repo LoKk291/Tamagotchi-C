@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "libraries/colors.h"
+#include <windows.h>
 #define N 13
 
 // contiene la información PRINCIPAL en tiempo de ejecución
@@ -52,7 +53,7 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
     return 0;
 }
 
-// convierte los segundos de la variable timeResult de la funcion lastOpenGetter horas/minutos/segundos
+// convierte los segundos de la variable timeResult de la funcion lastOpenGetterAndSaver horas/minutos/segundos
 // y almacena los datos procesados en struct elapsedTime
 int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
 {
@@ -63,27 +64,20 @@ int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
     hours = seconds / 3600;
     minutes = (seconds - hours * 3600) / 60;
     seconds = seconds - (hours * 3600 + minutes * 60);
-    printf("\nla cantidad de segundos es: %i\n", seconds);
-    printf("\n%i %i %i\n", hours, minutes, seconds);
+    //printf("\nla cantidad de segundos es: %i\n", seconds);
+    //printf("\n%i %i %i\n", hours, minutes, seconds);
 
     (*ptrElpasedTime)->hours = hours;
     (*ptrElpasedTime)->minutes = minutes;
     (*ptrElpasedTime)->seconds = seconds;
 
-    printf("\n%i %i %i\n", (*ptrElpasedTime)->hours, (*ptrElpasedTime)->minutes, (*ptrElpasedTime)->seconds);
-    return 0;
-}
-
-// para hacer la actualizacion de las barras de estado usaré la librería time.h con su función "clock_t clock (void)"
-int stateBars()
-{
-
+    //printf("\n%i %i %i\n", (*ptrElpasedTime)->hours, (*ptrElpasedTime)->minutes, (*ptrElpasedTime)->seconds);
     return 0;
 }
 
 // esta funcion abrira el archivo "lastOpen" y dependiendo del modo, escribirá en el u obtendrá su contenido
 // mode = 1 (guarda) mode = 0 (lee)
-int lastOpenGetter(int mode, time_t timeNow)
+int lastOpenGetterAndSaver(int mode, time_t timeNow)
 {
     time_t timeLast; // guardara lo que contenga el archivo
     double timeResult = 0;
@@ -96,8 +90,8 @@ int lastOpenGetter(int mode, time_t timeNow)
     }
     else
     {
-        // lee el contenido
         FILE *fileLastClose = fopen("../files/lastClose.txt", "r");
+        // lee el contenido
         fscanf(fileLastClose, "%ld", &timeLast);
         fclose(fileLastClose);
 
@@ -111,19 +105,29 @@ int lastOpenGetter(int mode, time_t timeNow)
     return timeResult;
 }
 
+//carga los estados de la barra anterior y calcula el valor real en base al tiempo transcurrido
+int stateBarsLoad(struct dataStateBars** ptrDataStateBars)
+{
+    FILE *filelastStateBars = fopen("../files/lastStateBars.txt", "r");
+    fscanf(filelastStateBars, "%i %i %i", &(*ptrDataStateBars)->health, &(*ptrDataStateBars)->mood, &(*ptrDataStateBars)->hungry);
+    fclose(filelastStateBars);
+
+    //printf("\n%i%i%i\n", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry);
+    return 0;
+}
+
 int main()
 {
     // time_t es un tipo de dato que permite guardar una "marca de tiempo"
     time_t timeNow = time(NULL);
 
-    int timeResult = lastOpenGetter(0, timeNow);
-    ;
+    int timeResult = lastOpenGetterAndSaver(0, timeNow);
 
     char optMenu;
 
     struct AssetsData *ptrAssetsData = (struct AssetsData *)malloc(sizeof(struct AssetsData)); // se le asigna un espacio en memoria a la estructura
-    struct dataStateBars *ptrDataStateBars = (struct dataStateBars *)malloc(sizeof(struct dataStateBars));
     struct elpasedTime *ptrElpasedTime = (struct elpasedTime *)malloc(sizeof(struct elpasedTime));
+    struct dataStateBars *ptrDataStateBars = (struct dataStateBars *)malloc(sizeof(struct dataStateBars));
 
     if (assetsLoad(&ptrAssetsData))
     {
@@ -132,8 +136,9 @@ int main()
     }
 
     // lee y calcula la diferencia con la ultima sesion y lo guarda
-
     timeConverter(timeResult, &ptrElpasedTime);
+
+    stateBarsLoad(&ptrDataStateBars);
 
     /*
     //esteregg "time since 1970"
@@ -151,7 +156,7 @@ int main()
     timeNow = time(NULL);
 
     // guarda la salida de la ultima sesion
-    lastOpenGetter(1, timeNow);
+    lastOpenGetterAndSaver(1, timeNow);
 
     system("pause");
     return 0;
