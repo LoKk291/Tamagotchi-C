@@ -4,7 +4,7 @@
 #include "libraries/colors.h"
 #define N 13
 
-// esta estructura contiene la información PRINCIPAL en tiempo de ejecución
+//contiene la información PRINCIPAL en tiempo de ejecución
 struct AssetsData
 {
     // tanto el nombre de la mascomo como de usuario seran de maximo 12 caracteres
@@ -16,7 +16,7 @@ struct AssetsData
     int gameTryHard; // si esta opción es verdadera, una vez que la mascota muera no se podrá volver a jugar
 };
 
-// esta estructura almacena los datos de las barras de estado
+//almacena los datos de las barras de estado
 struct dataStateBars
 {
     int health;
@@ -24,16 +24,11 @@ struct dataStateBars
     int hungry;
 };
 
-//esta estructura almacena la fecha antes de que sea formateada (se usa para calcular la fecha actual a partir de los segundos) 
-struct tm *currentDate;
-
-struct currentDateFormated{
-    int day;
-    int month;
-    int year;
-    int hour;
-    int minute;
-    int second;
+//almacena las horas/minutos/segundos que transcurrieron desde la ultima sesión de juego
+struct elpasedTime{
+    int seconds;
+    int minutes;
+    int hours;
 };
 
 // esta funcion carga las configuraciones PRINCIPALES
@@ -41,8 +36,8 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
 {
     char ruta[] = "../files/assets.txt"; // se vuelve una carpeta para atras para que el .exe pueda abrir el archivo
 
-    // el archivo assets contiene las configuraciones PRONCIPALES
-    FILE *fileAssets = fopen(ruta, "rb"); // se habre en modo lectura tipo binario
+    // el archivo assets contiene las configuraciones PRINCIPALES
+    FILE *fileAssets = fopen(ruta, "rb"); 
     if (fileAssets == NULL)
     {
         printf("ERROR FATAL, no se ha podido abrir el archivo 'assets'\n");
@@ -52,16 +47,31 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
     // lee los datos del archivo y los carga en la estructura
     fflush(stdin);
     fscanf(fileAssets, "%s%s%i%i%i%i", &(*ptrAssetsData)->userName, &(*ptrAssetsData)->petName, &(*ptrAssetsData)->gameAvatar, &(*ptrAssetsData)->petInmortality, &(*ptrAssetsData)->gameDifficult, &(*ptrAssetsData)->gameTryHard);
-    fclose(fileAssets); // terminada la carga del struct se ciera el archivo
+    fclose(fileAssets); 
     return 0;
 }
 
-//convierte los segundos obtenidos en la variable "timeNow" en fecha y hora exacta
-int timeConverter(time_t timeNow, struct tm *currentDate, struct currentDateFormated* ptrCurrentDateFormated)
+//convierte los segundos de la variable timeResult de la funcion lastOpenGetter horas/minutos/segundos
+//y almacena los datos procesados en struct elapsedTime
+int timeConverter(double timeResult)
 {
-    currentDate= localtime(timeNow);
+    struct elpasedTime* ptrElpasedTime = (struct elpasedTime*)malloc(sizeof(struct elpasedTime));
 
+    int hours = 0;
+    int minutes = 0;
+    int seconds = timeResult;
     
+    hours = seconds/3600;
+    minutes = (seconds-hours*3600)/60;   
+    seconds = seconds - (hours*3600+minutes*60);
+    //printf("\nla cantidad de segundos es: %i\n", seconds);
+    //printf("\n%i %i %i\n", hours, minutes, seconds);
+
+    ptrElpasedTime->hours = hours;
+    ptrElpasedTime->minutes = minutes;
+    ptrElpasedTime->seconds = seconds;
+    
+    //printf("\n%i %i %i\n", ptrElpasedTime->hours, ptrElpasedTime->minutes, ptrElpasedTime->seconds);
     return 0;
 }
 
@@ -91,10 +101,10 @@ int lastOpenGetter(int mode, time_t timeNow){
         /*Recibe dos variables de tipo time_t, calcula su diferencia
         y devuelve el resultado (double) expresado en segundos.*/
         timeResult = difftime(timeNow, timeLast);
-
+        timeConverter(timeResult);
     }
     
-    printf("\nLa diferencia de tiempo es: %f \n", timeResult);
+    //printf("\nLa diferencia de tiempo es: %f \n", timeResult);
     return 0;
 }
 
@@ -134,7 +144,7 @@ int main()
     
     //guarda la salida de la ultima sesion
     lastOpenGetter(1, timeNow); 
-
+    
     system("pause");
     return 0;
 }
