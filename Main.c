@@ -72,12 +72,38 @@ int stateBars()
     return 0;
 }
 
+//esta funcion abrira el archivo "lastOpen" y dependiendo del modo, escribirá en el u obtendrá su contenido
+//mode = 1 (guarda) mode = 0 (lee)
+int lastOpenGetter(int mode, time_t timeNow){
+    time_t timeLast; //guardara lo que contenga el archivo
+    double timeResult = 0;
+    if(mode){
+        // guarda el instante de salida en el archivo "lastClose.txt"
+        FILE *fileLastClose = fopen("../files/lastClose.txt", "w");
+        fprintf(fileLastClose, "%ld", timeNow);
+        fclose(fileLastClose);
+    }else{
+        // lee el contenido
+        FILE *fileLastClose = fopen("../files/lastClose.txt", "r");
+        fscanf(fileLastClose, "%ld", &timeLast);
+        fclose(fileLastClose);
+
+        /*Recibe dos variables de tipo time_t, calcula su diferencia
+        y devuelve el resultado (double) expresado en segundos.*/
+        timeResult = difftime(timeNow, timeLast);
+
+    }
+    
+    printf("\nLa diferencia de tiempo es: %f \n", timeResult);
+    return 0;
+}
+
 int main()
 {
     char optMenu;
 
     // time_t es un tipo de dato que permite guardar una "marca de tiempo"
-    time_t timeNow;
+    time_t timeNow = time(NULL);
 
     struct AssetsData *ptrAssetsData = (struct AssetsData *)malloc(sizeof(struct AssetsData)); // se le asigna un espacio en memoria a la estructura
     struct dataStateBars *ptrDataStateBars = (struct dataStateBars *)malloc(sizeof(struct dataStateBars));
@@ -87,6 +113,9 @@ int main()
         printf("ERROR FATAL, NO SE CARGARON LOS DATOS PRINCIPALES...");
         return 1;
     }
+    
+    //lee y calcula la diferencia con la ultima sesion
+    lastOpenGetter(0, timeNow); 
 
     /*
     //esteregg "time since 1970"
@@ -100,19 +129,11 @@ int main()
         scanf("%c", &optMenu);
     } while (optMenu != 's');
 
-    // captura el instante de salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
+    // captura el instante de tiempo de la salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
     timeNow = time(NULL);
-    /*    esto dara como resultado la cantidad de tiempo transcurridad desde el 1 de Enero de 1970
-          (conviertiendo esos numeros obtenemos la fecha actual)
-    */
-
-    struct currentDateFormated* ptrCurrentDateFormated;
-    timeConverter(timeNow, currentDate, &ptrCurrentDateFormated);
-
-    // guarda el instante de salida en el archivo "lastClose.txt"
-    FILE *fileLastClose = fopen("../files/lastClose.txt", "w");
-    fprintf(fileLastClose, "%i", timeNow);
-    fclose(fileLastClose);
+    
+    //guarda la salida de la ultima sesion
+    lastOpenGetter(1, timeNow); 
 
     system("pause");
     return 0;
