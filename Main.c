@@ -4,7 +4,7 @@
 #include "libraries/colors.h"
 #include <windows.h>
 #define N 13
-
+#define M 100
 // contiene la información PRINCIPAL en tiempo de ejecución
 struct AssetsData
 {
@@ -130,9 +130,21 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars** ptrDataStateBars)
         //printf("\n%i%i%i\n", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry); //PRUEBAS
         //printf("\nCarga finalizada..\n"); //PRUEBAS
     }
-   
     return 0;
 }
+
+//arroja frases random contenidas en el archivo "phrases.txt"
+int randomPhrases(){
+    srand(time(NULL));
+    int randomValue = 1+rand()%(157+1-1);
+    printf("\nEl valor aleatorio es: %d", randomValue);
+    char phrase[M] = {};
+    FILE *filePhrases = fopen("../files/phrases.txt", "r");
+    fscanf(filePhrases, "%s");
+    fclose(filePhrases);
+    
+    return 0;
+}  
 
 int main()
 {
@@ -157,7 +169,8 @@ int main()
     timeConverter(timeResult, &ptrElpasedTime);
 
     stateBarsGetterAndSaver(0, &ptrDataStateBars);
-
+    
+    randomPhrases();
     /*
     //esteregg "time since 1970"
     time_t since1970 = time(NULL);
@@ -166,6 +179,7 @@ int main()
 
     do
     {
+        fflush(stdin);
         printf("Desea salir? (s/n): ");
         scanf("%c", &optMenu);
     } while (optMenu != 's');
