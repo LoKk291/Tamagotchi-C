@@ -153,12 +153,14 @@ int randomPhrases(){
     }
     fclose(filePhrases);
     
-    printf("\n%s\n", phrase);
+    printf(GREEN"\n%s\n", phrase);
+    printf(RESET);
     return 0;
 }  
 
 int main()
 {
+    system("cls");
     // time_t es un tipo de dato que permite guardar una "marca de tiempo"
     time_t timeNow = time(NULL);
 
@@ -172,10 +174,14 @@ int main()
 
     if (assetsLoad(&ptrAssetsData))
     {
-        printf("ERROR FATAL, NO SE CARGARON LOS DATOS PRINCIPALES...");
+        printf(RED"ERROR FATAL, NO SE CARGARON LOS DATOS PRINCIPALES...");
+        system("pause");
         return 1;
     }
 
+    printf(GREEN"Hola de nuevo %s!", ptrAssetsData->userName);
+    printf(RESET);
+    
     // lee y calcula la diferencia con la ultima sesion y lo guarda
     timeConverter(timeResult, &ptrElpasedTime);
 
