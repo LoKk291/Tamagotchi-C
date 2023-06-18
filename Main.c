@@ -160,6 +160,19 @@ int randomPhrases(){
     return 0;
 }  
 
+void splashScreen(){
+    char line[M];
+
+    printf(ORANGE);
+    FILE *fileSplashScreen = fopen("../files/splashScreen.txt", "r");
+    while(!feof(fileSplashScreen)){
+        fgets(line, M, fileSplashScreen);
+        printf("%s", line);
+    }
+    printf(RESET"\n");
+    fclose(fileSplashScreen);
+}
+
 int main()
 {
     system("cls");
@@ -201,7 +214,7 @@ int main()
     eastergg de sonido "thoy dont know me son"
     */
 
-
+   splashScreen();
 
     do
     {
