@@ -135,14 +135,26 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars** ptrDataStateBars)
 
 //arroja frases random contenidas en el archivo "phrases.txt"
 int randomPhrases(){
+    char phrase[M];
+
+    //como c no permite ir hasta una linea especifica de un archivo, creo un indice con un numero random
+    //dentro de un rango dado por la cantidad de frases que contiene el archivo y recorro el archivo hasta
+    //llegar a la linea que indica el indice random
+
     srand(time(NULL));
-    int randomValue = 1+rand()%(157+1-1);
-    printf("\nEl valor aleatorio es: %d", randomValue);
-    char phrase[M] = {};
+    int indexRandomMax = rand()%(157-1);
+    int index = 0;
+
+    printf("\nEl valor aleatorio es: %d", indexRandomMax);
+
     FILE *filePhrases = fopen("../files/phrases.txt", "r");
-    fscanf(filePhrases, "%s");
+    while(index <= indexRandomMax){
+        fgets(phrase, M, filePhrases);
+        index++;
+    }
     fclose(filePhrases);
     
+    printf("\n%s\n", phrase);
     return 0;
 }  
 
