@@ -3,8 +3,10 @@
 #include <time.h>
 #include "libraries/colors.h"
 #include <windows.h>
+
 #define N 13
 #define M 100
+
 // contiene la información PRINCIPAL en tiempo de ejecución
 struct AssetsData
 {
@@ -195,13 +197,24 @@ int main()
     printf("\n%ld\n", since1970);
     */
 
+    /*
+    eastergg de sonido "thoy dont know me son"
+    */
+
+
+
     do
     {
-        printf("");
+        printf(BLUE"1. Alimentar\n");
+        printf("2. Curar\n");
+        printf("3. Jugar\n");
+        printf("S. Salir\n");
+        printf(RESET);
+
         fflush(stdin);
-        printf("Desea salir? (s/n): ");
         scanf("%c", &optMenu);
-    } while (optMenu != 's');
+        system("cls");
+    } while (optMenu != 's' && optMenu != 'S');
 
     // captura el instante de tiempo de la salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
     timeNow = time(NULL);
