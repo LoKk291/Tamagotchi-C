@@ -143,7 +143,7 @@ int randomPhrases(){
     //llegar a la linea que indica el indice random
 
     srand(time(NULL));
-    int indexRandomMax = rand()%(157-1);
+    int indexRandomMax = rand()%(147-1);
     int index = 0;
 
     printf("\nEl valor aleatorio es: %d", indexRandomMax);
@@ -160,6 +160,7 @@ int randomPhrases(){
     return 0;
 }  
 
+//Muestra una pantalla de bienvenida al usuario
 void splashScreen(){
     char line[M];
 
@@ -219,7 +220,8 @@ int main()
     splashScreen();
 
     do
-    {
+    {   
+
         printf(BLUE"1. Alimentar\n");
         printf("2. Curar\n");
         printf("3. Jugar\n");
