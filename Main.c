@@ -181,7 +181,7 @@ int main()
 
     printf(GREEN"Hola de nuevo %s!", ptrAssetsData->userName);
     printf(RESET);
-    
+
     // lee y calcula la diferencia con la ultima sesion y lo guarda
     timeConverter(timeResult, &ptrElpasedTime);
 
@@ -197,6 +197,7 @@ int main()
 
     do
     {
+        printf("");
         fflush(stdin);
         printf("Desea salir? (s/n): ");
         scanf("%c", &optMenu);
