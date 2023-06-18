@@ -42,7 +42,6 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
     FILE *fileAssets = fopen(ruta, "rb");
     if (fileAssets == NULL)
     {
-        printf("ERROR FATAL, no se ha podido abrir el archivo 'assets'\n");
         return 1;
     }
 
@@ -183,6 +182,7 @@ int main()
     stateBarsGetterAndSaver(0, &ptrDataStateBars);
     
     randomPhrases();
+    
     /*
     //esteregg "time since 1970"
     time_t since1970 = time(NULL);
