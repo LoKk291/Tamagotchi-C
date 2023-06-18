@@ -171,6 +171,8 @@ void splashScreen(){
     }
     printf(RESET"\n");
     fclose(fileSplashScreen);
+    Sleep(5000);
+    system("cls");
 }
 
 int main()
@@ -214,7 +216,7 @@ int main()
     eastergg de sonido "thoy dont know me son"
     */
 
-   splashScreen();
+    splashScreen();
 
     do
     {
