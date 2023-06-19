@@ -65,14 +65,14 @@ int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
     hours = seconds / 3600;
     minutes = (seconds - hours * 3600) / 60;
     seconds = seconds - (hours * 3600 + minutes * 60);
-    //printf("\nla cantidad de segundos es: %i\n", seconds);
-    //printf("\n%i %i %i\n", hours, minutes, seconds);
+    // printf("\nla cantidad de segundos es: %i\n", seconds);
+    // printf("\n%i %i %i\n", hours, minutes, seconds);
 
     (*ptrElpasedTime)->hours = hours;
     (*ptrElpasedTime)->minutes = minutes;
     (*ptrElpasedTime)->seconds = seconds;
 
-    //printf("\n%i %i %i\n", (*ptrElpasedTime)->hours, (*ptrElpasedTime)->minutes, (*ptrElpasedTime)->seconds);
+    // printf("\n%i %i %i\n", (*ptrElpasedTime)->hours, (*ptrElpasedTime)->minutes, (*ptrElpasedTime)->seconds);
     return 0;
 }
 
@@ -88,7 +88,7 @@ int lastOpenGetterAndSaver(int mode, time_t timeNow)
         FILE *fileLastClose = fopen("../files/lastClose.txt", "w");
         fprintf(fileLastClose, "%ld", timeNow);
         fclose(fileLastClose);
-        //printf("\nGuardado finalizado..\n");
+        // printf("\nGuardado finalizado..\n");
     }
     else
     {
@@ -101,105 +101,117 @@ int lastOpenGetterAndSaver(int mode, time_t timeNow)
         y devuelve el resultado (double) expresado en segundos.*/
         // guarda la diferencia entre la sesion anterior y el timeNow
         timeResult = difftime(timeNow, timeLast);
-        //printf("\nCarga finalizada..\n");
+        // printf("\nCarga finalizada..\n");
     }
 
     // printf("\nLa diferencia de tiempo es: %f \n", timeResult);
     return timeResult;
 }
 
-//carga los estados de la barra anterior y calcula el valor real en base al tiempo transcurrido
-int stateBarsGetterAndSaver(int mode, struct dataStateBars** ptrDataStateBars)
+// carga los estados de la barra anterior y calcula el valor real en base al tiempo transcurrido
+int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
 {
-    if(mode){
-        //guarda los estados actuales
+    if (mode)
+    {
+        // guarda los estados actuales
         FILE *filelastStateBars = fopen("../files/lastStateBars.txt", "w");
         fprintf(filelastStateBars, "%i %i %i", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry);
         fclose(filelastStateBars);
 
-        //printf("\n%i%i%i\n", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry);    //PRUEBAS
-        //printf("\nGuardado finalizado..\n");  //PRUEBAS
-    }else{
-        //lee los estados anteriores
+        // printf("\n%i%i%i\n", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry);    //PRUEBAS
+        // printf("\nGuardado finalizado..\n");  //PRUEBAS
+    }
+    else
+    {
+        // lee los estados anteriores
         FILE *filelastStateBars = fopen("../files/lastStateBars.txt", "r");
         fscanf(filelastStateBars, "%i %i %i", &(*ptrDataStateBars)->health, &(*ptrDataStateBars)->mood, &(*ptrDataStateBars)->hungry);
-        //(*ptrDataStateBars)->health = 20; 
+        //(*ptrDataStateBars)->health = 20;
         //(*ptrDataStateBars)->mood = 40;       //PRUEBAS
         //(*ptrDataStateBars)->hungry = 30;
         fclose(filelastStateBars);
 
-        //printf("\n%i%i%i\n", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry); //PRUEBAS
-        //printf("\nCarga finalizada..\n"); //PRUEBAS
+        // printf("\n%i%i%i\n", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry); //PRUEBAS
+        // printf("\nCarga finalizada..\n"); //PRUEBAS
     }
     return 0;
 }
 
-//arroja frases random contenidas en el archivo "phrases.txt"
-int randomPhrases(){
+// arroja frases random contenidas en el archivo "phrases.txt"
+int randomPhrases()
+{
     char phrase[M];
 
-    //como c no permite ir hasta una linea especifica de un archivo, creo un indice con un numero random
-    //dentro de un rango dado por la cantidad de frases que contiene el archivo y recorro el archivo hasta
-    //llegar a la linea que indica el indice random
+    // como c no permite ir hasta una linea especifica de un archivo, creo un indice con un numero random
+    // dentro de un rango dado por la cantidad de frases que contiene el archivo y recorro el archivo hasta
+    // llegar a la linea que indica el indice random
 
     srand(time(NULL));
-    int indexRandomMax = rand()%(147-1);
+    int indexRandomMax = rand() % (147 - 1);
     int index = 0;
 
-    //printf("\nEl valor aleatorio es: %d", indexRandomMax);
+    // printf("\nEl valor aleatorio es: %d", indexRandomMax);
 
     FILE *filePhrases = fopen("../files/phrases.txt", "r");
-    while(index <= indexRandomMax){
+    while (index <= indexRandomMax)
+    {
         fgets(phrase, M, filePhrases);
         index++;
     }
     fclose(filePhrases);
-    
-    printf(GREEN"\n%s\n", phrase);
+
+    printf(GREEN "\n%s\n", phrase);
     printf(RESET);
     return 0;
-}  
+}
 
-//Muestra una pantalla de bienvenida al usuario
-void splashScreen(){
+// Muestra una pantalla de bienvenida al usuario
+void splashScreen()
+{
     char line[M];
 
     printf(ORANGE);
     FILE *fileSplashScreen = fopen("../files/splashScreen.txt", "r");
-    while(!feof(fileSplashScreen)){
+    while (!feof(fileSplashScreen))
+    {
         fgets(line, M, fileSplashScreen);
         printf("%s", line);
     }
-    printf(RESET"\n");
+    printf(RESET "\n");
     fclose(fileSplashScreen);
     Sleep(5000);
     system("cls");
 }
 
-//muestra el avatar seleccionado por el usuario
-void showAvatar(struct AssetsData **ptrAssetsData){
-    char avatarPath[] = "../files/avatars/avatarX.txt"; 
+// muestra el avatar seleccionado por el usuario
+void showAvatar(struct AssetsData **ptrAssetsData)
+{
+    char avatarPath[] = "../files/avatars/avatarX.txt";
     char line[M];
 
-    //para optimizar el codigo, en vez de copiar toda la linea completa, lo que hago es cambiar unicamente
-    //el caracter que altera que archivo va a abrirse
-    if((*ptrAssetsData)->gameAvatar == 0){
-       avatarPath[23] = '0';
+    // para optimizar el codigo, en vez de copiar toda la linea completa, lo que hago es cambiar unicamente
+    // el caracter que altera que archivo va a abrirse
+    if ((*ptrAssetsData)->gameAvatar == 0)
+    {
+        avatarPath[23] = '0';
     }
-    if((*ptrAssetsData)->gameAvatar == 1){
-       avatarPath[23] = '1';
+    if ((*ptrAssetsData)->gameAvatar == 1)
+    {
+        avatarPath[23] = '1';
     }
-    if((*ptrAssetsData)->gameAvatar == 2){
-       avatarPath[23] = '2';
+    if ((*ptrAssetsData)->gameAvatar == 2)
+    {
+        avatarPath[23] = '2';
     }
-    
+
     FILE *fileAvatar = fopen(avatarPath, "r");
-    printf(MAGENTA"\n");
-    while(!feof(fileAvatar)){
+    printf(MAGENTA "\n");
+    while (!feof(fileAvatar))
+    {
         fgets(line, M, fileAvatar);
         printf("%s", line);
     }
-    printf(RESET"\n");
+    printf(RESET "\n");
     fclose(fileAvatar);
 }
 
@@ -219,21 +231,21 @@ int main()
 
     if (assetsLoad(&ptrAssetsData))
     {
-        printf(RED"ERROR FATAL, NO SE CARGARON LOS DATOS PRINCIPALES...");
+        printf(RED "ERROR FATAL, NO SE CARGARON LOS DATOS PRINCIPALES...");
         system("pause");
         return 1;
     }
 
-    printf(GREEN"Hola de nuevo %s!", ptrAssetsData->userName);
+    printf(GREEN "Hola de nuevo %s!", ptrAssetsData->userName);
     printf(RESET);
 
     // lee y calcula la diferencia con la ultima sesion y lo guarda
     timeConverter(timeResult, &ptrElpasedTime);
 
     stateBarsGetterAndSaver(0, &ptrDataStateBars);
-    
+
     randomPhrases();
-    
+
     /*
     //esteregg "time since 1970"
     time_t since1970 = time(NULL);
@@ -247,10 +259,10 @@ int main()
     splashScreen();
 
     do
-    {   
+    {
         showAvatar(&ptrAssetsData);
 
-        printf(BLUE"1. Alimentar\n");
+        printf(BLUE "1. Alimentar\n");
         printf("2. Curar\n");
         printf("3. Jugar\n");
         printf("S. Salir\n");
