@@ -146,7 +146,7 @@ int randomPhrases(){
     int indexRandomMax = rand()%(147-1);
     int index = 0;
 
-    printf("\nEl valor aleatorio es: %d", indexRandomMax);
+    //printf("\nEl valor aleatorio es: %d", indexRandomMax);
 
     FILE *filePhrases = fopen("../files/phrases.txt", "r");
     while(index <= indexRandomMax){
