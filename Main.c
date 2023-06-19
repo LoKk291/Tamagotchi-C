@@ -137,6 +137,44 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
     return 0;
 }
 
+//incrementa ptrDataStateBars->hungry dependiendo de la comida empleada (si es comida chatarra decrementa la barra de salud)
+//si la comida seleccionada es saludable incrementa un poco la salud
+//ESTA FUCION ES SUPER BÁSICA Y ES SOLO PARA GUIARME HASTA QUE AGUSTIN HAGA LA PARTE DE ARBOLES
+int alimentation(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData){
+    int optAlimentation;
+    do{
+        printf("\n1. Comida balanceada (aumenta la salud en uno)\n");
+        printf("2. Comida chatarra (aumenta la salud en uno)\n");
+        printf("Selecciona la comida que quieres darle a %s:", (*ptrAssetsData)->petName);
+        scanf("%i", &optAlimentation);
+    }while(optAlimentation != 1 && optAlimentation != 2);
+
+    if(optAlimentation == 1){
+        (*ptrDataStateBars)->hungry += 10;
+        (*ptrDataStateBars)->health += 5;
+    }else{
+        (*ptrDataStateBars)->hungry += 25;
+        (*ptrDataStateBars)->health -= 10;
+    }
+
+    //para asegurarse de que la barra no sobrepase los 100
+    if((*ptrDataStateBars)->hungry > 100){
+        (*ptrDataStateBars)->hungry = 100;
+    }
+
+    //MAS ADELANTE SE PUED AGREGAR LA FUNCIÓN SOBREPESO
+    return 0;
+}
+
+//incrementa ptrDataStateBars->health
+
+//muestra los estados de las barras (por el momento en numeros)
+void showAndIncrementerStateBars(struct dataStateBars **ptrDataStateBars){
+    printf(GREEN"Salud: %i/100\n", (*ptrDataStateBars)->health);
+    printf(BLUE"Animo: %i/100\n", (*ptrDataStateBars)->mood);
+    printf(YELLOW"Hambre: %i/100\n", (*ptrDataStateBars)->hungry);
+}
+
 // arroja frases random contenidas en el archivo "phrases.txt"
 int randomPhrases()
 {
@@ -261,8 +299,9 @@ int main()
     do
     {
         showAvatar(&ptrAssetsData);
+        showAndIncrementerStateBars(&ptrDataStateBars);
 
-        printf(BLUE "1. Alimentar\n");
+        printf(BLUE "\n1. Alimentar\n");
         printf("2. Curar\n");
         printf("3. Jugar\n");
         printf("S. Salir\n");
@@ -271,6 +310,12 @@ int main()
         fflush(stdin);
         scanf("%c", &optMenu);
         system("cls");
+
+        switch(optMenu){
+            case '1':
+                alimentation(&ptrDataStateBars, &ptrAssetsData);
+                break;
+        }
     } while (optMenu != 's' && optMenu != 'S');
 
     // captura el instante de tiempo de la salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
