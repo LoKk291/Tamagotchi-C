@@ -323,30 +323,27 @@ int settings(struct AssetsData **ptrAssetsData){
         scanf("%i", &gameDifficult);
         printf("Modo TryHard (0/1):");
         scanf("%i", &gameTryHard);
-    }
 
-    fflush(stdin);
-    printf(BLUE"SEGURO QUE DESEAS APLICAR LOS CAMBIOS?: ");
-    scanf("%c", &optChange);
+        fflush(stdin);
+        printf(BLUE"SEGURO QUE DESEAS APLICAR LOS CAMBIOS?: ");
+        scanf("%c", &optChange);
 
-    //se guardan las opciones
-    if(optChange == 's' || optChange == 'S'){
-        FILE *fileAssets = fopen("../files/assets.txt", "w");
-        if (fileAssets == NULL)
-        {
-            return 1;
+         //se guardan las opciones
+        if(optChange == 's' || optChange == 'S'){
+            FILE *fileAssets = fopen("../files/assets.txt", "w");
+            if (fileAssets == NULL)
+            {
+                return 1;
+            }
+            fprintf(fileAssets, "%s\n%s\n%i\n%i\n%i\n%i", userName, petName, gameAvatar, petInmortality, gameDifficult, gameTryHard);
+            fclose(fileAssets);
+
+            printf(GREEN"\nCambios aplicados...\n");
+        }else{
+            printf(YELLOW"\nCambios descartados...\n");
         }
-        fprintf(fileAssets, "%s\n%s\n%i\n%i\n%i\n%i", userName, petName, gameAvatar, petInmortality, gameDifficult, gameTryHard);
-        
-        //problemas al cargar denuevo la estrucutura con la funcion assetsLoad
-
-        fclose(fileAssets);
-
-        printf(GREEN"\nCambios aplicados...\n");
-    }else{
-        printf(YELLOW"\nCambios descartados...\n");
+        printf(RESET);
     }
-    printf(RESET);
 
     return 0;
 }
@@ -394,6 +391,7 @@ int main()
 
     do
     {
+        printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
         randomPhrases();
         showAvatar(&ptrAssetsData);
         showAndIncrementerStateBars(&ptrDataStateBars);
@@ -420,6 +418,7 @@ int main()
                 break;
             case '4':
                 settings(&ptrAssetsData);
+                assetsLoad(&ptrAssetsData);
                 break;
         }
     } while (optMenu != 's' && optMenu != 'S');
