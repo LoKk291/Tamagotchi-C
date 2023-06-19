@@ -11,8 +11,8 @@
 struct AssetsData
 {
     // tanto el nombre de la mascomo como de usuario seran de maximo 12 caracteres
-    char petName[N];
     char userName[N];
+    char petName[N];
     int gameAvatar;
     int petInmortality;
     int gameDifficult;
@@ -274,6 +274,83 @@ void showAvatar(struct AssetsData **ptrAssetsData)
     fclose(fileAvatar);
 }
 
+//permite modificar los ajustes del archivos assets, luego de ejecutada la funcion debe recargar la estructura "AssetsData"
+int settings(struct AssetsData **ptrAssetsData){
+    //almacenan temporalmente las preferencias actualizadas
+    char petName[N];
+    char userName[N];
+    int gameAvatar;
+    int petInmortality;
+    int gameDifficult;
+    int gameTryHard;
+
+    char optChange;
+
+    FILE *fileAssets = fopen("../files/assets.txt", "rb");
+    if (fileAssets == NULL)
+    {
+        return 1;
+    }
+
+    fflush(stdin);
+    printf("Los valores actuales son: \n");
+    printf("Nombre de usuario: %s\n", (*ptrAssetsData)->userName);
+    printf("Nombre de la mascota: %s\n",(*ptrAssetsData)->petName);
+    printf("Avatar seleccionado: %i\n",(*ptrAssetsData)->gameAvatar);
+    printf("Inmortalidad de la inmortalidad: %i\n",(*ptrAssetsData)->petInmortality);
+    printf("Dicifultad del juego: %i\n",(*ptrAssetsData)->gameDifficult);
+    printf("Modo TryHard: %i\n",(*ptrAssetsData)->gameTryHard);
+
+    fclose(fileAssets);
+
+    do{
+        printf(RED"Desea cambiar estos valores?(S/N): ");
+        scanf("%c", &optChange);
+    }while(optChange != 's' && optChange != 'n' && optChange != 'S' && optChange != 'N');
+    printf(RESET);
+    
+    if(optChange == 's' || optChange == 'S'){
+        printf("Ingrese los nuevos valores que desea agregar:\n");
+        printf("Nombre del usuario (no puede ser mayor a 12 caracteres): ");
+        scanf("%s", userName);
+        printf("Nombre de la mascota (no puede ser mayor a 12 caracteres): ");
+        scanf("%s", petName);
+        printf("Avatar seleccionado (0/1/2): ");
+        scanf("%i", &gameAvatar);
+        printf("Inmortalidad de la mascota: (1/0): ");
+        scanf("%i", &petInmortality);
+        printf("Dicifultad del juego (0/1/2): ");
+        scanf("%i", &gameDifficult);
+        printf("Modo TryHard (0/1):");
+        scanf("%i", &gameTryHard);
+    }
+
+    fflush(stdin);
+    printf(BLUE"SEGURO QUE DESEAS APLICAR LOS CAMBIOS?: ");
+    scanf("%c", &optChange);
+
+    //se guardan las opciones
+    if(optChange == 's' || optChange == 'S'){
+        FILE *fileAssets = fopen("../files/assets.txt", "w");
+        if (fileAssets == NULL)
+        {
+            return 1;
+        }
+        fprintf(fileAssets, "%s\n%s\n%i\n%i\n%i\n%i", userName, petName, gameAvatar, petInmortality, gameDifficult, gameTryHard);
+        
+        //problemas al cargar denuevo la estrucutura con la funcion assetsLoad
+
+        fclose(fileAssets);
+
+        printf(GREEN"\nCambios aplicados...\n");
+    }else{
+        printf(YELLOW"\nCambios descartados...\n");
+    }
+    printf(RESET);
+
+    return 0;
+}
+
 int main()
 {
     system("cls");
@@ -295,15 +372,10 @@ int main()
         return 1;
     }
 
-    printf(GREEN "Hola de nuevo %s!\n", ptrAssetsData->userName);
-    printf(RESET);
-
     // lee y calcula la diferencia con la ultima sesion y lo guarda
     timeConverter(timeResult, &ptrElpasedTime);
 
     stateBarsGetterAndSaver(0, &ptrDataStateBars);
-
-    randomPhrases();
 
     /*
     //esteregg "time since 1970"
@@ -317,14 +389,19 @@ int main()
 
     splashScreen();
 
+    printf(GREEN "Hola de nuevo %s!\n", ptrAssetsData->userName);
+    printf(RESET);
+
     do
     {
+        randomPhrases();
         showAvatar(&ptrAssetsData);
         showAndIncrementerStateBars(&ptrDataStateBars);
 
         printf(BLUE "\n1. Alimentar\n");
         printf("2. Curar\n");
         printf("3. Jugar\n");
+        printf("4. Connfiguraciones\n");
         printf("S. Salir\n");
         printf(RESET);
 
@@ -338,6 +415,11 @@ int main()
                 break;
             case '2':
                 healing(&ptrDataStateBars, &ptrAssetsData);
+                break;
+            case '3':
+                break;
+            case '4':
+                settings(&ptrAssetsData);
                 break;
         }
     } while (optMenu != 's' && optMenu != 'S');
