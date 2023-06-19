@@ -176,6 +176,33 @@ void splashScreen(){
     system("cls");
 }
 
+//muestra el avatar seleccionado por el usuario
+void showAvatar(struct AssetsData **ptrAssetsData){
+    char avatarPath[] = "../files/avatars/avatarX.txt"; 
+    char line[M];
+
+    //para optimizar el codigo, en vez de copiar toda la linea completa, lo que hago es cambiar unicamente
+    //el caracter que altera que archivo va a abrirse
+    if((*ptrAssetsData)->gameAvatar == 0){
+       avatarPath[23] = '0';
+    }
+    if((*ptrAssetsData)->gameAvatar == 1){
+       avatarPath[23] = '1';
+    }
+    if((*ptrAssetsData)->gameAvatar == 2){
+       avatarPath[23] = '2';
+    }
+    
+    FILE *fileAvatar = fopen(avatarPath, "r");
+    printf(MAGENTA"\n");
+    while(!feof(fileAvatar)){
+        fgets(line, M, fileAvatar);
+        printf("%s", line);
+    }
+    printf(RESET"\n");
+    fclose(fileAvatar);
+}
+
 int main()
 {
     system("cls");
@@ -221,6 +248,7 @@ int main()
 
     do
     {   
+        showAvatar(&ptrAssetsData);
 
         printf(BLUE"1. Alimentar\n");
         printf("2. Curar\n");
