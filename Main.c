@@ -143,8 +143,8 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
 int alimentation(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData){
     int optAlimentation;
     do{
-        printf("\n1. Comida balanceada (aumenta la salud en uno)\n");
-        printf("2. Comida chatarra (aumenta la salud en uno)\n");
+        printf("\n1. Comida balanceada (aumenta la salud 5)\n");
+        printf("2. Comida chatarra (decrementa la salud en 10)\n");
         printf("Selecciona la comida que quieres darle a %s:", (*ptrAssetsData)->petName);
         scanf("%i", &optAlimentation);
     }while(optAlimentation != 1 && optAlimentation != 2);
@@ -166,7 +166,28 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct AssetsData **pt
     return 0;
 }
 
-//incrementa ptrDataStateBars->health
+//incrementa ptrDataStateBars->health dependiendo de la medicina seleccionada
+int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData){
+    int optHealing;
+    do{
+        printf("\n1.Pastilla (aumenta la salud en 25)\n");
+        printf("2.Inyección (aumenta la salud en 50)\n");
+        printf("Selecciona la medicina que quieres darle a %s:", (*ptrAssetsData)->petName);
+        scanf("%i", &optHealing);
+    }while(optHealing != 1 && optHealing != 2);
+
+    if(optHealing == 1){
+        (*ptrDataStateBars)->health += 25;
+    }else{
+        (*ptrDataStateBars)->health += 50;
+    }
+
+    //para asegurarse de que la barra no sobrepase los 100
+    if((*ptrDataStateBars)->health > 100){
+        (*ptrDataStateBars)->health = 100;
+    }
+    return 0;
+}
 
 //muestra los estados de las barras (por el momento en numeros)
 void showAndIncrementerStateBars(struct dataStateBars **ptrDataStateBars){
@@ -274,7 +295,7 @@ int main()
         return 1;
     }
 
-    printf(GREEN "Hola de nuevo %s!", ptrAssetsData->userName);
+    printf(GREEN "Hola de nuevo %s!\n", ptrAssetsData->userName);
     printf(RESET);
 
     // lee y calcula la diferencia con la ultima sesion y lo guarda
@@ -314,6 +335,9 @@ int main()
         switch(optMenu){
             case '1':
                 alimentation(&ptrDataStateBars, &ptrAssetsData);
+                break;
+            case '2':
+                healing(&ptrDataStateBars, &ptrAssetsData);
                 break;
         }
     } while (optMenu != 's' && optMenu != 'S');
