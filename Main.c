@@ -191,9 +191,27 @@ int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAsse
 
 //muestra los estados de las barras (por el momento en numeros)
 void showAndIncrementerStateBars(struct dataStateBars **ptrDataStateBars){
+    //caracter de tabla ascii extendida
+    char icon = 35; //35 = #
+
     printf(GREEN"Salud: %i/100\n", (*ptrDataStateBars)->health);
     printf(BLUE"Animo: %i/100\n", (*ptrDataStateBars)->mood);
     printf(YELLOW"Hambre: %i/100\n", (*ptrDataStateBars)->hungry);
+    printf(RESET"\n");
+
+    //estos for dibujan las barras
+    for(int i=0; i<((*ptrDataStateBars)->health)/4; i++){
+        printf("%c", icon);
+    }
+    printf("\n");
+    for(int i=0; i<((*ptrDataStateBars)->mood)/4; i++){
+        printf("%c", icon);
+    }
+    printf("\n");
+    for(int i=0; i<((*ptrDataStateBars)->hungry)/4; i++){
+        printf("%c", icon);
+    }
+    printf("\n");
 }
 
 // arroja frases random contenidas en el archivo "phrases.txt"
@@ -391,7 +409,7 @@ int main()
 
     do
     {
-        printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
+        //printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
         randomPhrases();
         showAvatar(&ptrAssetsData);
         showAndIncrementerStateBars(&ptrDataStateBars);
