@@ -162,7 +162,11 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct AssetsData **pt
         (*ptrDataStateBars)->hungry = 100;
     }
 
-    //MAS ADELANTE SE PUED AGREGAR LA FUNCIÓN SOBREPESO
+    //como los alimentos también incrementan la salud, acá también tengo que verificar que no exceda los 100
+    if((*ptrDataStateBars)->health > 100){
+        (*ptrDataStateBars)->health = 100;
+    }
+    //MAS ADELANTE SE PUEDE AGREGAR LA FUNCIÓN SOBREPESO
     return 0;
 }
 
