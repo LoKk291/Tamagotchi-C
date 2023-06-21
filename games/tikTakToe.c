@@ -15,15 +15,17 @@ int main(){
     char optAgain;
 
     do{
-        printBoard(board);
+        resetBoard(board);
         playerMove(board);
+        printBoard(board);
+        
         fflush(stdin);
         printf("Desea volver a jugar: ");
         scanf("%c", &optAgain);
     }while(optAgain != 'N' && optAgain != 'n');
 }
 
-//permite mostrar el tablero en pantalla
+//muestra el tablero en pantalla
 void printBoard(char board[][C]){
 	printf(" %c | %c | %c ", board[0][0], board[0][1], board[0][2]);
 	printf("\n---|---|---\n");
@@ -57,12 +59,21 @@ void playerMove(char board[][C]){
         }while(j>3);
 		j--;
 		
-
+        //error de bucle infinito
 		if(board[i][j] != ' '){
-			printf("La cassilla ya está ocuapada\n");
+			printf("La casilla ya está ocupada\n");
 		}else{
 			board[i][j] = USER;
 		}
 	} while (board[i][j] != ' ');
 	
+}
+
+//reinicia todo el tablero
+void resetBoard(char board[][C]){
+	for(int i = 0; i < R; i++){
+		for(int j = 0; j < C; j++){
+			board[i][j] = ' ';
+		}
+	}
 }
