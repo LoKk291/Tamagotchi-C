@@ -33,14 +33,17 @@ void printBoard(char board[][C]){
 	printf("\n---|---|---\n");
 	printf(" %c | %c | %c ", board[2][0], board[2][1], board[2][2]);
 	printf("\n");
+    fflush(stdin);
 }
 
 //permite al jugador poner su "ficha"
 void playerMove(char board[][C]){
 	int i;
 	int j;
-	
+	int band;
+
 	do{
+        band = 0;
         do{
             printf("Ingrese la fila: (1-3)");
 		    scanf("%i", &i);
@@ -64,9 +67,10 @@ void playerMove(char board[][C]){
 			printf("La casilla ya está ocupada\n");
 		}else{
 			board[i][j] = USER;
+            band = 1;
 		}
-	} while (board[i][j] != ' ');
-	
+	} while (band == 0);
+	fflush(stdin);
 }
 
 //reinicia todo el tablero
