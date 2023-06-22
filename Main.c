@@ -35,7 +35,8 @@ struct elpasedTime
     int hours;
 };
 
-struct walletData{
+struct walletData
+{
     int coins;
 };
 
@@ -141,82 +142,99 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
     return 0;
 }
 
-//incrementa ptrDataStateBars->hungry dependiendo de la comida empleada (si es comida chatarra decrementa la barra de salud)
-//si la comida seleccionada es saludable incrementa un poco la salud
-//ESTA FUCION ES SUPER BÁSICA Y ES SOLO PARA GUIARME HASTA QUE AGUSTIN HAGA LA PARTE DE ARBOLES
-int alimentation(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData){
+// incrementa ptrDataStateBars->hungry dependiendo de la comida empleada (si es comida chatarra decrementa la barra de salud)
+// si la comida seleccionada es saludable incrementa un poco la salud
+// ESTA FUCION ES SUPER BÁSICA Y ES SOLO PARA GUIARME HASTA QUE AGUSTIN HAGA LA PARTE DE ARBOLES
+int alimentation(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
+{
     int optAlimentation;
-    do{
+    do
+    {
         printf("\n1. Comida balanceada (aumenta la salud 5)\n");
         printf("2. Comida chatarra (decrementa la salud en 10)\n");
         printf("Selecciona la comida que quieres darle a %s:", (*ptrAssetsData)->petName);
         scanf("%i", &optAlimentation);
-    }while(optAlimentation != 1 && optAlimentation != 2);
+    } while (optAlimentation != 1 && optAlimentation != 2);
 
-    if(optAlimentation == 1){
+    if (optAlimentation == 1)
+    {
         (*ptrDataStateBars)->hungry += 10;
         (*ptrDataStateBars)->health += 5;
-    }else{
+    }
+    else
+    {
         (*ptrDataStateBars)->hungry += 25;
         (*ptrDataStateBars)->health -= 10;
     }
 
-    //para asegurarse de que la barra no sobrepase los 100
-    if((*ptrDataStateBars)->hungry > 100){
+    // para asegurarse de que la barra no sobrepase los 100
+    if ((*ptrDataStateBars)->hungry > 100)
+    {
         (*ptrDataStateBars)->hungry = 100;
     }
 
-    //como los alimentos también incrementan la salud, acá también tengo que verificar que no exceda los 100
-    if((*ptrDataStateBars)->health > 100){
+    // como los alimentos también incrementan la salud, acá también tengo que verificar que no exceda los 100
+    if ((*ptrDataStateBars)->health > 100)
+    {
         (*ptrDataStateBars)->health = 100;
     }
-    //MAS ADELANTE SE PUEDE AGREGAR LA FUNCIÓN SOBREPESO
+    // MAS ADELANTE SE PUEDE AGREGAR LA FUNCIÓN SOBREPESO
     return 0;
 }
 
-//incrementa ptrDataStateBars->health dependiendo de la medicina seleccionada
-int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData){
+// incrementa ptrDataStateBars->health dependiendo de la medicina seleccionada
+int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
+{
     int optHealing;
-    do{
+    do
+    {
         printf("\n1.Pastilla (aumenta la salud en 25)\n");
         printf("2.Inyección (aumenta la salud en 50)\n");
         printf("Selecciona la medicina que quieres darle a %s:", (*ptrAssetsData)->petName);
         scanf("%i", &optHealing);
-    }while(optHealing != 1 && optHealing != 2);
+    } while (optHealing != 1 && optHealing != 2);
 
-    if(optHealing == 1){
+    if (optHealing == 1)
+    {
         (*ptrDataStateBars)->health += 25;
-    }else{
+    }
+    else
+    {
         (*ptrDataStateBars)->health += 50;
     }
 
-    //para asegurarse de que la barra no sobrepase los 100
-    if((*ptrDataStateBars)->health > 100){
+    // para asegurarse de que la barra no sobrepase los 100
+    if ((*ptrDataStateBars)->health > 100)
+    {
         (*ptrDataStateBars)->health = 100;
     }
     return 0;
 }
 
-//muestra los estados de las barras (por el momento en numeros)
-void showAndIncrementerStateBars(struct dataStateBars **ptrDataStateBars){
-    //caracter de tabla ascii extendida
-    char icon = 35; //35 = #
+// muestra los estados de las barras (por el momento en numeros)
+void showAndIncrementerStateBars(struct dataStateBars **ptrDataStateBars)
+{
+    // caracter de tabla ascii extendida
+    char icon = 35; // 35 = #
 
-    printf(GREEN"Salud: %i/100\n", (*ptrDataStateBars)->health);
-    printf(BLUE"Animo: %i/100\n", (*ptrDataStateBars)->mood);
-    printf(YELLOW"Hambre: %i/100\n", (*ptrDataStateBars)->hungry);
-    printf(RESET"\n");
+    printf(GREEN "Salud: %i/100\n", (*ptrDataStateBars)->health);
+    printf(BLUE "Animo: %i/100\n", (*ptrDataStateBars)->mood);
+    printf(YELLOW "Hambre: %i/100\n", (*ptrDataStateBars)->hungry);
+    printf(RESET "\n");
 
-    //estos for dibujan las barras
-    for(int i=0; i<((*ptrDataStateBars)->health)/4; i++){
+    // estos for dibujan las barras
+    for (int i = 0; i < ((*ptrDataStateBars)->health) / 4; i++)
+    {
         printf("%c", icon);
     }
     printf("\n");
-    for(int i=0; i<((*ptrDataStateBars)->mood)/4; i++){
+    for (int i = 0; i < ((*ptrDataStateBars)->mood) / 4; i++)
+    {
         printf("%c", icon);
     }
     printf("\n");
-    for(int i=0; i<((*ptrDataStateBars)->hungry)/4; i++){
+    for (int i = 0; i < ((*ptrDataStateBars)->hungry) / 4; i++)
+    {
         printf("%c", icon);
     }
     printf("\n");
@@ -300,9 +318,10 @@ void showAvatar(struct AssetsData **ptrAssetsData)
     fclose(fileAvatar);
 }
 
-//permite modificar los ajustes del archivos assets, luego de ejecutada la funcion debe recargar la estructura "AssetsData"
-int settings(struct AssetsData **ptrAssetsData){
-    //almacenan temporalmente las preferencias actualizadas
+// permite modificar los ajustes del archivos assets, luego de ejecutada la funcion debe recargar la estructura "AssetsData"
+int settings(struct AssetsData **ptrAssetsData)
+{
+    // almacenan temporalmente las preferencias actualizadas
     char petName[N];
     char userName[N];
     int gameAvatar;
@@ -321,21 +340,23 @@ int settings(struct AssetsData **ptrAssetsData){
     fflush(stdin);
     printf("Los valores actuales son: \n");
     printf("Nombre de usuario: %s\n", (*ptrAssetsData)->userName);
-    printf("Nombre de la mascota: %s\n",(*ptrAssetsData)->petName);
-    printf("Avatar seleccionado: %i\n",(*ptrAssetsData)->gameAvatar);
-    printf("Inmortalidad de la inmortalidad: %i\n",(*ptrAssetsData)->petInmortality);
-    printf("Dicifultad del juego: %i\n",(*ptrAssetsData)->gameDifficult);
-    printf("Modo TryHard: %i\n",(*ptrAssetsData)->gameTryHard);
+    printf("Nombre de la mascota: %s\n", (*ptrAssetsData)->petName);
+    printf("Avatar seleccionado: %i\n", (*ptrAssetsData)->gameAvatar);
+    printf("Inmortalidad de la inmortalidad: %i\n", (*ptrAssetsData)->petInmortality);
+    printf("Dicifultad del juego: %i\n", (*ptrAssetsData)->gameDifficult);
+    printf("Modo TryHard: %i\n", (*ptrAssetsData)->gameTryHard);
 
     fclose(fileAssets);
 
-    do{
-        printf(RED"Desea cambiar estos valores?(S/N): ");
+    do
+    {
+        printf(RED "Desea cambiar estos valores?(S/N): ");
         scanf("%c", &optChange);
-    }while(optChange != 's' && optChange != 'n' && optChange != 'S' && optChange != 'N');
+    } while (optChange != 's' && optChange != 'n' && optChange != 'S' && optChange != 'N');
     printf(RESET);
-    
-    if(optChange == 's' || optChange == 'S'){
+
+    if (optChange == 's' || optChange == 'S')
+    {
         printf("Ingrese los nuevos valores que desea agregar:\n");
         printf("Nombre del usuario (no puede ser mayor a 12 caracteres): ");
         scanf("%s", userName);
@@ -351,11 +372,12 @@ int settings(struct AssetsData **ptrAssetsData){
         scanf("%i", &gameTryHard);
 
         fflush(stdin);
-        printf(BLUE"SEGURO QUE DESEAS APLICAR LOS CAMBIOS?: ");
+        printf(BLUE "SEGURO QUE DESEAS APLICAR LOS CAMBIOS?: ");
         scanf("%c", &optChange);
 
-        //se guardan las opciones
-        if(optChange == 's' || optChange == 'S'){
+        // se guardan las opciones
+        if (optChange == 's' || optChange == 'S')
+        {
             FILE *fileAssets = fopen("../files/assets.txt", "w");
             if (fileAssets == NULL)
             {
@@ -364,9 +386,11 @@ int settings(struct AssetsData **ptrAssetsData){
             fprintf(fileAssets, "%s\n%s\n%i\n%i\n%i\n%i", userName, petName, gameAvatar, petInmortality, gameDifficult, gameTryHard);
             fclose(fileAssets);
 
-            printf(GREEN"\nCambios aplicados...\n");
-        }else{
-            printf(YELLOW"\nCambios descartados...\n");
+            printf(GREEN "\nCambios aplicados...\n");
+        }
+        else
+        {
+            printf(YELLOW "\nCambios descartados...\n");
         }
         printf(RESET);
     }
@@ -374,16 +398,20 @@ int settings(struct AssetsData **ptrAssetsData){
     return 0;
 }
 
-//guarda o carga la cantidad de monedas del usuario
-//mode = 1 guarda la informacion en el archivo wallet.txt, mode = 0 lee el contenido del archivo
-int walletGetterAndSaver(struct walletData **ptrWalletData, int mode){
-    if(mode){
+// guarda o carga la cantidad de monedas del usuario
+// mode = 1 guarda la informacion en el archivo wallet.txt, mode = 0 lee el contenido del archivo
+int walletGetterAndSaver(struct walletData **ptrWalletData, int mode)
+{
+    if (mode)
+    {
         // guarda la cantidad de monedas del usuario al momento de cerrar la sesión
         FILE *fileWallet = fopen("../files/wallet.txt", "w");
         fprintf(fileWallet, "%i", (*ptrWalletData)->coins);
         fclose(fileWallet);
-    }else{
-        //carga la cantidad de monedas del usuario de la sesion anterior
+    }
+    else
+    {
+        // carga la cantidad de monedas del usuario de la sesion anterior
         FILE *fileWallet = fopen("../files/wallet.txt", "r");
         fscanf(fileWallet, "%i", &(*ptrWalletData)->coins);
         fclose(fileWallet);
@@ -438,7 +466,7 @@ int main()
 
     do
     {
-        //printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
+        // printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
         randomPhrases();
         showAvatar(&ptrAssetsData);
         showAndIncrementerStateBars(&ptrDataStateBars);
@@ -454,19 +482,20 @@ int main()
         scanf("%c", &optMenu);
         system("cls");
 
-        switch(optMenu){
-            case '1':
-                alimentation(&ptrDataStateBars, &ptrAssetsData);
-                break;
-            case '2':
-                healing(&ptrDataStateBars, &ptrAssetsData);
-                break;
-            case '3':
-                break;
-            case '4':
-                settings(&ptrAssetsData);
-                assetsLoad(&ptrAssetsData);
-                break;
+        switch (optMenu)
+        {
+        case '1':
+            alimentation(&ptrDataStateBars, &ptrAssetsData);
+            break;
+        case '2':
+            healing(&ptrDataStateBars, &ptrAssetsData);
+            break;
+        case '3':
+            break;
+        case '4':
+            settings(&ptrAssetsData);
+            assetsLoad(&ptrAssetsData);
+            break;
         }
     } while (optMenu != 's' && optMenu != 'S');
 
