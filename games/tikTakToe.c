@@ -45,19 +45,19 @@ void playerMove(char board[][C]){
 	do{
         band = 0;
         do{
-            printf("Ingrese la fila: (1-3)");
+            printf("Ingrese la fila: (1-3): ");
 		    scanf("%i", &i);
             if(i>3){
-                printf("Valor inválido, ingrese un valor entre 1 y 3");
+                printf("Casilla inválida, ingrese una casilla entre 1 y 3");
             }
         }while(i>3);
 		i--;
 
         do{
-            printf("Ingrese la columna (1-3)");
+            printf("Ingrese la columna (1-3): ");
 		    scanf("%i", &j);
             if(j>3){
-                printf("Valor inválido, ingrese un valor entre 1 y 3");
+                printf("Casilla inválida, ingrese una casilla entre 1 y 3");
             }
         }while(j>3);
 		j--;
@@ -73,11 +73,25 @@ void playerMove(char board[][C]){
 	fflush(stdin);
 }
 
-//reinicia todo el tablero
+//reinicia todo el tablero (vacía las casillas)
 void resetBoard(char board[][C]){
 	for(int i = 0; i < R; i++){
 		for(int j = 0; j < C; j++){
 			board[i][j] = ' ';
 		}
 	}
+}
+
+//chequea los espacios disponibles en el tablero
+int checkFreeSpaces(char board[][C]){
+   int freeSpaces = 9;
+
+   for(int i = 0; i < R; i++){
+      for(int j = 0; j < C; j++){
+         if(board[i][j] != ' '){
+            freeSpaces--;
+         }
+      }
+   }
+   return freeSpaces;
 }
