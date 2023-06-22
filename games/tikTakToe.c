@@ -16,8 +16,10 @@ int main(){
 
     do{
         resetBoard(board);
-        playerMove(board);
-        printBoard(board);
+        while((checkFreeSpaces(board) != 0) || (checkWinner(board) == 0)){
+            playerMove(board);
+            printBoard(board);
+        }
         
         fflush(stdin);
         printf("Desea volver a jugar: ");
@@ -43,7 +45,7 @@ void playerMove(char board[][C]){
 	int flag;
 
 	do{
-        band = 0;
+        flag = 0;
         do{
             printf("Ingrese la fila: (1-3): ");
 		    scanf("%i", &i);
@@ -93,6 +95,7 @@ int checkFreeSpaces(char board[][C]){
          }
       }
    }
+   //printf("\nQuedan %i espacios libres\n", freeSpaces);
    return freeSpaces;
 }
 
@@ -135,6 +138,7 @@ int checkWinner(char board[][C]){
         }else{
             whosWhinner = 2;
         }
+        printf("\nHay un ganador, es %i\n", whosWhinner);
     }
 
     return whosWhinner;
