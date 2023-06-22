@@ -40,7 +40,7 @@ void printBoard(char board[][C]){
 void playerMove(char board[][C]){
 	int i;
 	int j;
-	int band;
+	int flag;
 
 	do{
         band = 0;
@@ -67,9 +67,9 @@ void playerMove(char board[][C]){
 			printf("La casilla ya está ocupada\n");
 		}else{
 			board[i][j] = USER;
-            band = 1;
+            flag = 1;
 		}
-	} while (band == 0);
+	} while (flag == 0);
 	fflush(stdin);
 }
 
@@ -94,4 +94,48 @@ int checkFreeSpaces(char board[][C]){
       }
    }
    return freeSpaces;
+}
+
+//chequea si alguna fila, columna, o diagonal fue relenada con el mismo 
+//caracter para determinar si  existe un ganador y quien gano
+int checkWinner(char board[][C]){
+    int flagWinner = 0;
+    char winner;
+
+    //identifica quien es el ganador
+    int whosWhinner = 0;
+
+    //filas
+    for(int i = 0; i < 3; i++){
+        if(board[i][0] == board[i][1] && board[i][0] == board[i][2]){
+            winner =  board[i][0];
+            flagWinner = 1;
+        }
+    }
+    //columnas
+    for(int i = 0; i < 3; i++){
+        if(board[0][i] == board[1][i] && board[0][i] == board[2][i]){
+        winner = board[0][i];
+        flagWinner = 1;
+        }
+    }
+    //diagonales 
+    if(board[0][0] == board[1][1] && board[0][0] == board[2][2]){
+        winner = board[0][0];
+        flagWinner = 1;
+    }
+    if(board[0][2] == board[1][1] && board[0][2] == board[2][0]){
+        winner = board[0][2];
+        flagWinner = 1;
+    }
+
+    if(flagWinner){
+        if(winner == 'X'){
+            whosWhinner = 1;
+        }else{
+            whosWhinner = 2;
+        }
+    }
+
+    return whosWhinner;
 }
