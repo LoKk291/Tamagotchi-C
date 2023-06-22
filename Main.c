@@ -400,7 +400,7 @@ int settings(struct AssetsData **ptrAssetsData)
 
 // guarda o carga la cantidad de monedas del usuario
 // mode = 1 guarda la informacion en el archivo wallet.txt, mode = 0 lee el contenido del archivo
-int walletGetterAndSaver(struct walletData **ptrWalletData, int mode)
+int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
 {
     if (mode)
     {
@@ -447,7 +447,7 @@ int main()
 
     stateBarsGetterAndSaver(0, &ptrDataStateBars);
 
-    walletGetterAndSaver(&ptrWalletData, 0);
+    walletGetterAndSaver(0, &ptrWalletData);
 
     /*
     //esteregg "time since 1970"
@@ -505,7 +505,7 @@ int main()
     // guarda la salida de la ultima sesion y los estados de las barras
     lastOpenGetterAndSaver(1, timeNow);
     stateBarsGetterAndSaver(1, &ptrDataStateBars);
-    walletGetterAndSaver(&ptrWalletData, 1);
+    walletGetterAndSaver(1, &ptrWalletData);
 
     system("pause");
     return 0;
