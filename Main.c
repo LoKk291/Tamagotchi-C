@@ -218,15 +218,20 @@ void showAndIncrementerStateBars(struct dataStateBars **ptrDataStateBars)
     char icon = 35; // 35 = #
 
     // estos for dibujan las barras y los if determinan el color de la barra
-    //salud
-    if((*ptrDataStateBars)->health >= 70){
+    // salud
+    if ((*ptrDataStateBars)->health >= 70)
+    {
         printf(GREEN);
-    }else if(((*ptrDataStateBars)->health <= 69) && ((*ptrDataStateBars)->health >= 40)){
+    }
+    else if (((*ptrDataStateBars)->health <= 69) && ((*ptrDataStateBars)->health >= 40))
+    {
         printf(YELLOW);
-    }else{
+    }
+    else
+    {
         printf(RED);
     }
-    
+
     printf("Salud: ");
     for (int i = 0; i < ((*ptrDataStateBars)->health) / 4; i++)
     {
@@ -234,12 +239,17 @@ void showAndIncrementerStateBars(struct dataStateBars **ptrDataStateBars)
     }
     printf(" %i/100\n", (*ptrDataStateBars)->health);
 
-    //animo
-    if((*ptrDataStateBars)->mood >= 70){
+    // animo
+    if ((*ptrDataStateBars)->mood >= 70)
+    {
         printf(GREEN);
-    }else if(((*ptrDataStateBars)->mood <= 69) && ((*ptrDataStateBars)->hungry >= 40)){
+    }
+    else if (((*ptrDataStateBars)->mood <= 69) && ((*ptrDataStateBars)->hungry >= 40))
+    {
         printf(YELLOW);
-    }else{
+    }
+    else
+    {
         printf(RED);
     }
     printf("Animo: ");
@@ -249,12 +259,17 @@ void showAndIncrementerStateBars(struct dataStateBars **ptrDataStateBars)
     }
     printf(" %i/100\n", (*ptrDataStateBars)->mood);
 
-    //hambre
-    if((*ptrDataStateBars)->hungry >= 70){
+    // hambre
+    if ((*ptrDataStateBars)->hungry >= 70)
+    {
         printf(GREEN);
-    }else if(((*ptrDataStateBars)->hungry <= 69) && ((*ptrDataStateBars)->hungry >= 40)){
+    }
+    else if (((*ptrDataStateBars)->hungry <= 69) && ((*ptrDataStateBars)->hungry >= 40))
+    {
         printf(YELLOW);
-    }else{
+    }
+    else
+    {
         printf(RED);
     }
     printf("Hambre: ");
