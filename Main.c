@@ -217,27 +217,69 @@ void showAndIncrementerStateBars(struct dataStateBars **ptrDataStateBars)
     // caracter de tabla ascii extendida
     char icon = 35; // 35 = #
 
-    printf(GREEN "Salud: %i/100\n", (*ptrDataStateBars)->health);
-    printf(BLUE "Animo: %i/100\n", (*ptrDataStateBars)->mood);
-    printf(YELLOW "Hambre: %i/100\n", (*ptrDataStateBars)->hungry);
-    printf(RESET "\n");
+    // estos for dibujan las barras y los if determinan el color de la barra
+    // salud
+    if ((*ptrDataStateBars)->health >= 70)
+    {
+        printf(GREEN);
+    }
+    else if (((*ptrDataStateBars)->health <= 69) && ((*ptrDataStateBars)->health >= 40))
+    {
+        printf(YELLOW);
+    }
+    else
+    {
+        printf(RED);
+    }
 
-    // estos for dibujan las barras
+    printf("Salud: ");
     for (int i = 0; i < ((*ptrDataStateBars)->health) / 4; i++)
     {
         printf("%c", icon);
     }
-    printf("\n");
+    printf(" %i/100\n", (*ptrDataStateBars)->health);
+
+    // animo
+    if ((*ptrDataStateBars)->mood >= 70)
+    {
+        printf(GREEN);
+    }
+    else if (((*ptrDataStateBars)->mood <= 69) && ((*ptrDataStateBars)->hungry >= 40))
+    {
+        printf(YELLOW);
+    }
+    else
+    {
+        printf(RED);
+    }
+    printf("Animo: ");
     for (int i = 0; i < ((*ptrDataStateBars)->mood) / 4; i++)
     {
         printf("%c", icon);
     }
-    printf("\n");
+    printf(" %i/100\n", (*ptrDataStateBars)->mood);
+
+    // hambre
+    if ((*ptrDataStateBars)->hungry >= 70)
+    {
+        printf(GREEN);
+    }
+    else if (((*ptrDataStateBars)->hungry <= 69) && ((*ptrDataStateBars)->hungry >= 40))
+    {
+        printf(YELLOW);
+    }
+    else
+    {
+        printf(RED);
+    }
+    printf("Hambre: ");
     for (int i = 0; i < ((*ptrDataStateBars)->hungry) / 4; i++)
     {
         printf("%c", icon);
     }
-    printf("\n");
+    printf(" %i/100\n", (*ptrDataStateBars)->hungry);
+
+    printf(RESET);
 }
 
 // arroja frases random contenidas en el archivo "phrases.txt"
