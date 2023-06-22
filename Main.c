@@ -10,7 +10,7 @@
 // contiene la información PRINCIPAL en tiempo de ejecución
 struct AssetsData
 {
-    // tanto el nombre de la mascomo como de usuario seran de maximo 12 caracteres
+    // tanto el nombre de la mascota como de usuario seran de maximo 12 caracteres
     char userName[N];
     char petName[N];
     int gameAvatar;
@@ -33,6 +33,10 @@ struct elpasedTime
     int seconds;
     int minutes;
     int hours;
+};
+
+struct walletData{
+    int coins;
 };
 
 // esta funcion carga las configuraciones PRINCIPALES
@@ -350,7 +354,7 @@ int settings(struct AssetsData **ptrAssetsData){
         printf(BLUE"SEGURO QUE DESEAS APLICAR LOS CAMBIOS?: ");
         scanf("%c", &optChange);
 
-         //se guardan las opciones
+        //se guardan las opciones
         if(optChange == 's' || optChange == 'S'){
             FILE *fileAssets = fopen("../files/assets.txt", "w");
             if (fileAssets == NULL)
@@ -370,6 +374,24 @@ int settings(struct AssetsData **ptrAssetsData){
     return 0;
 }
 
+//guarda o carga la cantidad de monedas del usuario
+//mode = 1 guarda la informacion en el archivo wallet.txt, mode = 0 lee el contenido del archivo
+int walletGetterAndSaver(struct walletData **ptrWalletData, int mode){
+    if(mode){
+        // guarda la cantidad de monedas del usuario al momento de cerrar la sesión
+        FILE *fileWallet = fopen("../files/wallet.txt", "w");
+        fprintf(fileWallet, "%i", (*ptrWalletData)->coins);
+        fclose(fileWallet);
+    }else{
+        //carga la cantidad de monedas del usuario de la sesion anterior
+        FILE *fileWallet = fopen("../files/wallet.txt", "r");
+        fscanf(fileWallet, "%i", &(*ptrWalletData)->coins);
+        fclose(fileWallet);
+
+        printf("\nLa cantida de monedas de la última sesión es: %i\n", (*ptrWalletData)->coins);
+    }
+}
+
 int main()
 {
     system("cls");
@@ -383,6 +405,7 @@ int main()
     struct AssetsData *ptrAssetsData = (struct AssetsData *)malloc(sizeof(struct AssetsData)); // se le asigna un espacio en memoria a la estructura
     struct elpasedTime *ptrElpasedTime = (struct elpasedTime *)malloc(sizeof(struct elpasedTime));
     struct dataStateBars *ptrDataStateBars = (struct dataStateBars *)malloc(sizeof(struct dataStateBars));
+    struct walletData *ptrWalletData = (struct walletData *)malloc(sizeof(struct walletData));
 
     if (assetsLoad(&ptrAssetsData))
     {
@@ -395,6 +418,8 @@ int main()
     timeConverter(timeResult, &ptrElpasedTime);
 
     stateBarsGetterAndSaver(0, &ptrDataStateBars);
+
+    walletGetterAndSaver(&ptrWalletData, 0);
 
     /*
     //esteregg "time since 1970"
@@ -451,6 +476,7 @@ int main()
     // guarda la salida de la ultima sesion y los estados de las barras
     lastOpenGetterAndSaver(1, timeNow);
     stateBarsGetterAndSaver(1, &ptrDataStateBars);
+    walletGetterAndSaver(&ptrWalletData, 1);
 
     system("pause");
     return 0;
