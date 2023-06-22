@@ -9,11 +9,11 @@
 struct question{
     char question[MAX_LINE_LENGHT];
     int answer;
-}
+};
 
 /*con esta funcion, separo en cada linea, las preguntas de las respuestas de cada linea leida; con la funcion strtok separo una linea usando un delimitador*/
-void separateQuestionsAnswers(struct question* question){
-    char *token =strtok(linea,";")
+void separateQuestionsAnswers(char *line,struct question* question){
+    char *token =strtok(line,";");
     if(token !=NULL){
         strcpy(question->question,token);
         token=strtok(NULL,",");
@@ -26,6 +26,7 @@ void separateQuestionsAnswers(struct question* question){
 
 
 int main(void){
+    printf("---------------Trivia Mind-------------\n");
 FILE *archive =fopen();//aca va la direccion del archivo
 
 if(archive==NULL){
@@ -33,12 +34,35 @@ if(archive==NULL){
     return(1);
 }
 
-//generacion de cantidad de preguntas
+//generacion de variables necesarias para la implementacion del conteo de puntos y preguntas
 struct question question[CANT];
+int totalquestions=0;
+char line[MAX_LINE_LENGHT];
 
-printf("---------------Trivia Mind-------------\n");
+//separar linea actual y sumar 1 pregunta
+while(fgets(line,sizeof(line),archive)){
+    separateQuestionsAnswers(line,&question[totalquestions]);
+    totalquestions++;
+}
+
+fclose(archive);
 
 
+int points=0;
+for(int i=0;i<totalquestions;i++){
+int answer;
+scanf("&d",&answer);
+
+if(answer == question[i].answer){
+    printf("¡Respuesta correcta!.\n");
+}else{
+    printf("Respuesta incorrecta.\n");
+}
+printf("\n");
+
+}
+
+printf("\nPuntaje final: %d/%d\n",points,totalquestions);
 
 return 0;
 }
