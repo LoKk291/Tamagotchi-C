@@ -9,27 +9,6 @@
 #define R 3
 #define C 3
 
-int main()
-{
-    // el campo del juego será una matriz
-    char board[R][C];
-    char optAgain;
-
-    do
-    {
-        resetBoard(board);
-        while ((checkFreeSpaces(board) != 0) || (checkWinner(board) == 0))
-        {
-            playerMove(board);
-            printBoard(board);
-        }
-
-        fflush(stdin);
-        printf("Desea volver a jugar: ");
-        scanf("%c", &optAgain);
-    } while (optAgain != 'N' && optAgain != 'n');
-}
-
 // muestra el tablero en pantalla
 void printBoard(char board[][C])
 {
@@ -173,4 +152,25 @@ int checkWinner(char board[][C])
     }
 
     return whosWhinner;
+}
+
+int main()
+{
+    // el campo del juego será una matriz
+    char board[R][C];
+    char optAgain;
+
+    do
+    {
+        resetBoard(board);
+        while ((checkFreeSpaces(board) != 0) || (checkWinner(board) == 0))
+        {
+            playerMove(board);
+            printBoard(board);
+        }
+
+        fflush(stdin);
+        printf("Desea volver a jugar: ");
+        scanf("%c", &optAgain);
+    } while (optAgain != 'N' && optAgain != 'n');
 }
