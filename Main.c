@@ -35,6 +35,7 @@ struct elpasedTime
     int hours;
 };
 
+//contiene las monedas del usuario, mas adelante agregaré gemas
 struct walletData
 {
     int coins;
@@ -212,7 +213,7 @@ int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAsse
 }
 
 // muestra los estados de las barras (por el momento en numeros)
-void showAndIncrementerStateBars(struct dataStateBars **ptrDataStateBars)
+void showStateBars(struct dataStateBars **ptrDataStateBars)
 {
     // caracter de tabla ascii extendida
     char icon = 35; // 35 = #
@@ -351,7 +352,7 @@ void showAvatar(struct AssetsData **ptrAssetsData)
 
     FILE *fileAvatar = fopen(avatarPath, "r");
     printf(MAGENTA "\n");
-    while (!feof(fileAvatar))
+    while (!feof(fileAvatar)) //recorre el archivo hasta el final
     {
         fgets(line, M, fileAvatar);
         printf("%s", line);
@@ -397,6 +398,7 @@ int settings(struct AssetsData **ptrAssetsData)
     } while (optChange != 's' && optChange != 'n' && optChange != 'S' && optChange != 'N');
     printf(RESET);
 
+    //AGREGAR LA COMPROBACION DE DATOS
     if (optChange == 's' || optChange == 'S')
     {
         printf("Ingrese los nuevos valores que desea agregar:\n");
@@ -462,6 +464,34 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
     }
 }
 
+//determina en cuanto se deben decrementar las barras dependiendo del tiempo transcurrido y de 
+//la dificultad seleccionada por el usuario
+void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData){
+    float decrement;
+    
+    //por cada hora transcurrida se decrementa un porcentaje dado a cada barra de estado
+
+    if((*ptrElpasedTime)->hours >= 1){ //para que comience a decrementar debe transcurrir minimo una hora
+        if((*ptrAssetsData)->gameDifficult == 0){ //facil
+            decrement = 0.05;
+        }else if((*ptrAssetsData)->gameDifficult == 1){ //medio
+            decrement = 0.20;
+        }else{ //dificl
+            decrement = 0.35;
+        }
+
+        //decrementa dependiendo de la dificultad que ha seleccionado el usuario
+        for(int i=0; i<(*ptrElpasedTime)->seconds; i++){
+            (*ptrDataStateBars)->health = (*ptrDataStateBars)->health * decrement;
+            (*ptrDataStateBars)->mood = (*ptrDataStateBars)->mood * decrement;
+            (*ptrDataStateBars)->hungry = (*ptrDataStateBars)->hungry * decrement;
+        }
+    }
+
+    //AREA DE MUESTRA PARA LA EXPOSICION
+    
+}
+
 int main()
 {
     system("cls");
@@ -489,6 +519,8 @@ int main()
 
     stateBarsGetterAndSaver(0, &ptrDataStateBars);
 
+    stateBarsDecrement(&ptrElpasedTime, &ptrDataStateBars, &ptrAssetsData);
+
     walletGetterAndSaver(0, &ptrWalletData);
 
     /*
@@ -511,12 +543,12 @@ int main()
         // printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
         randomPhrases();
         showAvatar(&ptrAssetsData);
-        showAndIncrementerStateBars(&ptrDataStateBars);
+        showStateBars(&ptrDataStateBars);
 
         printf(BLUE "\n1. Alimentar\n");
         printf("2. Curar\n");
         printf("3. Jugar\n");
-        printf("4. Connfiguraciones\n");
+        printf("4. Configuraciones\n");
         printf("S. Salir\n");
         printf(RESET);
 
