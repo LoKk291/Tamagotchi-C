@@ -71,8 +71,8 @@ int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
     hours = seconds / 3600;
     minutes = (seconds - hours * 3600) / 60;
     seconds = seconds - (hours * 3600 + minutes * 60);
-    // printf("\nla cantidad de segundos es: %i\n", seconds);
-    // printf("\n%i %i %i\n", hours, minutes, seconds);
+     printf("\nla cantidad de segundos es: %i\n", seconds);
+     printf("\n%i %i %i\n", hours, minutes, seconds);
 
     (*ptrElpasedTime)->hours = hours;
     (*ptrElpasedTime)->minutes = minutes;
@@ -481,7 +481,8 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
         }
 
         //decrementa dependiendo de la dificultad que ha seleccionado el usuario
-        for(int i=0; i<(*ptrElpasedTime)->seconds; i++){
+        //printf("\nLa cantidad de horas transcurridas fueron: %i\n", (*ptrElpasedTime)->hours);
+        for(int i=0; i<(*ptrElpasedTime)->hours; i++){
             (*ptrDataStateBars)->health = (*ptrDataStateBars)->health * decrement;
             (*ptrDataStateBars)->mood = (*ptrDataStateBars)->mood * decrement;
             (*ptrDataStateBars)->hungry = (*ptrDataStateBars)->hungry * decrement;
