@@ -30,7 +30,7 @@ void separateQuestionsAnswers(char *line, struct question *question)
 
 int main(void)
 {
-    printf("---------------Trivia Mind-------------\n");
+    printf("---------------Trivia Mind-------------\n");    
     FILE *archive = fopen(); // aca va la direccion del archivo
 
     if (archive == NULL)
