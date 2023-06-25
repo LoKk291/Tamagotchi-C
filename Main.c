@@ -62,7 +62,7 @@ int firstTime(time_t timeNow)
 
         // se setea el archivo lastStateBars en 100
         FILE *fileStateBars = fopen("../files/lastStateBars.txt", "w");
-        fprintf(fileStateBars, "%i %i %i", 90, 90, 90);
+        fprintf(fileStateBars, "%i %i %i", 100, 100, 100);
         fclose(fileStateBars);
         // se setea el archivo wallet en 250
 
@@ -612,6 +612,7 @@ int main()
 
     if (ptrDataStateBars->health <= 0)
     {
+        // printf("\n La salud es: %i\n", ptrDataStateBars->health);
         deathScreen(ptrAssetsData);
         return 1;
     }
