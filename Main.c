@@ -8,7 +8,7 @@
 #define N 13
 #define M 100
 
-//teclas
+// teclas
 #define UP 72
 #define DOWN 80
 #define ENTER 13
@@ -41,7 +41,7 @@ struct elpasedTime
     int hours;
 };
 
-//contiene las monedas del usuario, mas adelante agregaré gemas
+// contiene las monedas del usuario, mas adelante agregaré gemas
 struct walletData
 {
     int coins;
@@ -77,8 +77,8 @@ int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
     hours = seconds / 3600;
     minutes = (seconds - hours * 3600) / 60;
     seconds = seconds - (hours * 3600 + minutes * 60);
-     printf("\nla cantidad de segundos es: %i\n", seconds);
-     printf("\n%i %i %i\n", hours, minutes, seconds);
+    printf("\nla cantidad de segundos es: %i\n", seconds);
+    printf("\n%i %i %i\n", hours, minutes, seconds);
 
     (*ptrElpasedTime)->hours = hours;
     (*ptrElpasedTime)->minutes = minutes;
@@ -358,7 +358,7 @@ void showAvatar(struct AssetsData **ptrAssetsData)
 
     FILE *fileAvatar = fopen(avatarPath, "r");
     printf(MAGENTA "\n");
-    while (!feof(fileAvatar)) //recorre el archivo hasta el final
+    while (!feof(fileAvatar)) // recorre el archivo hasta el final
     {
         fgets(line, M, fileAvatar);
         printf("%s", line);
@@ -404,7 +404,7 @@ int settings(struct AssetsData **ptrAssetsData)
     } while (optChange != 's' && optChange != 'n' && optChange != 'S' && optChange != 'N');
     printf(RESET);
 
-    //AGREGAR LA COMPROBACION DE DATOS
+    // AGREGAR LA COMPROBACION DE DATOS
     if (optChange == 's' || optChange == 'S')
     {
         printf("Ingrese los nuevos valores que desea agregar:\n");
@@ -466,37 +466,44 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
         fscanf(fileWallet, "%i", &(*ptrWalletData)->coins);
         fclose(fileWallet);
 
-        //printf("\nLa cantidad de monedas de la última sesión es: %i\n", (*ptrWalletData)->coins);
+        // printf("\nLa cantidad de monedas de la última sesión es: %i\n", (*ptrWalletData)->coins);
     }
 }
 
-//determina en cuanto se deben decrementar las barras dependiendo del tiempo transcurrido y de 
-//la dificultad seleccionada por el usuario
-void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData){
+// determina en cuanto se deben decrementar las barras dependiendo del tiempo transcurrido y de
+// la dificultad seleccionada por el usuario
+void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
+{
     float decrement;
-    
-    //por cada hora transcurrida se decrementa un porcentaje dado a cada barra de estado
 
-    if((*ptrElpasedTime)->hours >= 1){ //para que comience a decrementar debe transcurrir minimo una hora
-        if((*ptrAssetsData)->gameDifficult == 0){ //facil
+    // por cada hora transcurrida se decrementa un porcentaje dado a cada barra de estado
+
+    if ((*ptrElpasedTime)->hours >= 1)
+    { // para que comience a decrementar debe transcurrir minimo una hora
+        if ((*ptrAssetsData)->gameDifficult == 0)
+        { // facil
             decrement = 0.05;
-        }else if((*ptrAssetsData)->gameDifficult == 1){ //medio
+        }
+        else if ((*ptrAssetsData)->gameDifficult == 1)
+        { // medio
             decrement = 0.20;
-        }else{ //dificl
+        }
+        else
+        { // dificl
             decrement = 0.35;
         }
 
-        //decrementa dependiendo de la dificultad que ha seleccionado el usuario
-        //printf("\nLa cantidad de horas transcurridas fueron: %i\n", (*ptrElpasedTime)->hours);
-        for(int i=0; i<(*ptrElpasedTime)->hours; i++){
+        // decrementa dependiendo de la dificultad que ha seleccionado el usuario
+        // printf("\nLa cantidad de horas transcurridas fueron: %i\n", (*ptrElpasedTime)->hours);
+        for (int i = 0; i < (*ptrElpasedTime)->hours; i++)
+        {
             (*ptrDataStateBars)->health = (*ptrDataStateBars)->health * decrement;
             (*ptrDataStateBars)->mood = (*ptrDataStateBars)->mood * decrement;
             (*ptrDataStateBars)->hungry = (*ptrDataStateBars)->hungry * decrement;
         }
     }
 
-    //AREA DE MUESTRA PARA LA EXPOSICION
-    
+    // AREA DE MUESTRA PARA LA EXPOSICION
 }
 
 int main()
@@ -564,21 +571,31 @@ int main()
         keyOptMenu = getch();
         system("cls");
 
-        switch (keyOptMenu)
+        if (keyOptMenu != 's' || keyOptMenu != 'S')
         {
-        case '1':
-            alimentation(&ptrDataStateBars, &ptrAssetsData);
-            break;
-        case '2':
-            healing(&ptrDataStateBars, &ptrAssetsData);
-            break;
-        case '3':
-            break;
-        case '4':
-            settings(&ptrAssetsData);
-            assetsLoad(&ptrAssetsData);
-            break;
+            switch (keyOptMenu)
+            {
+            case '1':
+                alimentation(&ptrDataStateBars, &ptrAssetsData);
+                break;
+            case '2':
+                healing(&ptrDataStateBars, &ptrAssetsData);
+                break;
+            case '3':
+                break;
+            case '4':
+                settings(&ptrAssetsData);
+                assetsLoad(&ptrAssetsData);
+                break;
+            case 's':
+            case'S':
+                break;
+            default:
+                printf(YELLOW "\nEscoje una opción válida!!\n");
+                printf(RESET);
+            }
         }
+
     } while (keyOptMenu != 's' && keyOptMenu != 'S');
 
     // captura el instante de tiempo de la salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
