@@ -501,8 +501,34 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
     // AREA DE MUESTRA PARA LA EXPOSICION
 }
 
-void tutorial(){
+void deathScreen(struct AssetsData *ptrAssetsData)
+{
+    printf("                       ______\n");
+    printf("                    .-\"      \"-.\n");
+    printf("                   /            \\\n");
+    printf("       _          |              |          _\n");
+    printf("      ( \\         |,  .-.  .-.  ,|         / )\n");
+    printf("       > \"=._     | )(__/  \\__)( |     _.=\" <\n");
+    printf("      (_/\"=._\"=._ |/     /\\     \\| _.=\"_.=\"\\_)\n");
+    printf("             \"=._ (_     ^^     _)\"_.=\"\n");
+    printf("                 \"=\\__|IIIIII|__/=\"\n");
+    printf("                _.=\"| \\IIIIII/ |\"=._\n");
+    printf("      _     _.=\"_.=\"\\          /\"=._\"=._     _\n");
+    printf("     ( \\_.=\"_.=\"     `--------`     \"=._\"=._/ )\n");
+    printf("      > _.=\"                            \"=._ <\n");
+    printf("     (_/                                    \\_)\n");
 
+    printf(RED "%s eres un IRRESPONSABLE!!! Dejaste que al pobre %s le diera un cortocircuito :(\n", ptrAssetsData->userName, ptrAssetsData->petName);
+    printf(WHITE "%s ahora descansa en el");
+    printf(GREEN " paraiso electronico...\n", ptrAssetsData->petName);
+    printf(RESET);
+    system("pause");
+
+    // aqui debe ir el ascii de una calavera
+}
+
+void tutorial()
+{
 }
 
 int main()
@@ -534,6 +560,12 @@ int main()
 
     stateBarsDecrement(&ptrElpasedTime, &ptrDataStateBars, &ptrAssetsData);
 
+    if (ptrDataStateBars->health <= 0)
+    {
+        deathScreen(ptrAssetsData);
+        return 1;
+    }
+
     walletGetterAndSaver(0, &ptrWalletData);
 
     /*
@@ -558,7 +590,7 @@ int main()
         showAvatar(&ptrAssetsData);
         showStateBars(&ptrDataStateBars);
 
-        printf(BLUE "\n1. Alimentar\n");
+        printf(CYAN "\n1. Alimentar\n");
         printf("2. Curar\n");
         printf("3. Juegos\n");
         printf("4. Configuraciones\n");
@@ -591,7 +623,7 @@ int main()
                 assetsLoad(&ptrAssetsData);
                 break;
             case 's':
-            case'S':
+            case 'S':
                 break;
             default:
                 printf(YELLOW "\nEscoje una opción válida!!\n");
