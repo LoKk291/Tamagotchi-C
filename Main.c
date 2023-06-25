@@ -42,6 +42,26 @@ struct walletData
     int coins;
 };
 
+// analiza si es la primera vez que se abre el programa y pide las configuraciones inciales
+int firstTime(time_t timeNow){
+    int firstOpen;
+
+    FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "r");
+    fscanf(fileFirstOpen, "%i", &firstOpen);
+    fclose(fileFirstOpen);
+
+    //si se abre por primera vez, se guarda el momento de la primera abertura y se setea en 0 el primer espacio
+    if(firstOpen == 1){
+        firstOpen = 0;
+        FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "w");
+        fprintf(fileFirstOpen, "%i\n%i", firstOpen, timeNow);
+        fclose(fileFirstOpen);
+        return 1;
+    }
+    
+    return 0;
+}
+
 // esta funcion carga las configuraciones PRINCIPALES
 int assetsLoad(struct AssetsData **ptrAssetsData)
 {
@@ -528,7 +548,7 @@ void deathScreen(struct AssetsData *ptrAssetsData)
     // aqui debe ir el ascii de una calavera
 }
 
-//explica como usar y cuidar a la mascota
+// explica como usar y cuidar a la mascota
 void tutorial()
 {
 }
@@ -538,6 +558,10 @@ int main()
     system("cls");
     // time_t es un tipo de dato que permite guardar una "marca de tiempo"
     time_t timeNow = time(NULL);
+
+    if(firstTime(timeNow) != 0){
+        printf("\nPrimera vez\n");
+    }
 
     int timeResult = lastOpenGetterAndSaver(0, timeNow);
 
