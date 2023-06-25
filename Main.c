@@ -42,23 +42,25 @@ struct walletData
     int coins;
 };
 
-// analiza si es la primera vez que se abre el programa y pide las configuraciones inciales
-int firstTime(time_t timeNow){
+// chequea si es la primera vez que se abre el programa y pide las configuraciones inciales
+int firstTime(time_t timeNow)
+{
     int firstOpen;
 
     FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "r");
     fscanf(fileFirstOpen, "%i", &firstOpen);
     fclose(fileFirstOpen);
 
-    //si se abre por primera vez, se guarda el momento de la primera abertura y se setea en 0 el primer espacio
-    if(firstOpen == 1){
+    // si se abre por primera vez, se guarda el momento de la primera abertura y se setea en 0 el primer espacio
+    if (firstOpen == 1)
+    {
         firstOpen = 0;
         FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "w");
         fprintf(fileFirstOpen, "%i\n%i", firstOpen, timeNow);
         fclose(fileFirstOpen);
         return 1;
     }
-    
+
     return 0;
 }
 
@@ -383,7 +385,8 @@ void showAvatar(struct AssetsData **ptrAssetsData)
 }
 
 // permite modificar los ajustes del archivos assets, luego de ejecutada la funcion debe recargar la estructura "AssetsData"
-int settings(struct AssetsData **ptrAssetsData)
+// tiene dos modos, mode = 1 permite modificiar los valores / mode = 0 es para cargar los valores iniciales
+int settings(int mode, struct AssetsData **ptrAssetsData)
 {
     // almacenan temporalmente las preferencias actualizadas
     char petName[N];
@@ -395,34 +398,46 @@ int settings(struct AssetsData **ptrAssetsData)
 
     char optChange;
 
-    FILE *fileAssets = fopen("../files/assets.txt", "rb");
-    if (fileAssets == NULL)
+    if (mode)
     {
-        return 1;
+
+        FILE *fileAssets = fopen("../files/assets.txt", "rb");
+        if (fileAssets == NULL)
+        {
+            return 1;
+        }
+
+        fflush(stdin);
+        printf("Los valores actuales son: \n");
+        printf("Nombre de usuario: %s\n", (*ptrAssetsData)->userName);
+        printf("Nombre de la mascota: %s\n", (*ptrAssetsData)->petName);
+        printf("Avatar seleccionado: %i\n", (*ptrAssetsData)->gameAvatar);
+        printf("Inmortalidad de la inmortalidad: %i\n", (*ptrAssetsData)->petInmortality);
+        printf("Dicifultad del juego: %i\n", (*ptrAssetsData)->gameDifficult);
+        printf("Modo TryHard: %i\n", (*ptrAssetsData)->gameTryHard);
+
+        fclose(fileAssets);
+
+        do
+        {
+            printf(RED "Desea cambiar estos valores?(S/N): ");
+            scanf("%c", &optChange);
+        } while (optChange != 's' && optChange != 'n' && optChange != 'S' && optChange != 'N');
+        printf(RESET);
     }
 
-    fflush(stdin);
-    printf("Los valores actuales son: \n");
-    printf("Nombre de usuario: %s\n", (*ptrAssetsData)->userName);
-    printf("Nombre de la mascota: %s\n", (*ptrAssetsData)->petName);
-    printf("Avatar seleccionado: %i\n", (*ptrAssetsData)->gameAvatar);
-    printf("Inmortalidad de la inmortalidad: %i\n", (*ptrAssetsData)->petInmortality);
-    printf("Dicifultad del juego: %i\n", (*ptrAssetsData)->gameDifficult);
-    printf("Modo TryHard: %i\n", (*ptrAssetsData)->gameTryHard);
-
-    fclose(fileAssets);
-
-    do
-    {
-        printf(RED "Desea cambiar estos valores?(S/N): ");
-        scanf("%c", &optChange);
-    } while (optChange != 's' && optChange != 'n' && optChange != 'S' && optChange != 'N');
-    printf(RESET);
-
     // AGREGAR LA COMPROBACION DE DATOS
-    if (optChange == 's' || optChange == 'S')
+    if (optChange == 's' || optChange == 'S' || mode == 0)
     {
-        printf("Ingrese los nuevos valores que desea agregar:\n");
+        if (mode)
+        {
+            printf("Ingrese los nuevos valores que desea agregar:\n");
+        }
+        else
+        {
+            printf("Ingrese los datos que desea:\n");
+        }
+
         printf("Nombre del usuario (no puede ser mayor a 12 caracteres): ");
         scanf("%s", userName);
         printf("Nombre de la mascota (no puede ser mayor a 12 caracteres): ");
@@ -441,7 +456,7 @@ int settings(struct AssetsData **ptrAssetsData)
         scanf("%c", &optChange);
 
         // se guardan las opciones
-        if (optChange == 's' || optChange == 'S')
+        if (optChange == 's' || optChange == 'S' || mode == 0)
         {
             FILE *fileAssets = fopen("../files/assets.txt", "w");
             if (fileAssets == NULL)
@@ -451,11 +466,11 @@ int settings(struct AssetsData **ptrAssetsData)
             fprintf(fileAssets, "%s\n%s\n%i\n%i\n%i\n%i", userName, petName, gameAvatar, petInmortality, gameDifficult, gameTryHard);
             fclose(fileAssets);
 
-            printf(GREEN "\nCambios aplicados...\n");
+            printf(GREEN "\nDatos guardados...\n");
         }
         else
         {
-            printf(YELLOW "\nCambios descartados...\n");
+            printf(YELLOW "\nDatos descartados...\n");
         }
         printf(RESET);
     }
@@ -559,18 +574,19 @@ int main()
     // time_t es un tipo de dato que permite guardar una "marca de tiempo"
     time_t timeNow = time(NULL);
 
-    if(firstTime(timeNow) != 0){
-        printf("\nPrimera vez\n");
-    }
+    struct AssetsData *ptrAssetsData = (struct AssetsData *)malloc(sizeof(struct AssetsData)); // se le asigna un espacio en memoria a la estructura
+    struct elpasedTime *ptrElpasedTime = (struct elpasedTime *)malloc(sizeof(struct elpasedTime));
+    struct dataStateBars *ptrDataStateBars = (struct dataStateBars *)malloc(sizeof(struct dataStateBars));
+    struct walletData *ptrWalletData = (struct walletData *)malloc(sizeof(struct walletData));
 
     int timeResult = lastOpenGetterAndSaver(0, timeNow);
 
     char keyOptMenu;
 
-    struct AssetsData *ptrAssetsData = (struct AssetsData *)malloc(sizeof(struct AssetsData)); // se le asigna un espacio en memoria a la estructura
-    struct elpasedTime *ptrElpasedTime = (struct elpasedTime *)malloc(sizeof(struct elpasedTime));
-    struct dataStateBars *ptrDataStateBars = (struct dataStateBars *)malloc(sizeof(struct dataStateBars));
-    struct walletData *ptrWalletData = (struct walletData *)malloc(sizeof(struct walletData));
+    if (firstTime(timeNow) != 0)
+    {
+        settings(0, &ptrAssetsData);
+    }
 
     if (assetsLoad(&ptrAssetsData))
     {
@@ -645,7 +661,7 @@ int main()
             case '3':
                 break;
             case '4':
-                settings(&ptrAssetsData);
+                settings(1, &ptrAssetsData);
                 assetsLoad(&ptrAssetsData);
                 break;
             case 's':
