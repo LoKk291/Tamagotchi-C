@@ -3,9 +3,15 @@
 #include <time.h>
 #include "libraries/colors.h"
 #include <windows.h>
+#include <conio.h>
 
 #define N 13
 #define M 100
+
+//teclas
+#define UP 72
+#define DOWN 80
+#define ENTER 13
 
 // contiene la información PRINCIPAL en tiempo de ejecución
 struct AssetsData
@@ -501,7 +507,7 @@ int main()
 
     int timeResult = lastOpenGetterAndSaver(0, timeNow);
 
-    char optMenu;
+    char keyOptMenu;
 
     struct AssetsData *ptrAssetsData = (struct AssetsData *)malloc(sizeof(struct AssetsData)); // se le asigna un espacio en memoria a la estructura
     struct elpasedTime *ptrElpasedTime = (struct elpasedTime *)malloc(sizeof(struct elpasedTime));
@@ -554,10 +560,11 @@ int main()
         printf(RESET);
 
         fflush(stdin);
-        scanf("%c", &optMenu);
+        printf("\nPresione la tecla de la opción que desea realizar..");
+        keyOptMenu = getch();
         system("cls");
 
-        switch (optMenu)
+        switch (keyOptMenu)
         {
         case '1':
             alimentation(&ptrDataStateBars, &ptrAssetsData);
@@ -572,7 +579,7 @@ int main()
             assetsLoad(&ptrAssetsData);
             break;
         }
-    } while (optMenu != 's' && optMenu != 'S');
+    } while (keyOptMenu != 's' && keyOptMenu != 'S');
 
     // captura el instante de tiempo de la salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
     timeNow = time(NULL);
