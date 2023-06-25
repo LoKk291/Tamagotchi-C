@@ -47,20 +47,23 @@ int firstTime(time_t timeNow)
 {
     int firstOpen;
 
+    // cuando se abre por primera vez, el archivo firstOpen solo guardara un entero "1"
     FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "r");
     fscanf(fileFirstOpen, "%i", &firstOpen);
     fclose(fileFirstOpen);
 
-    // si se abre por primera vez, se guarda el momento de la primera abertura y se setea en 0 el primer espacio
+    // si se abre por primera vez, se setea en 0 y se guarda el momento de la primera apertura 
     if (firstOpen == 1)
     {
         firstOpen = 0;
         FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "w");
-        fprintf(fileFirstOpen, "%i\n%i", firstOpen, timeNow);
+        fprintf(fileFirstOpen, "%i\n%ld", firstOpen, timeNow);
         fclose(fileFirstOpen);
 
-        // se setea el archivo assets en 100
-
+        // se setea el archivo lastStateBars en 100
+        FILE *fileStateBars = fopen("../files/lastStateBars.txt", "w");
+        fprintf(fileStateBars, "%i %i %i", 90, 90, 90);
+        fclose(fileStateBars);
         // se setea el archivo wallet en 250
 
         return 1;
