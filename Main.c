@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <conio.h>
 
-#define N 13
+#define N 15
 #define M 100
 
 // contiene la información PRINCIPAL en tiempo de ejecución
