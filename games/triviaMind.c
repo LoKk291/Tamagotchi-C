@@ -22,7 +22,7 @@ struct question
 La funcion strlok divide la cadena en subcadenas utilizando un delimitaodr específico*/
 void separateQuestionsAnswers(char *line, struct question *question)
 {
-    char *token = strtok(line, ";");
+    char *token = strtok((char *)line, ";");
     if (token != NULL)
     {
         strcpy(question->question, token);
