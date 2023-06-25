@@ -58,6 +58,11 @@ int firstTime(time_t timeNow)
         FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "w");
         fprintf(fileFirstOpen, "%i\n%i", firstOpen, timeNow);
         fclose(fileFirstOpen);
+
+        // se setea el archivo assets en 100
+
+        // se setea el archivo wallet en 250
+
         return 1;
     }
 
