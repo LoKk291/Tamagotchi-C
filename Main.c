@@ -64,7 +64,11 @@ int firstTime(time_t timeNow)
         FILE *fileStateBars = fopen("../files/lastStateBars.txt", "w");
         fprintf(fileStateBars, "%i %i %i", 100, 100, 100);
         fclose(fileStateBars);
+
         // se setea el archivo wallet en 250
+        FILE *fileWallet = fopen("../files/lastStateBars.txt", "w");
+        fprintf(fileWallet, "%i", 250); //cantidad de oro inicial para el jugador
+        fclose(fileWallet);
 
         return 1;
     }
