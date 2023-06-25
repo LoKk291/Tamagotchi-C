@@ -460,7 +460,7 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
         fscanf(fileWallet, "%i", &(*ptrWalletData)->coins);
         fclose(fileWallet);
 
-        printf("\nLa cantida de monedas de la última sesión es: %i\n", (*ptrWalletData)->coins);
+        //printf("\nLa cantidad de monedas de la última sesión es: %i\n", (*ptrWalletData)->coins);
     }
 }
 

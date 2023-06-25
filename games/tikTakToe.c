@@ -9,27 +9,6 @@
 #define R 3
 #define C 3
 
-int main()
-{
-    // el campo del juego será una matriz
-    char board[R][C];
-    char optAgain;
-
-    do
-    {
-        resetBoard(board);
-        while ((checkFreeSpaces(board) != 0) || (checkWinner(board) == 0))
-        {
-            playerMove(board);
-            printBoard(board);
-        }
-
-        fflush(stdin);
-        printf("Desea volver a jugar: ");
-        scanf("%c", &optAgain);
-    } while (optAgain != 'N' && optAgain != 'n');
-}
-
 // muestra el tablero en pantalla
 void printBoard(char board[][C])
 {
@@ -100,64 +79,50 @@ void resetBoard(char board[][C])
     }
 }
 
-// chequea los espacios disponibles en el tablero
-int checkFreeSpaces(char board[][C])
-{
-    int freeSpaces = 9;
-
-    for (int i = 0; i < R; i++)
-    {
-        for (int j = 0; j < C; j++)
-        {
-            if (board[i][j] != ' ')
-            {
-                freeSpaces--;
-            }
-        }
-    }
-    // printf("\nQuedan %i espacios libres\n", freeSpaces);
-    return freeSpaces;
-}
-
 // chequea si alguna fila, columna, o diagonal fue relenada con el mismo
 // caracter para determinar si  existe un ganador y quien gano
-int checkWinner(char board[][C])
+int checkWinner(char board[][C], int freeSpaces)
 {
     int flagWinner = 0;
     char winner;
 
     // identifica quien es el ganador
     int whosWhinner = 0;
-
-    // filas
-    for (int i = 0; i < 3; i++)
-    {
-        if (board[i][0] == board[i][1] && board[i][0] == board[i][2])
+    
+    //para coemnzar con la verificacion, primero se debe ver que la cantidad de espacios
+    //sea <= 6, ya que esta es la cantidad de espacios minima que se ocupan para que haya un ganador
+    if(freeSpaces <= 6){
+        // filas
+        for (int i = 0; i < R; i++)
         {
-            winner = board[i][0];
+            if (board[i][0] == board[i][1] && board[i][0] == board[i][2])
+            {
+                winner = board[i][0];
+                flagWinner = 1;
+            }
+        }
+        // columnas
+        for (int i = 0; i < C; i++)
+        {
+            if (board[0][i] == board[1][i] && board[0][i] == board[2][i])
+            {
+                winner = board[0][i];
+                flagWinner = 1;
+            }
+        }
+        // diagonales
+        if (board[0][0] == board[1][1] && board[0][0] == board[2][2])
+        {
+            winner = board[0][0];
+            flagWinner = 1;
+        }
+        if (board[0][2] == board[1][1] && board[0][2] == board[2][0])
+        {
+            winner = board[0][2];
             flagWinner = 1;
         }
     }
-    // columnas
-    for (int i = 0; i < 3; i++)
-    {
-        if (board[0][i] == board[1][i] && board[0][i] == board[2][i])
-        {
-            winner = board[0][i];
-            flagWinner = 1;
-        }
-    }
-    // diagonales
-    if (board[0][0] == board[1][1] && board[0][0] == board[2][2])
-    {
-        winner = board[0][0];
-        flagWinner = 1;
-    }
-    if (board[0][2] == board[1][1] && board[0][2] == board[2][0])
-    {
-        winner = board[0][2];
-        flagWinner = 1;
-    }
+    
 
     if (flagWinner)
     {
@@ -173,4 +138,28 @@ int checkWinner(char board[][C])
     }
 
     return whosWhinner;
+}
+
+int main()
+{
+    // el campo del juego será una matriz
+    char board[R][C];
+    char optAgain;
+    int freeSpaces;
+
+    do
+    {
+        freeSpaces = 9;
+        resetBoard(board);
+        while ( freeSpaces != 0 && (checkWinner(board, freeSpaces) == 0))
+        {
+            playerMove(board);
+            printBoard(board);
+            freeSpaces--;
+        }
+
+        fflush(stdin);
+        printf("Desea volver a jugar: ");
+        scanf("%c", &optAgain);
+    } while (optAgain != 'N' && optAgain != 'n');
 }
