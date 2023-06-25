@@ -501,6 +501,7 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
     // AREA DE MUESTRA PARA LA EXPOSICION
 }
 
+// muestra una pantalla de meurte cuado la salud es <= 0
 void deathScreen(struct AssetsData *ptrAssetsData)
 {
     printf("                       ______\n");
@@ -527,6 +528,7 @@ void deathScreen(struct AssetsData *ptrAssetsData)
     // aqui debe ir el ascii de una calavera
 }
 
+//explica como usar y cuidar a la mascota
 void tutorial()
 {
 }
