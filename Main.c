@@ -8,11 +8,6 @@
 #define N 13
 #define M 100
 
-// teclas
-#define UP 72
-#define DOWN 80
-#define ENTER 13
-
 // contiene la información PRINCIPAL en tiempo de ejecución
 struct AssetsData
 {
@@ -77,8 +72,8 @@ int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
     hours = seconds / 3600;
     minutes = (seconds - hours * 3600) / 60;
     seconds = seconds - (hours * 3600 + minutes * 60);
-    printf("\nla cantidad de segundos es: %i\n", seconds);
-    printf("\n%i %i %i\n", hours, minutes, seconds);
+    // printf("\nla cantidad de segundos es: %i\n", seconds);
+    // printf("\n%i %i %i\n", hours, minutes, seconds);
 
     (*ptrElpasedTime)->hours = hours;
     (*ptrElpasedTime)->minutes = minutes;
@@ -506,6 +501,10 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
     // AREA DE MUESTRA PARA LA EXPOSICION
 }
 
+void tutorial(){
+
+}
+
 int main()
 {
     system("cls");
@@ -561,8 +560,9 @@ int main()
 
         printf(BLUE "\n1. Alimentar\n");
         printf("2. Curar\n");
-        printf("3. Jugar\n");
+        printf("3. Juegos\n");
         printf("4. Configuraciones\n");
+        printf("0. Como cuidar la mascota\n");
         printf("S. Salir\n");
         printf(RESET);
 
@@ -575,6 +575,9 @@ int main()
         {
             switch (keyOptMenu)
             {
+            case 0:
+                tutorial();
+                break;
             case '1':
                 alimentation(&ptrDataStateBars, &ptrAssetsData);
                 break;
