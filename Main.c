@@ -179,9 +179,9 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
     return 0;
 }
 
-//la antigua funcion de alimentacion, se encuentra comentada, para así poder hacer uso de ciertas partes de su codigo, en la nueva funcion de alimentacion.
-// incrementa ptrDataStateBars->hungry dependiendo de la comida empleada (si es comida chatarra decrementa la barra de salud)
-// si la comida seleccionada es saludable incrementa un poco la salud
+// la antigua funcion de alimentacion, se encuentra comentada, para así poder hacer uso de ciertas partes de su codigo, en la nueva funcion de alimentacion.
+//  incrementa ptrDataStateBars->hungry dependiendo de la comida empleada (si es comida chatarra decrementa la barra de salud)
+//  si la comida seleccionada es saludable incrementa un poco la salud
 /*int alimentation(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
 {
     int optAlimentation;
@@ -222,12 +222,12 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
 // Estructura necesaria para la implementacion de arboles binarios
 struct node
 {
-    char itemName[50];  // Nombre del artículo
-    int unsigned quantity;       // Cantidad del artículo
-    int unsigned price;        // precio del artículo
-    char foodType[20];  // Tipo de comida
-    struct node *left;  // Puntero al subárbol izquierdo
-    struct node *right; // Puntero al subárbol derecho
+    char itemName[50];     // Nombre del artículo
+    int unsigned quantity; // Cantidad del artículo
+    int unsigned price;    // precio del artículo
+    char foodType[20];     // Tipo de comida
+    struct node *left;     // Puntero al subárbol izquierdo
+    struct node *right;    // Puntero al subárbol derecho
 };
 
 // Funciones necesarias para la implementacion de arboles Binarios
@@ -383,9 +383,9 @@ int alimentation()
 {
     struct node *root = NULL;
     int unsigned option;
-    
-    //TIENE QUE RECIBIR COMO PARAMETRO LA VARIABLE COINS DE LA ESTRUCTURA WALLETS Y OPERAR CON ELLA, POSTERIORMENTE
-    //EN CADA FUNCION QUE SE OCUPE WALLETS SE DEBE GUARDAR LAS MONEDAS QUE QUEDARON
+
+    // TIENE QUE RECIBIR COMO PARAMETRO LA VARIABLE COINS DE LA ESTRUCTURA WALLETS Y OPERAR CON ELLA, POSTERIORMENTE
+    // EN CADA FUNCION QUE SE OCUPE WALLETS SE DEBE GUARDAR LAS MONEDAS QUE QUEDARON
     int unsigned wallet = 250;
     char productName[50];
     int unsigned quantity;
@@ -565,7 +565,6 @@ int alimentation()
                 {
                     root = deleteNode(root, productName);
                 }
-
             }
             else
             {
@@ -1134,7 +1133,7 @@ int main()
                 tutorial();
                 break;
             case '1':
-                 alimentation();
+                alimentation();
                 break;
             case '2':
                 healing(&ptrDataStateBars, &ptrAssetsData);
