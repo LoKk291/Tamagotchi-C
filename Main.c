@@ -650,6 +650,22 @@ void tutorial()
 {
 }
 
+
+// ejecuta los juegos seleccionados
+// NO FUNCIONA
+void gameExecute(){
+    char optGame;
+
+    do{
+        printf("Ingerese el juego que desea jugar: \n");
+        optGame = getch();
+    }while(optGame != 1 && optGame != 2);
+
+    if(optGame == '1'){
+        system("../games/output/triviaMind.exe");
+    }
+}
+
 int main()
 {
     system("cls");
@@ -748,6 +764,7 @@ int main()
                 healing(&ptrDataStateBars, &ptrAssetsData);
                 break;
             case '3':
+                gameExecute();
                 break;
             case '4':
                 settings(1, &ptrAssetsData);
