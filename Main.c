@@ -4,6 +4,7 @@
 #include "libraries/colors.h"
 #include <windows.h>
 #include <conio.h>
+#include <stdbool.h>
 
 #define N 15
 #define M 100
@@ -178,6 +179,7 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
     return 0;
 }
 
+//la antigua funcion de alimentacion, se encuentra comentada, para así poder hacer uso de ciertas partes de su codigo, en la nueva funcion de alimentacion.
 // incrementa ptrDataStateBars->hungry dependiendo de la comida empleada (si es comida chatarra decrementa la barra de salud)
 // si la comida seleccionada es saludable incrementa un poco la salud
 /*int alimentation(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
@@ -221,8 +223,8 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
 struct node
 {
     char itemName[50];  // Nombre del artículo
-    int quantity;       // Cantidad del artículo
-    float price;        // precio del artículo
+    int unsigned quantity;       // Cantidad del artículo
+    int unsigned price;        // precio del artículo
     char foodType[20];  // Tipo de comida
     struct node *left;  // Puntero al subárbol izquierdo
     struct node *right; // Puntero al subárbol derecho
@@ -231,7 +233,7 @@ struct node
 // Funciones necesarias para la implementacion de arboles Binarios
 
 // Funcion para crear un nuevo nodo del árbol
-struct node *crearNodo(char itemName[], int quantity, float price, char foodType[])
+struct node *createNode(char itemName[], int unsigned quantity, int unsigned price, char foodType[])
 {
     // asignar memoria para el nuevo nodo
     struct node *node = (struct node *)malloc(sizeof(struct node));
@@ -248,24 +250,24 @@ struct node *crearNodo(char itemName[], int quantity, float price, char foodType
 }
 
 // Funcion para insertar un nodo en el árbol
-struct node *insertarNodo(struct node *root, char itemName[], int quantity, float price, char foodType[])
+struct node *insertNode(struct node *root, char itemName[], int quantity, int price, char foodType[])
 {
     // si el árbol está vacío, crear un nuevo nodo y establecerlo como raíz
     if (root == NULL)
     {
-        return crearNodo(itemName, quantity, price, foodType);
+        return createNode(itemName, quantity, price, foodType);
     }
 
     // Comparar el nombre del artículo con el nombre en el nodo actual
     if (strcmp(itemName, root->itemName) < 0)
     {
         // Si el nombre es menor, insertar el nodo en el subárbol izquierdo
-        root->left = insertarNodo(root->left, itemName, quantity, price, foodType);
+        root->left = insertNode(root->left, itemName, quantity, price, foodType);
     }
     else if (strcmp(itemName, root->itemName) > 0)
     {
         // Si el nombre es mayor, insertar el nodo en el subárbol derecho
-        root->right = insertarNodo(root->right, itemName, quantity, price, foodType);
+        root->right = insertNode(root->right, itemName, quantity, price, foodType);
     }
     else
     {
@@ -278,7 +280,7 @@ struct node *insertarNodo(struct node *root, char itemName[], int quantity, floa
 }
 
 // Funcion para buscar un nodo en el árbol
-struct node *buscarNodo(struct node *root, char itemName[])
+struct node *searchNode(struct node *root, char itemName[])
 {
     // Si el árbol está vacio o el nombre del artículo coincide, devolver el nodo actual
     if (root == NULL || strcmp(root->itemName, itemName) == 0)
@@ -290,34 +292,34 @@ struct node *buscarNodo(struct node *root, char itemName[])
     if (strcmp(itemName, root->itemName) < 0)
     {
         // Si el nombre es menor, buscar en el subárbol izquierdo
-        return buscarNodo(root->left, itemName);
+        return searchNode(root->left, itemName);
     }
     else
     {
         // Si el nombre es mayor, buscar en el subárbol derecho
-        return buscarNodo(root->right, itemName);
+        return searchNode(root->right, itemName);
     }
 }
 
 // Funcion para mostrar el inventario en orden
-void mostrarInventario(struct node *root)
+void showInventory(struct node *root)
 {
     if (root != NULL)
     {
         // Recorrer el subárbol izquierdo
-        mostrarInventario(root->left);
+        showInventory(root->left);
 
         // Mostrar los detalles del artículo en el nodo actual
-        printf("Nombre: %s, Cantidad: %d, Precio: %2.f, Tipo: %s\n",
+        printf("Nombre: %s, Cantidad: %u, Precio: %u, Tipo: %s\n",
                root->itemName, root->quantity, root->price, root->foodType);
 
         // Recorrer el subárbol derecho
-        mostrarInventario(root->right);
+        showInventory(root->right);
     }
 }
 
 // Funcion auxiliar para encontrar el nodo con el valor mínimo
-struct node *encontrarMinimo(struct node *root)
+struct node *findMinimum(struct node *root)
 {
     struct node *current = root;
     while (current && current->left != NULL)
@@ -328,7 +330,7 @@ struct node *encontrarMinimo(struct node *root)
 }
 
 // Funcion para eliminar un nodo del árbol
-struct node *eliminarNodo(struct node *root, char itemName[])
+struct node *deleteNode(struct node *root, char itemName[])
 {
     if (root == NULL)
     {
@@ -337,11 +339,11 @@ struct node *eliminarNodo(struct node *root, char itemName[])
 
     if (strcmp(itemName, root->itemName) < 0)
     {
-        root->left = eliminarNodo(root->left, itemName);
+        root->left = deleteNode(root->left, itemName);
     }
     else if (strcmp(itemName, root->itemName) > 0)
     {
-        root->right = eliminarNodo(root->right, itemName);
+        root->right = deleteNode(root->right, itemName);
     }
     else
     {
@@ -364,12 +366,12 @@ struct node *eliminarNodo(struct node *root, char itemName[])
                 return temp;
             }
 
-            struct node *temp = encontrarMinimo(root->right);
+            struct node *temp = findMinimum(root->right);
             strcpy(root->itemName, temp->itemName);
             root->quantity = temp->quantity;
             root->price = temp->price;
             strcpy(root->foodType, temp->foodType);
-            root->right = eliminarNodo(root->right, temp->itemName);
+            root->right = deleteNode(root->right, temp->itemName);
         }
     }
 
@@ -380,11 +382,14 @@ struct node *eliminarNodo(struct node *root, char itemName[])
 int alimentation()
 {
     struct node *root = NULL;
-    int option;
-    float wallet = 250.0;
+    int unsigned option;
+    
+    //TIENE QUE RECIBIR COMO PARAMETRO LA VARIABLE COINS DE LA ESTRUCTURA WALLETS Y OPERAR CON ELLA, POSTERIORMENTE
+    //EN CADA FUNCION QUE SE OCUPE WALLETS SE DEBE GUARDAR LAS MONEDAS QUE QUEDARON
+    int unsigned wallet = 250;
     char productName[50];
-    int quantity;
-    float price;
+    int unsigned quantity;
+    int unsigned price;
     char foodType[20];
 
     do
@@ -392,7 +397,7 @@ int alimentation()
         system("cls");
 
         printf("------- MENU -------\n");
-        printf("Billetera: %2.f\n", wallet);
+        printf("Billetera: %u\n", wallet);
         printf("1. Comprar producto\n");
         printf("2. Mostrar inventario\n");
         printf("3. COmer producto\n");
@@ -406,7 +411,7 @@ int alimentation()
             system("cls");
 
             printf("------- COMPRAR PRODUCTO -------\n");
-            printf("Billetera: %2f.\n", wallet);
+            printf("Billetera: %u.\n", wallet);
 
             printf("Seleccione el tipo de comida:\n");
             printf("1. Chatarra\n");
@@ -453,19 +458,19 @@ int alimentation()
                 {
                 case '1':
                     strcpy(productName, "Pizza");
-                    price = 10.0;
+                    price = 10;
                     strcpy(foodType, "Chatarra");
                     break;
 
                 case '2':
                     strcpy(productName, "Hamburguesa");
-                    price = 7.0;
+                    price = 7;
                     strcpy(foodType, "Chatarra");
                     break;
 
                 case '3':
                     strcpy(productName, "Pancho");
-                    price = 5.0;
+                    price = 5;
                     strcpy(foodType, "Chatarra");
                     break;
 
@@ -480,19 +485,19 @@ int alimentation()
                 {
                 case '1':
                     strcpy(productName, "Ensalada");
-                    price = 8.0;
+                    price = 8;
                     strcpy(foodType, "Saludable");
                     break;
 
                 case '2':
                     strcpy(productName, "Frutas");
-                    price = 4.0;
+                    price = 4;
                     strcpy(foodType, "Saludable");
                     break;
 
                 case '3':
                     strcpy(productName, "Yogurt");
-                    price = 6.0;
+                    price = 6;
                     strcpy(foodType, "Saludable");
                     break;
 
@@ -515,14 +520,14 @@ int alimentation()
             }
 
             // Consideracion: No se puede comprar mas productos de los que dispongas en cantidad de efectivo
-            int availableQuantity = wallet / price;
+            int unsigned availableQuantity = wallet / price;
             if (quantity > availableQuantity)
             {
-                printf("No puedes comprar mas de %d productos con la cantidad de efectivo disponible.\n", availableQuantity);
+                printf("No puedes comprar mas de %u productos con la cantidad de efectivo disponible.\n", availableQuantity);
                 break;
             }
 
-            root = insertarNodo(root, productName, quantity, price, foodType);
+            root = insertNode(root, productName, quantity, price, foodType);
             wallet -= price * quantity;
             break;
 
@@ -530,7 +535,7 @@ int alimentation()
             system("cls");
 
             printf("------- MOSTRAR INVENTARIO -------\n");
-            mostrarInventario(root);
+            showInventory(root);
             printf("\n");
             printf("Presione enter para continuar...");
             getchar();
@@ -541,16 +546,15 @@ int alimentation()
             system("cls");
 
             printf("------- INVENTARIO -------\n");
-            mostrarInventario(root);
+            showInventory(root);
             printf("--------------------------\n");
 
             printf("------- COMER PRODUCTO --------\n");
-            printf("Billetera: %2.f\n", wallet);
 
             printf("Ingrese el nombre del producto a comer: ");
             scanf("%s", productName);
 
-            struct node *node = buscarNodo(root, productName);
+            struct node *node = searchNode(root, productName);
             if (node != NULL)
             {
                 if (node->quantity > 1)
@@ -559,9 +563,9 @@ int alimentation()
                 }
                 else
                 {
-                    root = eliminarNodo(root, productName);
+                    root = deleteNode(root, productName);
                 }
-                wallet += node->price;
+
             }
             else
             {
@@ -1130,7 +1134,7 @@ int main()
                 tutorial();
                 break;
             case '1':
-                // alimentation(&ptrDataStateBars, &ptrAssetsData);
+                 alimentation();
                 break;
             case '2':
                 healing(&ptrDataStateBars, &ptrAssetsData);
