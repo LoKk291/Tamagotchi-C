@@ -642,8 +642,8 @@ int main()
     do
     {
         // printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
-        randomPhrases();
         showAvatar(&ptrAssetsData);
+        randomPhrases();
         showStateBars(&ptrDataStateBars);
 
         printf(CYAN "\n1. Alimentar\n");
