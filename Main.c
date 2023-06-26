@@ -471,7 +471,7 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
 
         do
         {
-            printf(RED "Desea cambiar estos valores?(S/N): ");
+            printf(RED "Desea cambiar estos valores?(S/N): \n");
             optChange = getch();
         } while (optChange != 's' && optChange != 'n' && optChange != 'S' && optChange != 'N');
         printf(RESET);
@@ -532,7 +532,7 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
         } while (gameTryHard != 0 && gameTryHard != 1);
 
         fflush(stdin);
-        printf(BLUE "SEGURO QUE DESEAS APLICAR LOS CAMBIOS?: ");
+        printf(BLUE "SEGURO QUE DESEAS APLICAR LOS CAMBIOS? (s/n): \n");
         optChange = getch();
 
         // se guardan las opciones
