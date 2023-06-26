@@ -408,6 +408,33 @@ void showAvatar(struct AssetsData **ptrAssetsData)
     fclose(fileAvatar);
 }
 
+// genera un nombre aleatorio para la mascota
+void randomPetName(char petName[])
+{
+    FILE *filePetNames = fopen("../files/petNames.txt", "r");
+    int indexRandomMax;
+    int index = 0;
+    char optGenerate;
+
+    do
+    {
+        srand(time(NULL));
+        indexRandomMax = rand() % (162 - 1);
+        // printf("\nEl valor aleatorio es: %d", indexRandomMax);
+
+        while (index <= indexRandomMax)
+        {
+            fgets(petName, N, filePetNames);
+            index++;
+        }
+        printf("El nombre generado aleatoriamente es: %s\n", petName);
+        printf("Desea generar otro nombre? (s/n):\n");
+        optGenerate = getch();
+    } while (optGenerate != 'n' && optGenerate != 'N');
+
+    fclose(filePetNames);
+}
+
 // permite modificar los ajustes del archivos assets, luego de ejecutada la funcion debe recargar la estructura "AssetsData"
 // tiene dos modos, mode = 1 permite modificiar los valores / mode = 0 es para cargar los valores iniciales
 int settings(int mode, struct AssetsData **ptrAssetsData)
@@ -462,41 +489,48 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
             printf("\nIngrese los datos que desea:\n");
         }
 
-        do{
+        do
+        {
             printf("Nombre del usuario (no puede ser mayor a 14 caracteres): ");
             scanf("%s", userName);
-        }while(strlen(userName) > 14);
-        
-        do{
+        } while (strlen(userName) > 14);
+
+        do
+        {
             printf("Nombre de la mascota (no puede ser mayor a 14 caracteres) (1 = Generar nombre de forma aleatoria): ");
             scanf("%s", petName);
-        }while(strlen(petName) > 14 && petName[0] != '1');
-        
+        } while (strlen(petName) > 14 && petName[0] != '1');
 
-        if(petName[0] == '1'){
-            //se genera el nombre de forma aleatoria
+        if (petName[0] == '1')
+        {
+            // se genera el nombre de forma aleatoria
+            randomPetName(petName);
         }
 
-        do{
+        do
+        {
             printf("Avatar seleccionado (0/1/2/3/4/5/6): ");
             scanf("%i", &gameAvatar);
-        }while(gameAvatar != 0 && gameAvatar != 1 && gameAvatar != 2 && gameAvatar != 3 && gameAvatar != 4 && gameAvatar != 5 && gameAvatar != 6 );
-        
-        do{
+        } while (gameAvatar != 0 && gameAvatar != 1 && gameAvatar != 2 && gameAvatar != 3 && gameAvatar != 4 && gameAvatar != 5 && gameAvatar != 6);
+
+        do
+        {
             printf("Inmortalidad de la mascota: (0 = no / 1 = si): ");
             scanf("%i", &petInmortality);
-        }while(petInmortality != 0 && petInmortality != 1);
-        
-        do{
+        } while (petInmortality != 0 && petInmortality != 1);
+
+        do
+        {
             printf("Dicifultad del juego (0 = facil / 1 = medio / 2= dificil): ");
             scanf("%i", &gameDifficult);
-        }while(gameDifficult != 0 && gameDifficult != 1 && gameDifficult != 2);
-        
-        do{
+        } while (gameDifficult != 0 && gameDifficult != 1 && gameDifficult != 2);
+
+        do
+        {
             printf("Modo TryHard (0 = no / 1= si):");
             scanf("%i", &gameTryHard);
-        }while(gameTryHard != 0 && gameTryHard != 1);
-        
+        } while (gameTryHard != 0 && gameTryHard != 1);
+
         fflush(stdin);
         printf(BLUE "SEGURO QUE DESEAS APLICAR LOS CAMBIOS?: ");
         optChange = getch();
