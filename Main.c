@@ -516,7 +516,7 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
 // la dificultad seleccionada por el usuario
 void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
 {
-    float decrement;
+    int decrement;
 
     // por cada hora transcurrida se decrementa un porcentaje dado a cada barra de estado
 
@@ -524,24 +524,24 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
     { // para que comience a decrementar debe transcurrir minimo una hora
         if ((*ptrAssetsData)->gameDifficult == 0)
         { // facil
-            decrement = 0.05;
+            decrement = 2;
         }
         else if ((*ptrAssetsData)->gameDifficult == 1)
         { // medio
-            decrement = 0.20;
+            decrement = 5;
         }
         else
         { // dificl
-            decrement = 0.35;
+            decrement = 10;
         }
 
         // decrementa dependiendo de la dificultad que ha seleccionado el usuario
         // printf("\nLa cantidad de horas transcurridas fueron: %i\n", (*ptrElpasedTime)->hours);
         for (int i = 0; i < (*ptrElpasedTime)->hours; i++)
         {
-            (*ptrDataStateBars)->health = (*ptrDataStateBars)->health * decrement;
-            (*ptrDataStateBars)->mood = (*ptrDataStateBars)->mood * decrement;
-            (*ptrDataStateBars)->hungry = (*ptrDataStateBars)->hungry * decrement;
+            (*ptrDataStateBars)->health = (*ptrDataStateBars)->health - decrement;
+            (*ptrDataStateBars)->mood = (*ptrDataStateBars)->mood - decrement;
+            (*ptrDataStateBars)->hungry = (*ptrDataStateBars)->hungry - decrement;
         }
     }
 
@@ -595,6 +595,7 @@ int main()
 
     char keyOptMenu;
 
+    //si es la primera vez que se abre el programa, pedira las confg iniciales
     if (firstTime(timeNow) != 0)
     {
         settings(0, &ptrAssetsData);
