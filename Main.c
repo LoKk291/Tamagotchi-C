@@ -384,6 +384,18 @@ void showAvatar(struct AssetsData **ptrAssetsData)
     {
         avatarPath[23] = '2';
     }
+    if ((*ptrAssetsData)->gameAvatar == 3)
+    {
+        avatarPath[23] = '3';
+    }
+    if ((*ptrAssetsData)->gameAvatar == 4)
+    {
+        avatarPath[23] = '4';
+    }
+    if ((*ptrAssetsData)->gameAvatar == 5)
+    {
+        avatarPath[23] = '5';
+    }
 
     FILE *fileAvatar = fopen(avatarPath, "r");
     printf(MAGENTA "\n");
