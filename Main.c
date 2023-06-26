@@ -445,7 +445,7 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
         do
         {
             printf(RED "Desea cambiar estos valores?(S/N): ");
-            scanf("%c", &optChange);
+            optChange = getch();
         } while (optChange != 's' && optChange != 'n' && optChange != 'S' && optChange != 'N');
         printf(RESET);
     }
@@ -455,29 +455,51 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
     {
         if (mode)
         {
-            printf("Ingrese los nuevos valores que desea agregar:\n");
+            printf("\nIngrese los nuevos valores que desea agregar:\n");
         }
         else
         {
-            printf("Ingrese los datos que desea:\n");
+            printf("\nIngrese los datos que desea:\n");
         }
 
-        printf("Nombre del usuario (no puede ser mayor a 12 caracteres): ");
-        scanf("%s", userName);
-        printf("Nombre de la mascota (no puede ser mayor a 12 caracteres): ");
-        scanf("%s", petName);
-        printf("Avatar seleccionado (0/1/2): ");
-        scanf("%i", &gameAvatar);
-        printf("Inmortalidad de la mascota: (1/0): ");
-        scanf("%i", &petInmortality);
-        printf("Dicifultad del juego (0/1/2): ");
-        scanf("%i", &gameDifficult);
-        printf("Modo TryHard (0/1):");
-        scanf("%i", &gameTryHard);
+        do{
+            printf("Nombre del usuario (no puede ser mayor a 14 caracteres): ");
+            scanf("%s", userName);
+        }while(strlen(userName) > 14);
+        
+        do{
+            printf("Nombre de la mascota (no puede ser mayor a 14 caracteres) (1 = Generar nombre de forma aleatoria): ");
+            scanf("%s", petName);
+        }while(strlen(petName) > 14 && petName[0] != '1');
+        
 
+        if(petName[0] == '1'){
+            //se genera el nombre de forma aleatoria
+        }
+
+        do{
+            printf("Avatar seleccionado (0/1/2/3/4/5/6): ");
+            scanf("%i", &gameAvatar);
+        }while(gameAvatar != 0 && gameAvatar != 1 && gameAvatar != 2 && gameAvatar != 3 && gameAvatar != 4 && gameAvatar != 5 && gameAvatar != 6 );
+        
+        do{
+            printf("Inmortalidad de la mascota: (0 = no / 1 = si): ");
+            scanf("%i", &petInmortality);
+        }while(petInmortality != 0 && petInmortality != 1);
+        
+        do{
+            printf("Dicifultad del juego (0 = facil / 1 = medio / 2= dificil): ");
+            scanf("%i", &gameDifficult);
+        }while(gameDifficult != 0 && gameDifficult != 1 && gameDifficult != 2);
+        
+        do{
+            printf("Modo TryHard (0 = no / 1= si):");
+            scanf("%i", &gameTryHard);
+        }while(gameTryHard != 0 && gameTryHard != 1);
+        
         fflush(stdin);
         printf(BLUE "SEGURO QUE DESEAS APLICAR LOS CAMBIOS?: ");
-        scanf("%c", &optChange);
+        optChange = getch();
 
         // se guardan las opciones
         if (optChange == 's' || optChange == 'S' || mode == 0)
@@ -491,6 +513,8 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
             fclose(fileAssets);
 
             printf(GREEN "\nDatos guardados...\n");
+            Sleep(200);
+            system("cls");
         }
         else
         {
