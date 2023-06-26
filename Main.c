@@ -52,7 +52,7 @@ int firstTime(time_t timeNow)
     fscanf(fileFirstOpen, "%i", &firstOpen);
     fclose(fileFirstOpen);
 
-    // si se abre por primera vez, se setea en 0 y se guarda el momento de la primera apertura 
+    // si se abre por primera vez, se setea en 0 y se guarda el momento de la primera apertura
     if (firstOpen == 1)
     {
         firstOpen = 0;
@@ -67,7 +67,7 @@ int firstTime(time_t timeNow)
 
         // se setea el archivo wallet en 250
         FILE *fileWallet = fopen("../files/lastStateBars.txt", "w");
-        fprintf(fileWallet, "%i", 250); //cantidad de oro inicial para el jugador
+        fprintf(fileWallet, "%i", 250); // cantidad de oro inicial para el jugador
         fclose(fileWallet);
 
         return 1;
@@ -607,7 +607,7 @@ int main()
 
     char keyOptMenu;
 
-    //si es la primera vez que se abre el programa, pedira las confg iniciales
+    // si es la primera vez que se abre el programa, pedira las confg iniciales
     if (firstTime(timeNow) != 0)
     {
         settings(0, &ptrAssetsData);
@@ -626,13 +626,6 @@ int main()
     stateBarsGetterAndSaver(0, &ptrDataStateBars);
 
     stateBarsDecrement(&ptrElpasedTime, &ptrDataStateBars, &ptrAssetsData);
-
-    if (ptrDataStateBars->health <= 0)
-    {
-        // printf("\n La salud es: %i\n", ptrDataStateBars->health);
-        deathScreen(ptrAssetsData);
-        return 1;
-    }
 
     walletGetterAndSaver(0, &ptrWalletData);
 
@@ -653,6 +646,18 @@ int main()
 
     do
     {
+
+        // si en las configuraciones la inmortalidad esta activada, la mascota no puede morir
+        if (ptrAssetsData->petInmortality != 1)
+        {
+            if (ptrDataStateBars->health <= 0)
+            {
+                // printf("\n La salud es: %i\n", ptrDataStateBars->health);
+                deathScreen(ptrAssetsData);
+                return 1;
+            }
+        }
+
         // printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
         showAvatar(&ptrAssetsData);
         randomPhrases();
