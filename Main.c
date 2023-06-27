@@ -379,7 +379,7 @@ struct node *deleteNode(struct node *root, char itemName[])
 }
 
 // Implementacion de Árboles Binarios mediante un sistema de gestion de alimentacion
-int alimentation()
+void alimentation()
 {
     struct node *root = NULL;
     char option;
@@ -588,11 +588,57 @@ int alimentation()
 
     } while (option != '4');
 
-    return 0;
+
 }
 
+
+//ACA VA LA IMPLEMENTACION DE ARBOLES BINARIOS RELACIONADA A LA GESTION DE MEDICAMENTOS
+
+//-
+//Estructura para representar los nodos del árbol binario
+struct product{
+    char productName[50];   //Nombre del producto
+    unsigned int quantity;  //Cantidad de unidades
+    unsigned int price;     //Precio del producto(en monedas)
+    struct product *left;   //Puntero al subárbol izquierdo
+    struct product *right;  //Puntero al subárbol derecho
+};
+
+//Funcion para crear un nuevo nodo del árbol
+struct product *createNodePr(char prodcutName[], unsigned int quantity, unsigned int price){
+    //Asignar memoria al nuevo nodo
+    struct product *node =(struct product*)malloc(sizeof(struct product));
+
+    //copiar los valores al nodo
+    strcpy(node->productName, productName);
+    node->quantity = quantity;
+    node->price = price;
+
+    //Inicialzar los punteros izquierdo y derecho como NULL
+    node->left = NULL;
+    node->right = NULL;
+
+    //Devolver el nodo creado
+    return node;
+
+}
+
+void healing(){
+    struct product *root = NULL;
+    //monedas de prueba hasta que david y yo implementemos el enlace de la variable wallet al archivo
+    struct walletData myWallet;
+    myWallet.coins = 100;
+    //espacio para variables de opciones
+
+    char productName[50];
+    unsigned int quantity;
+
+}
+
+//-
+
 // incrementa ptrDataStateBars->health dependiendo de la medicina seleccionada
-int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
+/*int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
 {
     int optHealing;
     do
@@ -618,7 +664,7 @@ int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAsse
         (*ptrDataStateBars)->health = 100;
     }
     return 0;
-}
+}*/
 
 // determina el color de las barras dependiendo de su estado
 // se pasa solo la PROPIEDAD del puntero. Ej: la propiedad ptrDataStateBars->health es un entero
@@ -1123,7 +1169,7 @@ int main()
                 alimentation();
                 break;
             case '2':
-                healing(&ptrDataStateBars, &ptrAssetsData);
+               //healing(&ptrDataStateBars, &ptrAssetsData);
                 break;
             case '3':
                 gameExecute();
