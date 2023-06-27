@@ -620,19 +620,14 @@ int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAsse
     return 0;
 }
 
-// muestra los estados de las barras (por el momento en numeros)
-void showStateBars(struct dataStateBars **ptrDataStateBars)
-{
-    // caracter de tabla ascii extendida
-    char icon = 35; // 35 = #
-
-    // estos for dibujan las barras y los if determinan el color de la barra
-    // salud
-    if ((*ptrDataStateBars)->health >= 70)
+// determina el color de las barras dependiendo de su estado
+// se pasa solo la PROPIEDAD del puntero. Ej: la propiedad ptrDataStateBars->health es un entero
+void colorBar(int propety){
+    if (propety >= 70)
     {
         printf(GREEN);
     }
-    else if (((*ptrDataStateBars)->health <= 69) && ((*ptrDataStateBars)->health >= 40))
+    else if (propety <= 69 && propety >= 40)
     {
         printf(YELLOW);
     }
@@ -640,6 +635,17 @@ void showStateBars(struct dataStateBars **ptrDataStateBars)
     {
         printf(RED);
     }
+}
+
+// muestra los estados de las barras (por el momento en numeros)
+void showStateBars(struct dataStateBars **ptrDataStateBars)
+{
+    // caracter de tabla ascii extendida
+    char icon = 35; // 35 = #
+
+    // estos for dibujan las barras
+    // salud
+    colorBar((*ptrDataStateBars)->health);
 
     printf("Salud: ");
     for (int i = 0; i < ((*ptrDataStateBars)->health) / 4; i++)
@@ -649,18 +655,7 @@ void showStateBars(struct dataStateBars **ptrDataStateBars)
     printf(" %i/100\n", (*ptrDataStateBars)->health);
 
     // animo
-    if ((*ptrDataStateBars)->mood >= 70)
-    {
-        printf(GREEN);
-    }
-    else if (((*ptrDataStateBars)->mood <= 69) && ((*ptrDataStateBars)->hungry >= 40))
-    {
-        printf(YELLOW);
-    }
-    else
-    {
-        printf(RED);
-    }
+    colorBar((*ptrDataStateBars)->mood);
     printf("Animo: ");
     for (int i = 0; i < ((*ptrDataStateBars)->mood) / 4; i++)
     {
@@ -669,18 +664,7 @@ void showStateBars(struct dataStateBars **ptrDataStateBars)
     printf(" %i/100\n", (*ptrDataStateBars)->mood);
 
     // hambre
-    if ((*ptrDataStateBars)->hungry >= 70)
-    {
-        printf(GREEN);
-    }
-    else if (((*ptrDataStateBars)->hungry <= 69) && ((*ptrDataStateBars)->hungry >= 40))
-    {
-        printf(YELLOW);
-    }
-    else
-    {
-        printf(RED);
-    }
+    colorBar((*ptrDataStateBars)->hungry);
     printf("Hambre: ");
     for (int i = 0; i < ((*ptrDataStateBars)->hungry) / 4; i++)
     {
@@ -1044,7 +1028,7 @@ void gameExecute()
 int main()
 {
     SetConsoleCP(1252);
-    SetConsoleOutputCP(1252);
+    SetConsoleOutputCP(1252); // posible solucion para que se reconozca el ascii extendido
 
     system("cls");
     // time_t es un tipo de dato que permite guardar una "marca de tiempo"
