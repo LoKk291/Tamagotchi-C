@@ -382,7 +382,7 @@ struct node *deleteNode(struct node *root, char itemName[])
 int alimentation()
 {
     struct node *root = NULL;
-    int unsigned option;
+    char option;
 
     // TIENE QUE RECIBIR COMO PARAMETRO LA VARIABLE COINS DE LA ESTRUCTURA WALLETS Y OPERAR CON ELLA, POSTERIORMENTE
     // EN CADA FUNCION QUE SE OCUPE WALLETS SE DEBE GUARDAR LAS MONEDAS QUE QUEDARON
@@ -403,11 +403,11 @@ int alimentation()
         printf("3. COmer producto\n");
         printf("4. Salir\n");
         printf("Ingrese una opcion: ");
-        scanf("%d", &option);
+        option = getch();
 
         switch (option)
         {
-        case 1:
+        case '1':
             system("cls");
 
             printf("------- COMPRAR PRODUCTO -------\n");
@@ -417,13 +417,13 @@ int alimentation()
             printf("1. Chatarra\n");
             printf("2. Saludable\n");
             printf("Ingrese una opcion: ");
-            scanf("%d", &option);
+            option = getch();
 
             printf("\n");
 
             switch (option)
             {
-            case 1:
+            case '1':
                 printf("------- CHATARRA -------\n");
                 printf("Productos disponibles:\n");
                 printf("1. Pizza ($10)\n");
@@ -431,7 +431,7 @@ int alimentation()
                 printf("3. Pancho ($5)\n");
                 break;
 
-            case 2:
+            case '2':
                 printf("------- SALUDABLE -------\n");
                 printf("Productos disponibles:\n");
                 printf("1. Ensalada ($8)\n");
@@ -453,7 +453,7 @@ int alimentation()
 
             switch (option)
             {
-            case 1:
+            case '1':
                 switch (productName[0])
                 {
                 case '1':
@@ -480,7 +480,7 @@ int alimentation()
                 }
                 break;
 
-            case 2:
+            case '2':
                 switch (productName[0])
                 {
                 case '1':
@@ -531,7 +531,7 @@ int alimentation()
             wallet -= price * quantity;
             break;
 
-        case 2:
+        case '2':
             system("cls");
 
             printf("------- MOSTRAR INVENTARIO -------\n");
@@ -542,7 +542,7 @@ int alimentation()
             getchar();
             break;
 
-        case 3:
+        case '3':
             system("cls");
 
             printf("------- INVENTARIO -------\n");
@@ -573,7 +573,7 @@ int alimentation()
 
             break;
 
-        case 4:
+        case '4':
             printf("Saliendo del programa...\n");
             break;
         default:
@@ -586,7 +586,7 @@ int alimentation()
         getchar();
         getchar();
 
-    } while (option != 4);
+    } while (option != '4');
 
     return 0;
 }
