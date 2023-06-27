@@ -43,6 +43,17 @@ struct walletData
     int coins;
 };
 
+// nodo del arbol binario
+struct node
+{
+    char itemName[50];     // Nombre del artículo
+    int unsigned quantity; // Cantidad del artículo
+    int unsigned price;    // precio del artículo
+    char foodType[20];     // Tipo de comida
+    struct node *left;     // Puntero al subárbol izquierdo
+    struct node *right;    // Puntero al subárbol derecho
+};
+
 // chequea si es la primera vez que se abre el programa y pide las configuraciones inciales
 int firstTime(time_t timeNow)
 {
@@ -219,20 +230,9 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
     return 0;
 }*/
 
-// Estructura necesaria para la implementacion de arboles binarios
-struct node
-{
-    char itemName[50];     // Nombre del artículo
-    int unsigned quantity; // Cantidad del artículo
-    int unsigned price;    // precio del artículo
-    char foodType[20];     // Tipo de comida
-    struct node *left;     // Puntero al subárbol izquierdo
-    struct node *right;    // Puntero al subárbol derecho
-};
-
 // Funciones necesarias para la implementacion de arboles Binarios
 
-// Funcion para crear un nuevo nodo del árbol
+// crea el nuevo nodo del arbol
 struct node *createNode(char itemName[], int unsigned quantity, int unsigned price, char foodType[])
 {
     // asignar memoria para el nuevo nodo
@@ -1043,6 +1043,9 @@ void gameExecute()
 
 int main()
 {
+    SetConsoleCP(1252);
+    SetConsoleOutputCP(1252);
+
     system("cls");
     // time_t es un tipo de dato que permite guardar una "marca de tiempo"
     time_t timeNow = time(NULL);
