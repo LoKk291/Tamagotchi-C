@@ -661,29 +661,34 @@ void drawBars(int valueBar)
     // este for dibuja el excedente de la barra
     for (int i = 0; i <= rest; i++)
     {
-        printf("#");
+        // si rest es 100, se imprime una almohadilla de mas, por lo que se evita ese problema con el if
+        if(i != rest){
+            printf("#");
+        }
     }
-    printf(" %i/100\n", valueBar);
+    colorBar(valueBar); // se vuelve a llamar esta funcion para que se pueda ver la estadistica con el mismo color
+    printf(" %i", valueBar);
+    printf(GRAY"/100\n");
+
+    printf(RESET);
 }
 
 // muestra finalmente las barras
 void showStateBars(struct dataStateBars **ptrDataStateBars)
 {
     // salud
-    printf("Salud: ");
+    printf("Salud:    |");
     drawBars((*ptrDataStateBars)->health);
 
     // animo
-    printf("Animo: ");
+    printf("Animo:    |");
     drawBars((*ptrDataStateBars)->mood);
 
     // hambre: para que sea mas correcto, el hambre realmente se entiende como saciedad, es decir, mientras
     // mas sasciedad, menos hambre
 
-    printf("Saciedad: ");
+    printf("Saciedad: |");
     drawBars((*ptrDataStateBars)->hungry);
-
-    printf(RESET);
 }
 
 // arroja frases random contenidas en el archivo "phrases.txt"
