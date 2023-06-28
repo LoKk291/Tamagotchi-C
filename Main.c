@@ -622,7 +622,8 @@ int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAsse
 
 // determina el color de las barras dependiendo de su estado
 // se pasa solo la PROPIEDAD del puntero. Ej: la propiedad ptrDataStateBars->health es un entero
-void colorBar(int propety){
+void colorBar(int propety)
+{
     if (propety >= 70)
     {
         printf(GREEN);
@@ -637,13 +638,14 @@ void colorBar(int propety){
     }
 }
 
-//MODIFICAR PARA QUE SE VEA MAS ESTETICO
-// dibuja las barras completas, lo que quiere decir que dibuja la barra en si y tambien su parte restante, como parametro
-//recibe el valor de la barra que se quiere dibujar
-void drawBars(int valueBar){
+// MODIFICAR PARA QUE SE VEA MAS ESTETICO
+//  dibuja las barras completas, lo que quiere decir que dibuja la barra en si y tambien su parte restante, como parametro
+// recibe el valor de la barra que se quiere dibujar
+void drawBars(int valueBar)
+{
     int rest = 100;
 
-    /* Ya que no se pudo agregar caracteres assci extendidos, lo que se hace es rellenar las barras con el 
+    /* Ya que no se pudo agregar caracteres assci extendidos, lo que se hace es rellenar las barras con el
     caracter # en un determinado color dado por la funcion colorBar() y luego el resto de la barra se dibuja
     con el mismo caracter pero de color gris, asi el usuario entiende que la barra no esta llena*/
 
@@ -654,7 +656,7 @@ void drawBars(int valueBar){
         printf("#");
     }
 
-    rest = (rest - valueBar) / 4; //calculo del excedente
+    rest = (rest - valueBar) / 4; // calculo del excedente
     printf(GRAY);
     // este for dibuja el excedente de la barra
     for (int i = 0; i <= rest; i++)
@@ -676,8 +678,8 @@ void showStateBars(struct dataStateBars **ptrDataStateBars)
     drawBars((*ptrDataStateBars)->mood);
 
     // hambre: para que sea mas correcto, el hambre realmente se entiende como saciedad, es decir, mientras
-    //mas sasciedad, menos hambre
-    
+    // mas sasciedad, menos hambre
+
     printf("Saciedad: ");
     drawBars((*ptrDataStateBars)->hungry);
 
@@ -1014,7 +1016,6 @@ void deathScreen(struct AssetsData *ptrAssetsData)
 // explica como usar y cuidar a la mascota
 void tutorial()
 {
-
 }
 
 // ejecuta los juegos seleccionados
