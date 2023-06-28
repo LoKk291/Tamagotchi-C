@@ -199,47 +199,8 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
     return 0;
 }
 
-// la antigua funcion de alimentacion, se encuentra comentada, para así poder hacer uso de ciertas partes de su codigo, en la nueva funcion de alimentacion.
-//  incrementa ptrDataStateBars->hungry dependiendo de la comida empleada (si es comida chatarra decrementa la barra de salud)
-//  si la comida seleccionada es saludable incrementa un poco la salud
-/*int alimentation(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
-{
-    int optAlimentation;
-    do
-    {
-        printf("\n1. Comida balanceada (aumenta la salud 5)\n");
-        printf("2. Comida chatarra (decrementa la salud en 10)\n");
-        printf("Selecciona la comida que quieres darle a %s:", (*ptrAssetsData)->petName);
-        scanf("%i", &optAlimentation);
-    } while (optAlimentation != 1 && optAlimentation != 2);
 
-    if (optAlimentation == 1)
-    {
-        (*ptrDataStateBars)->hungry += 10;
-        (*ptrDataStateBars)->health += 5;
-    }
-    else
-    {
-        (*ptrDataStateBars)->hungry += 25;
-        (*ptrDataStateBars)->health -= 10;
-    }
-
-    // para asegurarse de que la barra no sobrepase los 100
-    if ((*ptrDataStateBars)->hungry > 100)
-    {
-        (*ptrDataStateBars)->hungry = 100;
-    }
-
-    // como los alimentos también incrementan la salud, acá también tengo que verificar que no exceda los 100
-    if ((*ptrDataStateBars)->health > 100)
-    {
-        (*ptrDataStateBars)->health = 100;
-    }
-    // MAS ADELANTE SE PUEDE AGREGAR LA FUNCIÓN SOBREPESO
-    return 0;
-}*/
-
-// Funciones necesarias para la implementacion de arboles Binarios
+// FUNCIONES NECESARIAS PARA LA IMPLEMENTACION DE ARBOLES BINARIOSS
 
 // crea el nuevo nodo del arbol
 struct node *createNode(char itemName[], int unsigned quantity, int unsigned price, char foodType[])
@@ -918,37 +879,7 @@ void healing(){
 
 }
 
-
-/*
-// incrementa ptrDataStateBars->health dependiendo de la medicina seleccionada
-int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
-{
-    int optHealing;
-    do
-    {
-        printf("\n1.Pastilla (aumenta la salud en 25)\n");
-        printf("2.Inyección (aumenta la salud en 50)\n");
-        printf("Selecciona la medicina que quieres darle a %s:", (*ptrAssetsData)->petName);
-        scanf("%i", &optHealing);
-    } while (optHealing != 1 && optHealing != 2);
-
-    if (optHealing == 1)
-    {
-        (*ptrDataStateBars)->health += 25;
-    }
-    else
-    {
-        (*ptrDataStateBars)->health += 50;
-    }
-
-    // para asegurarse de que la barra no sobrepase los 100
-    if ((*ptrDataStateBars)->health > 100)
-    {
-        (*ptrDataStateBars)->health = 100;
-    }
-    return 0;
-}
-*/
+//FIN DE LOS ARBOLES BINARIOS
 
 // determina el color de las barras dependiendo de su estado
 // se pasa solo la PROPIEDAD del puntero. Ej: la propiedad ptrDataStateBars->health es un entero
