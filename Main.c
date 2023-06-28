@@ -637,40 +637,49 @@ void colorBar(int propety){
     }
 }
 
-// muestra los estados de las barras (por el momento en numeros)
+//MODIFICAR PARA QUE SE VEA MAS ESTETICO
+// dibuja las barras completas, lo que quiere decir que dibuja la barra en si y tambien su parte restante, como parametro
+//recibe el valor de la barra que se quiere dibujar
+void drawBars(int valueBar){
+    int rest = 100;
+
+    /* Ya que no se pudo agregar caracteres assci extendidos, lo que se hace es rellenar las barras con el 
+    caracter # en un determinado color dado por la funcion colorBar() y luego el resto de la barra se dibuja
+    con el mismo caracter pero de color gris, asi el usuario entiende que la barra no esta llena*/
+
+    // este for dibuja la barra
+    colorBar(valueBar);
+    for (int i = 0; i < (valueBar / 4); i++)
+    {
+        printf("#");
+    }
+
+    rest = (rest - valueBar) / 4; //calculo del excedente
+    printf(GRAY);
+    // este for dibuja el excedente de la barra
+    for (int i = 0; i <= rest; i++)
+    {
+        printf("#");
+    }
+    printf(" %i/100\n", valueBar);
+}
+
+// muestra finalmente las barras
 void showStateBars(struct dataStateBars **ptrDataStateBars)
 {
-    // caracter de tabla ascii extendida
-    char icon = 35; // 35 = #
-
-    // estos for dibujan las barras
     // salud
-    colorBar((*ptrDataStateBars)->health);
-
     printf("Salud: ");
-    for (int i = 0; i < ((*ptrDataStateBars)->health) / 4; i++)
-    {
-        printf("%c", icon);
-    }
-    printf(" %i/100\n", (*ptrDataStateBars)->health);
+    drawBars((*ptrDataStateBars)->health);
 
     // animo
-    colorBar((*ptrDataStateBars)->mood);
     printf("Animo: ");
-    for (int i = 0; i < ((*ptrDataStateBars)->mood) / 4; i++)
-    {
-        printf("%c", icon);
-    }
-    printf(" %i/100\n", (*ptrDataStateBars)->mood);
+    drawBars((*ptrDataStateBars)->mood);
 
-    // hambre
-    colorBar((*ptrDataStateBars)->hungry);
-    printf("Hambre: ");
-    for (int i = 0; i < ((*ptrDataStateBars)->hungry) / 4; i++)
-    {
-        printf("%c", icon);
-    }
-    printf(" %i/100\n", (*ptrDataStateBars)->hungry);
+    // hambre: para que sea mas correcto, el hambre realmente se entiende como saciedad, es decir, mientras
+    //mas sasciedad, menos hambre
+    
+    printf("Saciedad: ");
+    drawBars((*ptrDataStateBars)->hungry);
 
     printf(RESET);
 }
