@@ -667,10 +667,10 @@ struct product *searchNodePr(struct product *root, char productName[]){
 }
 
 //Funcion para mostrar el inventario en orden
-void ShowInventoryPr(struct product *root) {
+void showInventoryPr(struct product *root) {
     if (root != NULL) {
         //recorrer el subárbol izquierdo
-        ShowInventoryPr(root->left);
+        showInventoryPr(root->left);
 
         //Mostrar los detalles del artículo en el nodo actual
         printf("Nombre: %s, Cantidad: %u, Precio: %u\n",
@@ -699,7 +699,7 @@ struct product *deleteNodePr(struct product *root, char productName[]) {
     int comparison = strcmp (productName, root->productName);
 
     if(comparison < 0){
-        root->left = deleteNodepr(root->left, productName);
+        root->left = deleteNodePr(root->left, productName);
 
     }else if (comparison > 0 ){
         root->right = deleteNodePr(root->right, productName);
@@ -875,7 +875,7 @@ void healing(){
             printf("------- INVENTARIO -------\n");
             showInventoryPr(root);
             printf("--------------------------\n");
-            print("Presione enter para continuar...");
+            printf("Presione enter para continuar...");
             getchar();
             fflush(stdin);
 
