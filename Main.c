@@ -9,7 +9,7 @@
 #define N 15
 #define M 100
 
-// contiene la información PRINCIPAL en tiempo de ejecución
+// contiene la informacion PRINCIPAL en tiempo de ejecucion
 struct AssetsData
 {
     // tanto el nombre de la mascota como de usuario seran de maximo 12 caracteres
@@ -18,7 +18,7 @@ struct AssetsData
     int gameAvatar;
     int petInmortality;
     int gameDifficult;
-    int gameTryHard; // si esta opción es verdadera, una vez que la mascota muera no se podrá volver a jugar
+    int gameTryHard; // si esta opcion es verdadera, una vez que la mascota muera no se podra volver a jugar
 };
 
 // almacena los datos de las barras de estado
@@ -29,7 +29,7 @@ struct dataStateBars
     int hungry;
 };
 
-// almacena las horas/minutos/segundos que transcurrieron desde la ultima sesión de juego
+// almacena las horas/minutos/segundos que transcurrieron desde la ultima sesion de juego
 struct elpasedTime
 {
     int seconds;
@@ -37,7 +37,7 @@ struct elpasedTime
     int hours;
 };
 
-// contiene las monedas del usuario, mas adelante agregaré gemas
+// contiene las monedas del usuario, mas adelante agregare gemas
 struct walletData
 {
     int coins;
@@ -46,12 +46,12 @@ struct walletData
 // nodo del arbol binario
 struct node
 {
-    char itemName[50];     // Nombre del artículo
-    int unsigned quantity; // Cantidad del artículo
-    int unsigned price;    // precio del artículo
+    char itemName[50];     // Nombre del articulo
+    int unsigned quantity; // Cantidad del articulo
+    int unsigned price;    // precio del articulo
     char foodType[20];     // Tipo de comida
-    struct node *left;     // Puntero al subárbol izquierdo
-    struct node *right;    // Puntero al subárbol derecho
+    struct node *left;     // Puntero al subarbol izquierdo
+    struct node *right;    // Puntero al subarbol derecho
 };
 
 // Estructura para representar los nodos del Arbol binario
@@ -139,7 +139,7 @@ int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
     return 0;
 }
 
-// esta funcion abrira el archivo "lastOpen" y dependiendo del modo, escribirá en el u obtendrá su contenido
+// esta funcion abrira el archivo "lastOpen" y dependiendo del modo, escribira en el u obtendra su contenido
 // mode = 1 (guarda) mode = 0 (lee)
 int lastOpenGetterAndSaver(int mode, time_t timeNow)
 {
@@ -219,24 +219,24 @@ struct node *createNode(char itemName[], int unsigned quantity, int unsigned pri
     return node;
 }
 
-// Funcion para insertar un nodo en el árbol
+// Funcion para insertar un nodo en el arbol
 struct node *insertNode(struct node *root, char itemName[], int quantity, int price, char foodType[])
 {
-    // si el árbol está vacío, crear un nuevo nodo y establecerlo como raíz
+    // si el arbol esta vacio, crear un nuevo nodo y establecerlo como raiz
     if (root == NULL)
     {
         return createNode(itemName, quantity, price, foodType);
     }
 
-    // Comparar el nombre del artículo con el nombre en el nodo actual
+    // Comparar el nombre del articulo con el nombre en el nodo actual
     if (strcmp(itemName, root->itemName) < 0)
     {
-        // Si el nombre es menor, insertar el nodo en el subárbol izquierdo
+        // Si el nombre es menor, insertar el nodo en el subarbol izquierdo
         root->left = insertNode(root->left, itemName, quantity, price, foodType);
     }
     else if (strcmp(itemName, root->itemName) > 0)
     {
-        // Si el nombre es mayor, insertar el nodo en el subárbol derecho
+        // Si el nombre es mayor, insertar el nodo en el subarbol derecho
         root->right = insertNode(root->right, itemName, quantity, price, foodType);
     }
     else
@@ -245,28 +245,28 @@ struct node *insertNode(struct node *root, char itemName[], int quantity, int pr
         root->quantity += quantity;
     }
 
-    // devolver el nodo raíz modificado
+    // devolver el nodo raiz modificado
     return root;
 }
 
-// Funcion para buscar un nodo en el árbol
+// Funcion para buscar un nodo en el arbol
 struct node *searchNode(struct node *root, char itemName[])
 {
-    // Si el árbol está vacio o el nombre del artículo coincide, devolver el nodo actual
+    // Si el arbol esta vacio o el nombre del articulo coincide, devolver el nodo actual
     if (root == NULL || strcmp(root->itemName, itemName) == 0)
     {
         return root;
     }
 
-    // comparar el nombre del artículo con el nombre en el nodo actual
+    // comparar el nombre del articulo con el nombre en el nodo actual
     if (strcmp(itemName, root->itemName) < 0)
     {
-        // Si el nombre es menor, buscar en el subárbol izquierdo
+        // Si el nombre es menor, buscar en el subarbol izquierdo
         return searchNode(root->left, itemName);
     }
     else
     {
-        // Si el nombre es mayor, buscar en el subárbol derecho
+        // Si el nombre es mayor, buscar en el subarbol derecho
         return searchNode(root->right, itemName);
     }
 }
@@ -276,19 +276,19 @@ void showInventory(struct node *root)
 {
     if (root != NULL)
     {
-        // Recorrer el subárbol izquierdo
+        // Recorrer el subarbol izquierdo
         showInventory(root->left);
 
-        // Mostrar los detalles del artículo en el nodo actual
+        // Mostrar los detalles del articulo en el nodo actual
         printf("Nombre: %s, Cantidad: %u, Precio: %u, Tipo: %s\n",
                root->itemName, root->quantity, root->price, root->foodType);
 
-        // Recorrer el subárbol derecho
+        // Recorrer el subarbol derecho
         showInventory(root->right);
     }
 }
 
-// Funcion auxiliar para encontrar el nodo con el valor mínimo
+// Funcion auxiliar para encontrar el nodo con el valor minimo
 struct node *findMinimum(struct node *root)
 {
     struct node *current = root;
@@ -299,7 +299,7 @@ struct node *findMinimum(struct node *root)
     return current;
 }
 
-// Funcion para eliminar un nodo del árbol
+// Funcion para eliminar un nodo del arbol
 struct node *deleteNode(struct node *root, char itemName[])
 {
     if (root == NULL)
@@ -348,7 +348,7 @@ struct node *deleteNode(struct node *root, char itemName[])
     return root;
 }
 
-// Implementacion de Árboles Binarios mediante un sistema de gestion de alimentacion
+// Implementacion de arboles Binarios mediante un sistema de gestion de alimentacion
 int alimentation()
 {
     struct node *root = NULL;
@@ -565,7 +565,7 @@ int alimentation()
 // IMPLEMENTACION DE ARBOLES BINARIOS A INVENTARIO Y GESTION DE MEDICINAS
 // por implementar: incremento o decremento de salud. [Encargado: David]
 
-// Funcion para crear un nuevo nodo del árbol
+// Funcion para crear un nuevo nodo del arbol
 struct product *createNodePr(char productName[], unsigned int quantity, unsigned int price)
 {
     // Asignar memoria al nuevo nodo
@@ -584,10 +584,10 @@ struct product *createNodePr(char productName[], unsigned int quantity, unsigned
     return node;
 }
 
-// Funcion para insertar un nodo en el árbol
+// Funcion para insertar un nodo en el arbol
 struct product *insertNodePr(struct product *root, char productName[], unsigned int quantity, unsigned int price)
 {
-    // Si el árbol está vacío, crear un nuevo nodo y establecerlo como raíz
+    // Si el arbol esta vacio, crear un nuevo nodo y establecerlo como raiz
     if (root == NULL)
     {
         return createNodePr(productName, quantity, price);
@@ -597,12 +597,12 @@ struct product *insertNodePr(struct product *root, char productName[], unsigned 
     int comparison = strcmp(productName, root->productName);
     if (comparison < 0)
     {
-        // Si el nombre es menor, insertar el nodo en el subárbol izquierdo
+        // Si el nombre es menor, insertar el nodo en el subarbol izquierdo
         root->left = insertNodePr(root->left, productName, quantity, price);
     }
     else if (comparison > 0)
     {
-        // Si el nombre es mayor, insertar el nodo en el subárbol derecho
+        // Si el nombre es mayor, insertar el nodo en el subarbol derecho
         root->right = insertNodePr(root->right, productName, quantity, price);
     }
     else
@@ -611,14 +611,14 @@ struct product *insertNodePr(struct product *root, char productName[], unsigned 
         root->quantity += quantity;
     }
 
-    // Devolver el nodo raíz modificado
+    // Devolver el nodo raiz modificado
     return root;
 }
 
-// Funcion para buscar un nodo en el árbol
+// Funcion para buscar un nodo en el arbol
 struct product *searchNodePr(struct product *root, char productName[])
 {
-    // Si el arbol está vacío o el nombre del producto coincide, devolver el nodo actual
+    // Si el arbol esta vacio o el nombre del producto coincide, devolver el nodo actual
     if (root == NULL || strcmp(root->productName, productName) == 0)
     {
         return root;
@@ -628,12 +628,12 @@ struct product *searchNodePr(struct product *root, char productName[])
     int comparison = strcmp(productName, root->productName);
     if (comparison < 0)
     {
-        // Si el nombre es menor, buscar en el subárbol izquierdo
+        // Si el nombre es menor, buscar en el subarbol izquierdo
         return searchNodePr(root->left, productName);
     }
     else
     {
-        // Si el nombre es mayor buscar en el subárbol derecho
+        // Si el nombre es mayor buscar en el subarbol derecho
         return searchNodePr(root->right, productName);
     }
 }
@@ -643,19 +643,19 @@ void showInventoryPr(struct product *root)
 {
     if (root != NULL)
     {
-        // recorrer el subárbol izquierdo
+        // recorrer el subarbol izquierdo
         showInventoryPr(root->left);
 
-        // Mostrar los detalles del artículo en el nodo actual
+        // Mostrar los detalles del articulo en el nodo actual
         printf("Nombre: %s, Cantidad: %u, Precio: %u\n",
                root->productName, root->quantity, root->price);
 
-        // Recorrer el subárbol derecho
+        // Recorrer el subarbol derecho
         showInventoryPr(root->right);
     }
 }
 
-// Función auxiliar para encontrar el nodo con el valor mínimo
+// Funcion auxiliar para encontrar el nodo con el valor minimo
 struct product *findMinimumPr(struct product *root)
 {
     struct product *current = root;
@@ -666,7 +666,7 @@ struct product *findMinimumPr(struct product *root)
     return current;
 }
 
-// Funcion para eliminar un nodo del árbol
+// Funcion para eliminar un nodo del arbol
 struct product *deleteNodePr(struct product *root, char productName[])
 {
     if (root == NULL)
@@ -782,7 +782,7 @@ void healing()
         printf("2.Mostrar inventario\n");
         printf("3. COnsumir medicament\n");
         printf("4. Salir\n");
-        printf("Ingrese una opción\n");
+        printf("Ingrese una opcion\n");
         option = getchar();
         fflush(stdin);
 
@@ -798,7 +798,7 @@ void healing()
             printf("1. Curitas (6 monedas)\n");
             printf("2 Pastillas (10 monedas)\n");
             printf("3. Inyeccion (50 monedas\n");
-            printf("Ingrese una opción: ");
+            printf("Ingrese una opcion: ");
             subOption = getchar();
             fflush(stdin);
 
@@ -819,7 +819,7 @@ void healing()
                 {
                     myWallet.coins -= quantity * 6;
                     root = insertNodePr(root, "Curitas", quantity, 6);
-                    printf("Compra realizada con éxito.\n");
+                    printf("Compra realizada con exito.\n");
                     Sleep(1000);
                 }
 
@@ -839,7 +839,7 @@ void healing()
                 {
                     myWallet.coins -= quantity * 10;
                     root = insertNodePr(root, "Pastillas", quantity, 10);
-                    printf("Compra realizada con éxito.\n");
+                    printf("Compra realizada con exito.\n");
                     Sleep(1000);
                 }
 
@@ -859,13 +859,13 @@ void healing()
                 {
                     myWallet.coins -= quantity * 50;
                     root = insertNodePr(root, "Pastillas", quantity, 50);
-                    printf("Compra realizada con éxito.\n");
+                    printf("Compra realizada con exito.\n");
                     Sleep(1000);
                 }
 
                 break;
             default:
-                printf("Opción inválida.\n");
+                printf("Opcion invalida.\n");
                 Sleep(1000);
                 break;
             }
@@ -899,11 +899,11 @@ void healing()
 
             if (consumeMedicine(root, productName, quantity))
             {
-                printf("Medicamento consumido con éxito.\n");
+                printf("Medicamento consumido con exito.\n");
             }
             else
             {
-                printf("No se encontró el medicamento en el inventario o la cantidad ingresada es inválida.\n");
+                printf("No se encontro el medicamento en el inventario o la cantidad ingresada es invalida.\n");
             }
 
             Sleep(1000);
@@ -913,7 +913,7 @@ void healing()
             printf("Saliendo de la tienda de medicamentos...\n");
             break;
         default:
-            printf("Opción invalida.\n");
+            printf("Opcion invalida.\n");
             Sleep(1000);
             break;
         }
@@ -1243,7 +1243,7 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
 {
     if (mode)
     {
-        // guarda la cantidad de monedas del usuario al momento de cerrar la sesión
+        // guarda la cantidad de monedas del usuario al momento de cerrar la sesion
         FILE *fileWallet = fopen("../files/wallet.txt", "w");
         fprintf(fileWallet, "%i", (*ptrWalletData)->coins);
         fclose(fileWallet);
@@ -1255,7 +1255,7 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
         fscanf(fileWallet, "%i", &(*ptrWalletData)->coins);
         fclose(fileWallet);
 
-        // printf("\nLa cantidad de monedas de la última sesión es: %i\n", (*ptrWalletData)->coins);
+        // printf("\nLa cantidad de monedas de la ultima sesion es: %i\n", (*ptrWalletData)->coins);
     }
 }
 
@@ -1432,7 +1432,7 @@ int main()
         printf(RESET);
 
         fflush(stdin);
-        printf("\nPresione la tecla de la opción que desea realizar..");
+        printf("\nPresione la tecla de la opcion que desea realizar..");
         keyOptMenu = getch();
         system("cls");
 
@@ -1460,7 +1460,7 @@ int main()
             case 'S':
                 break;
             default:
-                printf(YELLOW "\nEscoje una opción válida!!\n");
+                printf(YELLOW "\nEscoje una opcion valida!!\n");
                 printf(RESET);
             }
         }
