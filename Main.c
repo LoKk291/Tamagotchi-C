@@ -1005,6 +1005,7 @@ void deathScreen(struct AssetsData *ptrAssetsData)
 // explica como usar y cuidar a la mascota
 void tutorial()
 {
+
 }
 
 // ejecuta los juegos seleccionados
@@ -1075,7 +1076,7 @@ int main()
     eastergg de sonido "thoy dont know me son"
     */
 
-    splashScreen();
+    // splashScreen();
 
     printf(GREEN "Hola de nuevo %s!\n", ptrAssetsData->userName);
     printf(RESET);
