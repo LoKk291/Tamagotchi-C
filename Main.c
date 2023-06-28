@@ -1303,6 +1303,10 @@ void gameExecute()
     }*/
 }
 
+void sickPet(){
+    
+}
+
 int main()
 {
     SetConsoleCP(1252);
