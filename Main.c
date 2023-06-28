@@ -356,7 +356,8 @@ int alimentation()
 
     // TIENE QUE RECIBIR COMO PARAMETRO LA VARIABLE COINS DE LA ESTRUCTURA WALLETS Y OPERAR CON ELLA, POSTERIORMENTE
     // EN CADA FUNCION QUE SE OCUPE WALLETS SE DEBE GUARDAR LAS MONEDAS QUE QUEDARON
-    int unsigned wallet = 250;
+    struct walletData myWallet;
+    myWallet.coins = 100;
     char productName[50];
     int unsigned quantity;
     int unsigned price;
@@ -367,7 +368,7 @@ int alimentation()
         system("cls");
 
         printf("------- MENU -------\n");
-        printf("Billetera: %u\n", wallet);
+        printf("Billetera: %u\n", myWallet.coins);
         printf("1. Comprar producto\n");
         printf("2. Mostrar inventario\n");
         printf("3. COmer producto\n");
@@ -381,7 +382,7 @@ int alimentation()
             system("cls");
 
             printf("------- COMPRAR PRODUCTO -------\n");
-            printf("Billetera: %u.\n", wallet);
+            printf("Billetera: %u.\n", myWallet.coins);
 
             printf("Seleccione el tipo de comida:\n");
             printf("1. Chatarra\n");
@@ -483,14 +484,14 @@ int alimentation()
                 break;
             }
 
-            if (price * quantity > wallet)
+            if (price * quantity > myWallet.coins)
             {
                 printf("No tienes suficiente dinero para comprar este producto.\n");
                 break;
             }
 
             // Consideracion: No se puede comprar mas productos de los que dispongas en cantidad de efectivo
-            int unsigned availableQuantity = wallet / price;
+            int unsigned availableQuantity = myWallet.coins / price;
             if (quantity > availableQuantity)
             {
                 printf("No puedes comprar mas de %u productos con la cantidad de efectivo disponible.\n", availableQuantity);
@@ -498,7 +499,7 @@ int alimentation()
             }
 
             root = insertNode(root, productName, quantity, price, foodType);
-            wallet -= price * quantity;
+            myWallet.coins -= price * quantity;
             break;
 
         case '2':
