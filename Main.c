@@ -54,7 +54,7 @@ struct node
     struct node *right;    // Puntero al subárbol derecho
 };
 
-//Estructura para representar los nodos del Ã¡rbol binario
+//Estructura para representar los nodos del Arbol binario
 struct product{
     char productName[50];   //Nombre del producto
     unsigned int quantity;  //Cantidad de unidades
@@ -746,7 +746,7 @@ void healing(){
         fflush(stdin);
         system("cls");
 
-        printf("------- MENÚ -------\n");
+        printf("------- MENU -------\n");
         printf("Billetera: %d\n", myWallet.coins);
         printf("1.Comprar medicamento\n");
         printf("2.Mostrar inventario\n");
@@ -808,7 +808,7 @@ void healing(){
 
                 break;
             case '3':
-                 printf("------- INYECCIÓN -------\n");
+                 printf("------- INYECCION -------\n");
                 printf("Ingrese la cantidad de inyecciones a comprar: ");
                 scanf("%u", &quantity);
                 fflush(stdin);
