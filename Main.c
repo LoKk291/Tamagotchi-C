@@ -54,15 +54,6 @@ struct node
     struct node *right;    // Puntero al subárbol derecho
 };
 
-//Estructura para representar los nodos del árbol binario
-struct product{
-    char productName[50];   //Nombre del producto
-    unsigned int quantity;  //Cantidad de unidades
-    unsigned int price;     //Precio del producto(en monedas)
-    struct product *left;   //Puntero al subárbol izquierdo
-    struct product *right;  //Puntero al subárbol derecho
-};
-
 // chequea si es la primera vez que se abre el programa y pide las configuraciones inciales
 int firstTime(time_t timeNow)
 {
@@ -388,7 +379,7 @@ struct node *deleteNode(struct node *root, char itemName[])
 }
 
 // Implementacion de Árboles Binarios mediante un sistema de gestion de alimentacion
-void alimentation()
+int alimentation()
 {
     struct node *root = NULL;
     char option;
@@ -597,330 +588,11 @@ void alimentation()
 
     } while (option != '4');
 
-
-}
-
-
-//IMPLEMENTACION DE ARBOLES BINARIOS A INVENTARIO Y GESTION DE MEDICINAS
-//por implementar: incremento o decremento de salud. [Encargado: David]
-
-//Funcion para crear un nuevo nodo del árbol
-struct product *createNodePr(char productName[], unsigned int quantity, unsigned int price){
-    //Asignar memoria al nuevo nodo
-    struct product *node =(struct product*)malloc(sizeof(struct product));
-
-    //copiar los valores al nodo
-    strcpy(node->productName, productName);
-    node->quantity = quantity;
-    node->price = price;
-
-    //Inicialzar los punteros izquierdo y derecho como NULL
-    node->left = NULL;
-    node->right = NULL;
-
-    //Devolver el nodo creado
-    return node;
-
-}
-
-//Funcion para insertar un nodo en el árbol
-struct product *insertNodePr(struct product *root, char productName[], unsigned int quantity, unsigned int price) {
-    // Si el árbol está vacío, crear un nuevo nodo y establecerlo como raíz
-    if(root ==NULL){
-        return createNodePr( productName, quantity, price);
-    }
-
-    //comparar el nombre del product con el nombre en el nodo actual
-    int comparison = strcmp(productName, root->productName);
-    if (comparison < 0){
-        //Si el nombre es menor, insertar el nodo en el subárbol izquierdo
-        root->left = insertNodePr(root->left, productName, quantity, price);
-    } else if (comparison >0){
-        //Si el nombre es mayor, insertar el nodo en el subárbol derecho
-        root->right = insertNodePr(root->right, productName, quantity, price);
-    } else{
-        //Si el nombre es igual, incrementar la cantidad en el nodo actual
-        root->quantity += quantity;
-    }
-
-    //Devolver el nodo raíz modificado
-    return root;
-}
-
-
-//Funcion para buscar un nodo en el árbol
-struct product *searchNodePr(struct product *root, char productName[]){
-    //Si el arbol está vacío o el nombre del producto coincide, devolver el nodo actual
-    if (root == NULL || strcmp(root->productName, productName) == 0){
-        return root;
-    }
-
-    //Comparar el nombre del producto con el nombre en el nodo actual
-    int comparison = strcmp(productName, root->productName);
-    if (comparison < 0){
-        //Si el nombre es menor, buscar en el subárbol izquierdo
-        return searchNodePr (root->left, productName);
-    } else {
-        //Si el nombre es mayor buscar en el subárbol derecho
-        return searchNodePr (root->right, productName);
-    }
-
-}
-
-//Funcion para mostrar el inventario en orden
-void ShowInventoryPr(struct product *root) {
-    if (root != NULL) {
-        //recorrer el subárbol izquierdo
-        ShowInventoryPr(root->left);
-
-        //Mostrar los detalles del artículo en el nodo actual
-        printf("Nombre: %s, Cantidad: %u, Precio: %u\n",
-                root->productName,root->quantity, root->price);
-
-        //Recorrer el subárbol derecho
-        showInventoryPr(root->right);
-    }
-}
-
-//Función auxiliar para encontrar el nodo con el valor mínimo
-struct product *findMinimumPr(struct product *root){
-    struct product *current = root;
-    while (current && current ->left !=NULL){
-        current = current->left;
-    }
-    return current;
-}
-
-//Funcion para eliminar un nodo del árbol
-struct product *deleteNodePr(struct product *root, char productName[]) {
-    if(root == NULL) {
-        return root;
-    }
-
-    int comparison = strcmp (productName, root->productName);
-
-    if(comparison < 0){
-        root->left = deleteNodepr(root->left, productName);
-
-    }else if (comparison > 0 ){
-        root->right = deleteNodePr(root->right, productName);
-
-    } else {
-        
-        if(root->quantity > 1){
-            root->quantity--;
-
-        } else {
-
-            if (root->left == NULL){
-                struct product *temp = root->right;
-                free(root);
-                return(temp); 
-
-            } else if (root->right == NULL) {
-                struct product *temp = root->left;
-                free(root);
-                return(temp);
-
-            }
-
-            struct product *temp = findMinimumPr(root->right);
-            strcpy(root->productName, temp->productName);
-            root->quantity = temp->quantity;
-            root->price = temp->price;
-            root->right = deleteNodePr(root->right, temp->productName);
-
-        }
-
-    }
-    return root;
-}
-
-//Funcion para consumir medicamentos del inventario
-int consumeMedicine(struct product *root, const char *productName, unsigned int quantity ) {
-    if(root == NULL){
-        return 0;
-    }
-
-    struct product *current = root;
-    while(current !=NULL){
-        int cmp= strcmp (productName, current->productName);
-
-        if(cmp == 0){
-            if(quantity <= current->quantity){
-                current->quantity -=quantity;
-
-                if(current->quantity == 0){
-                    root = deleteNodePr(root, current->productName);
-                }
-
-                return 1;
-
-            }else{
-                return 0;
-            }
-        
-        } else if (cmp < 0){
-            current = current ->left;
-        } else {
-            current = current -> right;
-        }
-
-    }
-
-}
-
-//Funcion principal de inventario y gestion de medicamentos
-void healing(){
-    struct product *root = NULL;
-    //monedas de prueba hasta que david y yo implementemos el enlace de la variable wallet al archivo
-    struct walletData myWallet;
-    myWallet.coins = 100;
-    char option;
-    char subOption;
-    char productName[50];
-    unsigned int quantity;
-
-    do{
-        fflush(stdin);
-        system("cls");
-
-        printf("------- MENÚ -------\n");
-        printf("Billetera: %d\n", myWallet.coins);
-        printf("1.Comprar medicamento\n");
-        printf("2.Mostrar inventario\n");
-        printf("3. COnsumir medicament\n");
-        printf("4. Salir\n");
-        printf("Ingrese una opción\n");
-        option = getchar();
-        fflush(stdin);
-
-        switch (option) {
-        case '1':
-            system ("cls");
-
-            printf("------- TIENDA DE MEDICAMENTOS -------\n");
-            printf("Billetera: %d. \n", myWallet.coins);
-
-            printf("Seleccione el tipo de medicamentos:\n");
-            printf("1. Curitas (6 monedas)\n");
-            printf("2 Pastillas (10 monedas)\n");
-            printf("3. Inyeccion (50 monedas\n");
-            printf("Ingrese una opción: ");
-            subOption = getchar();
-            fflush(stdin);
-
-            switch (subOption) {
-            case '1':
-                printf("------- CURITAS -------\n");
-                printf("Ingrese la cantidad de curitas a comprar: ");
-                scanf("%u", &quantity);
-                fflush(stdin);
-
-                if(quantity *6 > myWallet.coins){
-                    printf("No tienes suficientes monedas.\n");
-                    Sleep(1000);
-                } else {
-                    myWallet.coins -= quantity *6;
-                    root = insertNodePr(root,"Curitas",quantity,6);
-                    printf("Compra realizada con éxito.\n");
-                    Sleep(1000);
-                }
-
-
-                break;
-            case '2':
-                printf("------- PASTILLAS -------\n");
-                printf("Ingrese la cantidad de pastillas a comprar: ");
-                scanf("%u", &quantity);
-                fflush(stdin);
-
-                if(quantity *10 > myWallet.coins){
-                    printf("No tienes suficientes monedas.\n");
-                    Sleep(1000);
-                } else {
-                    myWallet.coins -= quantity *10;
-                    root = insertNodePr(root,"Pastillas",quantity,10);
-                    printf("Compra realizada con éxito.\n");
-                    Sleep(1000);
-                }
-
-                break;
-            case '3':
-                 printf("------- INYECCIÓN -------\n");
-                printf("Ingrese la cantidad de inyecciones a comprar: ");
-                scanf("%u", &quantity);
-                fflush(stdin);
-
-                if(quantity *50 > myWallet.coins){
-                    printf("No tienes suficientes monedas.\n");
-                    Sleep(1000);
-                } else {
-                    myWallet.coins -= quantity *50;
-                    root = insertNodePr(root,"Pastillas",quantity,50);
-                    printf("Compra realizada con éxito.\n");
-                    Sleep(1000);
-                }
-
-                break;
-            default:
-                printf("Opción inválida.\n");
-                Sleep(1000);
-                break;
-            }
-
-            break;
-        case '2':
-            system("cls");
-
-            printf("------- INVENTARIO -------\n");
-            showInventoryPr(root);
-            printf("--------------------------\n");
-            print("Presione enter para continuar...");
-            getchar();
-            fflush(stdin);
-
-            break;
-        case '3':
-            system("cls");
-
-            printf("------- INVENTARIO -------\n");
-            showInventoryPr(root);
-            printf("--------------------------\n");
-
-            printf("------- CONSUMIR MEDICAMENTO -------\n");
-            printf("Ingrese el nombre del medicamento: \n");
-            fgets(productName, sizeof(productName), stdin);
-            productName[strcspn(productName, "\n")] = '\0';
-
-            printf("Ingrese la cantidad a consumir: ");
-            scanf("%u", &quantity);
-
-            if (consumeMedicine(root, productName, quantity)) {
-                printf("Medicamento consumido con éxito.\n");
-            } else {
-                printf("No se encontró el medicamento en el inventario o la cantidad ingresada es inválida.\n");
-            }
-
-            Sleep(1000);
-
-        break;
-        case '4':
-            printf("Saliendo de la tienda de medicamentos...\n");
-            break;
-        default:
-            printf("Opción invalida.\n");
-            Sleep(1000);
-            break;
-        }
-
-    }while (option != '4');
-
-
+    return 0;
 }
 
 // incrementa ptrDataStateBars->health dependiendo de la medicina seleccionada
-/*int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
+int healing(struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
 {
     int optHealing;
     do
@@ -946,7 +618,7 @@ void healing(){
         (*ptrDataStateBars)->health = 100;
     }
     return 0;
-}*/
+}
 
 // determina el color de las barras dependiendo de su estado
 // se pasa solo la PROPIEDAD del puntero. Ej: la propiedad ptrDataStateBars->health es un entero
@@ -1451,7 +1123,7 @@ int main()
                 alimentation();
                 break;
             case '2':
-               //healing(&ptrDataStateBars, &ptrAssetsData);
+                healing(&ptrDataStateBars, &ptrAssetsData);
                 break;
             case '3':
                 gameExecute();
