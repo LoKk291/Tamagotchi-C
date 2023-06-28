@@ -1288,18 +1288,18 @@ void tutorial()
 // NO FUNCIONA
 void gameExecute()
 {
-    char optGame;
+    /*char optGame;
 
     do
     {
-        printf("Ingerese el juego que desea jugar: \n");
+        printf("ingrese el juego que desea jugar: \n");
         optGame = getch();
     } while (optGame != 1 && optGame != 2);
 
     if (optGame == '1')
     {
         system("../games/output/triviaMind.exe");
-    }
+    }*/
 }
 
 int main()
