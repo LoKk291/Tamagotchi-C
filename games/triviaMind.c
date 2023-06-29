@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <windows.h>
+#include "../libraries/colors.h"
 
 /*
 MAX_LINE_LENGTH:represnta la longitud máxima de una linea en el archivo 
@@ -51,17 +53,20 @@ int main(void)
 
     if (archive == NULL)
     {
-        printf("Error, no se pudo abrir el archivo seleccionado...\n");
+        printf(RED"Error, no se pudo abrir el archivo seleccionado...\n");
+        system("pause");
         return 1;
     }
-
+    //printf(GREEN"\nSe abre el archivo\n"); // <--- PUNTOS DE CONTROL
+ 
     // generacion de estructuras y variables necesarias para la implementacion del conteo de puntos y preguntas
     struct question question[AMOUNT];
     int totalquestions = 0;
     char line[MAX_LINE_LENGTH];
 
+    printf(GREEN"\nLLEGA\n"); // <--- PUNTOS DE CONTROL
     // Leo las preguntas y respuestas del archivo y las almaceno en el arreglo 'question'
-   
+    //ACA ES DONDE NO CRASHEA EL JUEGO
     while (fgets(line, sizeof(line), archive))
     {
         separateQuestionsAnswers(line, &question[totalquestions]);
@@ -69,12 +74,14 @@ int main(void)
     }
 
     fclose(archive);
+    printf(GREEN"\nLLEGA\n"); // <--- PUNTOS DE CONTROL
 
     //permutar las preguntas aleatoriamente 
     /*utilizo el algoritmo de Fisher-Yates:Comienzo en la ultima posicion del arreglo y en cada iteracion
     intercambio la pregunta actual con una pregunta aleatoria anterior a ella.*/
     for (int i = totalquestions-1; i>0 ; i--)
     {
+        //printf(GREEN"\nLLEGA\n"); // <--- PUNTOS DE CONTROL
         int j= generateRandomNumber(0,i);
         struct question temp= question[i];
         question[i]=question[j];
