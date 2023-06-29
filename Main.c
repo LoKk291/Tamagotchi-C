@@ -38,6 +38,7 @@ struct elpasedTime
 };
 
 // contiene las monedas del usuario, mas adelante agregare gemas
+// utilizo una estructura porque en el futuro se agregar las gemas ya mencionadas
 struct walletData
 {
     int coins;
@@ -1345,15 +1346,41 @@ void gameExecute()
     }*/
 }
 
-void sickPet()
+/* dependiendo del numero generado, la mascota se enferma o no, si se enferma, se guarda uno en el archivo sick
+ademas la funcion se encarga de leer el estado desde el archivo sickPet (si ya estaba enferma o no) y
+guardar el nuevo valor en caso de que se enferme cuando se ejecute la enfermedad o que se cure con una vacuna
+como el valor no es importante en todo momento de la ejecucion, no se crea una estructura para empaquetar el dato
+si no que solo se crea un puntero en el main.
+mode 0 = lee mode 1 = guarda*/ 
+void sickPet(int mode, int *sickPetStatus)
 {
+    srand(time(NULL));
+    int randNum = rand() % (99999);
+
+    // si el numero generado, multiplicado por 2 y restandole 7, es divisible por 3, entonces la mascota se enferma
+    randNum = (randNum * 2) - 7;
+    // printf("\nEl numero random es: %i\n", randNum);
+    randNum = 123;
+
+    // si el modo es 0 lee, si el modo es 1 guarda
+    if(!mode){ //mode 0
+        if(randNum % 3 == 0){
+        // printf("\nLa mascota se enferma\n");
+            sickPetStatus = 1;
+            FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
+            fprintf(fileSickPet, "%i", sickPetStatus);
+            fclose(fileSickPet);
+        }  
+    }else{ //mode 1
+        FILE *fileSickPet = fopen("../files/sickPet.txt", "r");
+        fscanf(fileSickPet, "%i", sickPetStatus); //no uso el & porque sickPetStatus ya es un puntero
+        fclose(fileSickPet);
+    }
+
 }
 
 int main()
 {
-    SetConsoleCP(1252);
-    SetConsoleOutputCP(1252); // posible solucion para que se reconozca el ascii extendido
-
     system("cls");
     // time_t es un tipo de dato que permite guardar una "marca de tiempo"
     time_t timeNow = time(NULL);
@@ -1362,6 +1389,10 @@ int main()
     struct elpasedTime *ptrElpasedTime = (struct elpasedTime *)malloc(sizeof(struct elpasedTime));
     struct dataStateBars *ptrDataStateBars = (struct dataStateBars *)malloc(sizeof(struct dataStateBars));
     struct walletData *ptrWalletData = (struct walletData *)malloc(sizeof(struct walletData));
+
+    // almacena el estado de enfermedad de la mascota
+    int sickPetStatus = 0;
+    int *ptrSickPetStatus = &sickPetStatus;
 
     int timeResult = lastOpenGetterAndSaver(0, timeNow);
 
@@ -1389,6 +1420,9 @@ int main()
 
     walletGetterAndSaver(0, &ptrWalletData);
 
+    sickPet(0, ptrSickPetStatus);
+    // printf("\nEl valor de la variable sickPetStatus es %i\n", sickPetStatus);
+    
     /*
     //esteregg "time since 1970"
     time_t since1970 = time(NULL);
