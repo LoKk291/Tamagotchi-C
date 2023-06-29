@@ -1476,19 +1476,24 @@ int main()
             {
             case 0:
                 tutorial();
+                system("cls");
                 break;
             case '1':
                 alimentation();
+                system("cls");
                 break;
             case '2':
                 healing(&ptrDataStateBars, &ptrAssetsData);
+                system("cls");
                 break;
             case '3':
                 gameExecute();
+                system("cls");
                 break;
             case '4':
                 settings(1, &ptrAssetsData);
                 assetsLoad(&ptrAssetsData);
+                system("cls");
                 break;
             case 's':
             case 'S':
