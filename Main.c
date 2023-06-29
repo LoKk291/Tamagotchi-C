@@ -369,6 +369,7 @@ int alimentation()
 
     do
     {
+        fflush(stdin);
         system("cls");
 
         printf("------- MENU -------\n");
@@ -515,12 +516,12 @@ int alimentation()
             showInventory(root);
             printf("\n");
             printf("Presione enter para continuar...");
-            getchar();
-            
+
             break;
 
         case '3':
             system("cls");
+            fflush(stdin);
 
             printf("------- INVENTARIO -------\n");
             showInventory(root);
@@ -530,6 +531,7 @@ int alimentation()
 
             printf("Ingrese el nombre del producto a comer: ");
             scanf("%s", productName);
+            fflush(stdin);
 
             struct node *node = searchNode(root, productName);
             if (node != NULL)
@@ -537,21 +539,19 @@ int alimentation()
                 if (node->quantity > 1)
                 {
                     node->quantity--;
-                     Sleep(1000);
+                    Sleep(1000);
                 }
                 else
                 {
                     root = deleteNode(root, productName);
-                     Sleep(1000);
+                    Sleep(1000);
                 }
             }
             else
             {
                 printf("No tienes ese producto en tu inventario.\n");
-                 Sleep(1000);
+                Sleep(1000);
             }
-
-           
 
             break;
 
@@ -566,6 +566,7 @@ int alimentation()
         printf("\n");
         printf("Presione enter para continuar...");
         getchar();
+        fflush(stdin);
 
     } while (option != '4');
 
