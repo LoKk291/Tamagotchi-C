@@ -353,7 +353,7 @@ struct node *deleteNode(struct node *root, char itemName[])
 }
 
 // Implementacion de arboles Binarios mediante un sistema de gestion de alimentacion
-int alimentation()
+int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWalletData)
 {
     struct node *root = NULL;
     char option;
@@ -918,7 +918,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
             {
                 printf(GREEN"Medicamento consumido con exito.\n");
                 printf(RESET);
-                
+
                 // hago el aumento de la barra aquí ya que es más fácil pasar los datos de la estructura
 
                 // cuando se encuentra el elemento, dependiendo de que elemento sea y la cantidad consumida
@@ -935,6 +935,12 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                 { // las inyecciones curan 25 por unidad y decrementan en 20 el animo
                     (*ptrDataStateBars)->health += 25 * quantity;
                     (*ptrDataStateBars)->mood -= 20 * quantity;
+                }
+
+                // no permite que la barra exceda los 100 puntos
+                if((*ptrDataStateBars)->health > 100)
+                {
+                    (*ptrDataStateBars)->health = 100;
                 }
             }
             else
@@ -1027,8 +1033,8 @@ void showStateBars(struct dataStateBars **ptrDataStateBars)
     drawBars((*ptrDataStateBars)->mood);
 
     // hambre: para que sea mas correcto, el hambre realmente se entiende como saciedad, es decir, mientras
-    // mas sasciedad, menos hambre
-
+    // mas sasciedad, menos hambre, por ende lo que aumenta cuando se alimenta a la mascota no es el hambre,
+    // si no la saciedad
     printf("Saciedad: |");
     drawBars((*ptrDataStateBars)->hungry);
 }
@@ -1534,7 +1540,7 @@ int main()
                 system("cls");
                 break;
             case '1':
-                alimentation();
+                alimentation(&ptrDataStateBars, &ptrWalletData);
                 system("cls");
                 break;
             case '2':
