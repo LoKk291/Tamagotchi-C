@@ -546,6 +546,8 @@ int alimentation()
                 printf("No tienes ese producto en tu inventario.\n");
             }
 
+            sleep(1000);
+
             break;
 
         case '4':
