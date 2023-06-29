@@ -1358,7 +1358,7 @@ ademas la funcion se encarga de leer el estado desde el archivo sickPet (si ya e
 guardar el nuevo valor en caso de que se enferme cuando se ejecute la enfermedad o que se cure con una vacuna
 como el valor no es importante en todo momento de la ejecucion, no se crea una estructura para empaquetar el dato
 si no que solo se crea un puntero en el main.
-mode 0 = lee mode 1 = guarda*/ 
+mode 0 = lee mode 1 = guarda*/
 void sickPet(int mode, int *sickPetStatus)
 {
     srand(time(NULL));
@@ -1370,20 +1370,23 @@ void sickPet(int mode, int *sickPetStatus)
     randNum = 123;
 
     // si el modo es 0 lee, si el modo es 1 guarda
-    if(!mode){ //mode 0
-        if(randNum % 3 == 0){
-        // printf("\nLa mascota se enferma\n");
+    if (!mode)
+    { // mode 0
+        if (randNum % 3 == 0)
+        {
+            // printf("\nLa mascota se enferma\n");
             sickPetStatus = 1;
             FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
             fprintf(fileSickPet, "%i", sickPetStatus);
             fclose(fileSickPet);
-        }  
-    }else{ //mode 1
+        }
+    }
+    else
+    { // mode 1
         FILE *fileSickPet = fopen("../files/sickPet.txt", "r");
-        fscanf(fileSickPet, "%i", sickPetStatus); //no uso el & porque sickPetStatus ya es un puntero
+        fscanf(fileSickPet, "%i", sickPetStatus); // no uso el & porque sickPetStatus ya es un puntero
         fclose(fileSickPet);
     }
-
 }
 
 int main()
@@ -1429,7 +1432,7 @@ int main()
 
     sickPet(0, ptrSickPetStatus);
     // printf("\nEl valor de la variable sickPetStatus es %i\n", sickPetStatus);
-    
+
     /*
     //esteregg "time since 1970"
     time_t since1970 = time(NULL);
@@ -1459,6 +1462,13 @@ int main()
             }
         }
 
+        // cada vez que se ejecuta el bucle, se guardan los datos en los archivos
+        timeNow = time(NULL);
+
+        lastOpenGetterAndSaver(1, timeNow);
+        stateBarsGetterAndSaver(1, &ptrDataStateBars);
+        walletGetterAndSaver(1, &ptrWalletData);
+        
         // printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
         showAvatar(&ptrAssetsData);
         randomPhrases();
@@ -1513,10 +1523,9 @@ int main()
 
     } while (keyOptMenu != 's' && keyOptMenu != 'S');
 
-    // captura el instante de tiempo de la salida del juego para calcular el tiempo transcurrido cuando el jeugo se vuelve a abrir
+    // captura el instante de tiempo
     timeNow = time(NULL);
 
-    // guarda la salida de la ultima sesion y los estados de las barras
     lastOpenGetterAndSaver(1, timeNow);
     stateBarsGetterAndSaver(1, &ptrDataStateBars);
     walletGetterAndSaver(1, &ptrWalletData);
