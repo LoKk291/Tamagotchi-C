@@ -547,26 +547,49 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
                 if (strcmp(productName, "Ensalada") == 0)
                 {
                     // ensalada h 15 s 3
+                    (*ptrDataStateBars)->hungry += 15 * quantity;
+                    (*ptrDataStateBars)->health += 3 * quantity;
                 }
                 else if (strcmp(productName, "Yogurt") == 0)
                 {
                     // yogurt h 10 s 2
+                    (*ptrDataStateBars)->hungry += 10 * quantity;
+                    (*ptrDataStateBars)->health += 2 * quantity;
                 }
                 else if (strcmp(productName, "Frutas") == 0)
                 {
                     // frutas h 6 s 1
+                    (*ptrDataStateBars)->hungry += 6 * quantity;
+                    (*ptrDataStateBars)->health += 1 * quantity;
                 }
                 else if (strcmp(productName, "Pizza") == 0)
                 {
                     // Pizza h 20 s -1
+                    (*ptrDataStateBars)->hungry += 20 * quantity;
+                    (*ptrDataStateBars)->health -= 1 * quantity;
                 }
                 else if (strcmp(productName, "Hamburguesa") == 0)
                 {
                     // Hamburguesa h 30 s -3
+                    (*ptrDataStateBars)->hungry += 30 * quantity;
+                    (*ptrDataStateBars)->health -= 3 * quantity;
                 }
                 else if (strcmp(productName, "Pancho") == 0)
                 {
                     // Pancho h 25 s -2
+                    (*ptrDataStateBars)->hungry += 25 * quantity;
+                    (*ptrDataStateBars)->health -= 2 * quantity;
+                }
+
+                // no permite que la barra exceda los 100 puntos
+                if ((*ptrDataStateBars)->health > 100)
+                {
+                    (*ptrDataStateBars)->health = 100;
+                }
+
+                if ((*ptrDataStateBars)->hungry > 100)
+                {
+                    (*ptrDataStateBars)->hungry = 100;
                 }
             }
             else
