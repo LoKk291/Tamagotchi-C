@@ -729,7 +729,7 @@ int consumeMedicine(struct product *root, const char *productName, unsigned int 
     while (current != NULL)
     {
         int cmp = strcmp(productName, current->productName); // se declara aqui por optimizacippon, asi si no se cumple la condicion
-                                                            // no se usa memoria innecesariamente
+                                                             // no se usa memoria innecesariamente
         if (cmp == 0)
         {
             if (quantity <= current->quantity)
@@ -905,14 +905,17 @@ void healing(struct dataStateBars **ptrDataStateBars)
 
                 // cuando se encuentra el elemento, dependiendo de que elemento sea y la cantidad consumida
                 // se incrementa la barra de salud
-                if(strcmp(productName, "Curitas") == 0 || (productName, "1") == 0){ // las curitas curan 5 por unidad
-                    (*ptrDataStateBars)->health += 5*quantity;
+                if (strcmp(productName, "Curitas") == 0 || (productName, "1") == 0)
+                { // las curitas curan 5 por unidad
+                    (*ptrDataStateBars)->health += 5 * quantity;
                 }
-                else if(strcmp(productName, "Pastillas") == 0 || (productName, "2") == 0){ // las pastillas curan 10 por unidad
-                    (*ptrDataStateBars)->health += 10*quantity;
+                else if (strcmp(productName, "Pastillas") == 0 || (productName, "2") == 0)
+                { // las pastillas curan 10 por unidad
+                    (*ptrDataStateBars)->health += 10 * quantity;
                 }
-                else if(strcmp(productName, "Inyeccion") == 0 || (productName, "3") == 0){ // las inyecciones curan 25 por unidad
-                    (*ptrDataStateBars)->health += 25*quantity;
+                else if (strcmp(productName, "Inyeccion") == 0 || (productName, "3") == 0)
+                { // las inyecciones curan 25 por unidad
+                    (*ptrDataStateBars)->health += 25 * quantity;
                 }
             }
             else
@@ -1482,7 +1485,7 @@ int main()
         lastOpenGetterAndSaver(1, timeNow);
         stateBarsGetterAndSaver(1, &ptrDataStateBars);
         walletGetterAndSaver(1, &ptrWalletData);
-        
+
         // printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
         showAvatar(&ptrAssetsData);
         randomPhrases();
