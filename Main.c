@@ -556,7 +556,6 @@ int alimentation()
         printf("\n");
         printf("Presione enter para continuar...");
         getchar();
-        getchar();
 
     } while (option != '4');
 
@@ -1264,7 +1263,9 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
 // la dificultad seleccionada por el usuario
 void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
 {
-    int decrement;
+    int decrementHealth;
+    int decrementMood;
+    int decrementHungry;
 
     // por cada hora transcurrida se decrementa un porcentaje dado a cada barra de estado
 
@@ -1272,24 +1273,30 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
     { // para que comience a decrementar debe transcurrir minimo una hora
         if ((*ptrAssetsData)->gameDifficult == 0)
         { // facil
-            decrement = 2;
+            decrementHealth = 2;
+            decrementMood = 5;
+            decrementHungry = 10;
         }
         else if ((*ptrAssetsData)->gameDifficult == 1)
         { // medio
-            decrement = 5;
+            decrementHealth = 5;
+            decrementMood = 10;
+            decrementHungry = 15;
         }
         else
         { // dificl
-            decrement = 10;
+            decrementHealth = 10;
+            decrementMood = 15;
+            decrementHungry = 25;
         }
 
         // decrementa dependiendo de la dificultad que ha seleccionado el usuario
         // printf("\nLa cantidad de horas transcurridas fueron: %i\n", (*ptrElpasedTime)->hours);
         for (int i = 0; i < (*ptrElpasedTime)->hours; i++)
         {
-            (*ptrDataStateBars)->health = (*ptrDataStateBars)->health - decrement;
-            (*ptrDataStateBars)->mood = (*ptrDataStateBars)->mood - decrement;
-            (*ptrDataStateBars)->hungry = (*ptrDataStateBars)->hungry - decrement;
+            (*ptrDataStateBars)->health = (*ptrDataStateBars)->health - decrementHealth;
+            (*ptrDataStateBars)->mood = (*ptrDataStateBars)->mood - decrementMood;
+            (*ptrDataStateBars)->hungry = (*ptrDataStateBars)->hungry - decrementHungry;
         }
     }
 
