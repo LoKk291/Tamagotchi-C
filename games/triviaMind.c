@@ -6,7 +6,7 @@
 #include "../libraries/colors.h"
 
 /*
-MAX_LINE_LENGTH:represnta la longitud máxima de una linea en el archivo 
+MAX_LINE_LENGTH:represnta la longitud máxima de una linea en el archivo
 .csv que contiene las preguntas y respuestas
 AMOUNT:indica la cantidad de preguntas que se mostraran en cada sesión.
 */
@@ -31,42 +31,43 @@ void separateQuestionsAnswers(char *line, struct question *question)
         token = strtok(NULL, ",");
         if (token != NULL)
         {
-            //copio la pregunta en la estructura y convierto la respuesta a un entero utilizando atoi();
+            // copio la pregunta en la estructura y convierto la respuesta a un entero utilizando atoi();
             question->answer = atoi(token);
         }
     }
 }
 
 /*Funcion que genera un numero aleatorio dentro de un rango determinado entre min y max*/
-int generateRandomNumber(int min,int max){
-return min + rand() % (max - min + 1);
+int generateRandomNumber(int min, int max)
+{
+    return min + rand() % (max - min + 1);
 }
 
 int main(void)
 {
-    //utilizo la funcion time dentro de srand asi defino una semilla aleatoria distinta en cada ejecucion del programa
+    // utilizo la funcion time dentro de srand asi defino una semilla aleatoria distinta en cada ejecucion del programa
     srand(time(NULL));
 
-    printf("---------------Trivia Mind-------------\n");    
-   
-    FILE *archive = fopen("../../files/triviaMind.csv","r"); // aca va la direccion del archivo
+    printf("---------------Trivia Mind-------------\n");
+
+    FILE *archive = fopen("../../files/triviaMind.csv", "r"); // aca va la direccion del archivo
 
     if (archive == NULL)
     {
-        printf(RED"Error, no se pudo abrir el archivo seleccionado...\n");
+        printf(RED "Error, no se pudo abrir el archivo seleccionado...\n");
         system("pause");
         return 1;
     }
-    //printf(GREEN"\nSe abre el archivo\n"); // <--- PUNTOS DE CONTROL
- 
+    // printf(GREEN"\nSe abre el archivo\n"); // <--- PUNTOS DE CONTROL
+
     // generacion de estructuras y variables necesarias para la implementacion del conteo de puntos y preguntas
     struct question question[AMOUNT];
     int totalquestions = 0;
     char line[MAX_LINE_LENGTH];
 
-    printf(GREEN"\nLLEGA\n"); // <--- PUNTOS DE CONTROL
+    printf(GREEN "\nLLEGA\n"); // <--- PUNTOS DE CONTROL
     // Leo las preguntas y respuestas del archivo y las almaceno en el arreglo 'question'
-    //ACA ES DONDE NO CRASHEA EL JUEGO
+    // ACA ES DONDE NO CRASHEA EL JUEGO
     while (fgets(line, sizeof(line), archive))
     {
         separateQuestionsAnswers(line, &question[totalquestions]);
@@ -74,50 +75,49 @@ int main(void)
     }
 
     fclose(archive);
-    printf(GREEN"\nLLEGA\n"); // <--- PUNTOS DE CONTROL
+    printf(GREEN "\nLLEGA\n"); // <--- PUNTOS DE CONTROL
 
-    //permutar las preguntas aleatoriamente 
+    // permutar las preguntas aleatoriamente
     /*utilizo el algoritmo de Fisher-Yates:Comienzo en la ultima posicion del arreglo y en cada iteracion
     intercambio la pregunta actual con una pregunta aleatoria anterior a ella.*/
-    for (int i = totalquestions-1; i>0 ; i--)
+    for (int i = totalquestions - 1; i > 0; i--)
     {
-        //printf(GREEN"\nLLEGA\n"); // <--- PUNTOS DE CONTROL
-        int j= generateRandomNumber(0,i);
-        struct question temp= question[i];
-        question[i]=question[j];
-        question[j]=temp;
+        // printf(GREEN"\nLLEGA\n"); // <--- PUNTOS DE CONTROL
+        int j = generateRandomNumber(0, i);
+        struct question temp = question[i];
+        question[i] = question[j];
+        question[j] = temp;
     }
 
+    // mostrar solo las primeras 10 preguntas permutadas y solicitamos al usuario que ingrese sus respuestas
 
-    //mostrar solo las primeras 10 preguntas permutadas y solicitamos al usuario que ingrese sus respuestas
-   
-     /*operacio ternaria que asegura de que no se muestren mas preguntas de las disponibles en el archivo .csv;
-    o, en todo caso, si hay menos preguntas, muestre todas las disponibles*/
-    int numQuestionsToShow = (totalquestions<AMOUNT) ? totalquestions : AMOUNT;
-    int points=0;
-    for(int i =0;i<numQuestionsToShow;i++)
+    /*operacio ternaria que asegura de que no se muestren mas preguntas de las disponibles en el archivo .csv;
+   o, en todo caso, si hay menos preguntas, muestre todas las disponibles*/
+    int numQuestionsToShow = (totalquestions < AMOUNT) ? totalquestions : AMOUNT;
+    int points = 0;
+    for (int i = 0; i < numQuestionsToShow; i++)
     {
-        printf("Pregunta %d: %s\n", i+1, question[i].question);
+        printf("Pregunta %d: %s\n", i + 1, question[i].question);
 
         int answer;
-        
-        printf("Respuesta (0 = Falso, i = Verdadero): ");
-        scanf("%d",&answer);
 
-        if(answer == question[i].answer)
+        printf("Respuesta (0 = Falso, i = Verdadero): ");
+        scanf("%d", &answer);
+
+        if (answer == question[i].answer)
         {
             printf("¡Respuesta correcta!\n");
             points = points + 5;
-        }else
+        }
+        else
         {
             printf("Respuesta incorrecta.\n");
             points = points - 5;
         }
         printf("\n");
-
     }
 
-    //muuestra de puntaje final
+    // muuestra de puntaje final
     printf("\nPuntaje final: %d/%d\n", points, numQuestionsToShow);
 
     return 0;
