@@ -728,8 +728,8 @@ int consumeMedicine(struct product *root, const char *productName, unsigned int 
     struct product *current = root;
     while (current != NULL)
     {
-        int cmp = strcmp(productName, current->productName);
-
+        int cmp = strcmp(productName, current->productName); // se declara aqui por optimizacippon, asi si no se cumple la condicion
+                                                            // no se usa memoria innecesariamente
         if (cmp == 0)
         {
             if (quantity <= current->quantity)
@@ -760,7 +760,7 @@ int consumeMedicine(struct product *root, const char *productName, unsigned int 
 }
 
 // Funcion principal de inventario y gestion de medicamentos
-void healing()
+void healing(struct dataStateBars **ptrDataStateBars)
 {
     struct product *root = NULL;
     // monedas de prueba hasta que david y yo implementemos el enlace de la variable wallet al archivo
@@ -780,7 +780,7 @@ void healing()
         printf("Billetera: %d\n", myWallet.coins);
         printf("1.Comprar medicamento\n");
         printf("2.Mostrar inventario\n");
-        printf("3. COnsumir medicament\n");
+        printf("3. Consumir medicament\n");
         printf("4. Salir\n");
         printf("Ingrese una opcion\n");
         option = getchar();
@@ -858,7 +858,7 @@ void healing()
                 else
                 {
                     myWallet.coins -= quantity * 50;
-                    root = insertNodePr(root, "Pastillas", quantity, 50);
+                    root = insertNodePr(root, "Inyeccion", quantity, 50);
                     printf("Compra realizada con exito.\n");
                     Sleep(1000);
                 }
@@ -900,6 +900,20 @@ void healing()
             if (consumeMedicine(root, productName, quantity))
             {
                 printf("Medicamento consumido con exito.\n");
+
+                // hago el aumento de la barra aquí ya que es más fácil pasar los datos de la estructura
+
+                // cuando se encuentra el elemento, dependiendo de que elemento sea y la cantidad consumida
+                // se incrementa la barra de salud
+                if(strcmp(productName, "Curitas") == 0 || (productName, "1") == 0){ // las curitas curan 5 por unidad
+                    (*ptrDataStateBars)->health += 5*quantity;
+                }
+                else if(strcmp(productName, "Pastillas") == 0 || (productName, "2") == 0){ // las pastillas curan 10 por unidad
+                    (*ptrDataStateBars)->health += 10*quantity;
+                }
+                else if(strcmp(productName, "Inyeccion") == 0 || (productName, "3") == 0){ // las inyecciones curan 25 por unidad
+                    (*ptrDataStateBars)->health += 25*quantity;
+                }
             }
             else
             {
@@ -1366,8 +1380,8 @@ void sickPet(int mode, int *sickPetStatus)
 
     // si el numero generado, multiplicado por 2 y restandole 7, es divisible por 3, entonces la mascota se enferma
     randNum = (randNum * 2) - 7;
-    // printf("\nEl numero random es: %i\n", randNum);
-    randNum = 123;
+    // printf("\nEl numero random es: %i\n", randNum); //PRUEBAS
+    // randNum = 123;
 
     // si el modo es 0 lee, si el modo es 1 guarda
     if (!mode)
@@ -1500,7 +1514,7 @@ int main()
                 system("cls");
                 break;
             case '2':
-                healing(&ptrDataStateBars, &ptrAssetsData);
+                healing(&ptrDataStateBars);
                 system("cls");
                 break;
             case '3':
