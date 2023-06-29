@@ -41,7 +41,7 @@ struct elpasedTime
 // utilizo una estructura porque en el futuro se agregar las gemas ya mencionadas
 struct walletData
 {
-    int coins;
+    int unsigned coins;
 };
 
 // nodo del arbol binario
@@ -770,12 +770,10 @@ int consumeMedicine(struct product *root, const char *productName, unsigned int 
 }
 
 // Funcion principal de inventario y gestion de medicamentos
-void healing(struct dataStateBars **ptrDataStateBars)
+void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWalletData)
 {
     struct product *root = NULL;
     // monedas de prueba hasta que david y yo implementemos el enlace de la variable wallet al archivo
-    struct walletData myWallet;
-    myWallet.coins = 100;
     char option;
     char subOption;
     char productName[50];
@@ -787,7 +785,7 @@ void healing(struct dataStateBars **ptrDataStateBars)
         system("cls");
 
         printf("------- MENU -------\n");
-        printf("Billetera: %d\n", myWallet.coins);
+        printf("Billetera: %d\n", (*ptrWalletData)->coins);
         printf("1.Comprar medicamento\n");
         printf("2.Mostrar inventario\n");
         printf("3. Consumir medicament\n");
@@ -802,7 +800,7 @@ void healing(struct dataStateBars **ptrDataStateBars)
             system("cls");
 
             printf("------- TIENDA DE MEDICAMENTOS -------\n");
-            printf("Billetera: %d. \n", myWallet.coins);
+            printf("Billetera: %d. \n", (*ptrWalletData)->coins);
 
             printf("Seleccione el tipo de medicamentos:\n");
             printf("1. Curitas (6 monedas)\n");
@@ -820,14 +818,14 @@ void healing(struct dataStateBars **ptrDataStateBars)
                 scanf("%u", &quantity);
                 fflush(stdin);
 
-                if (quantity * 6 > myWallet.coins)
+                if (quantity * 6 > (*ptrWalletData)->coins)
                 {
                     printf("No tienes suficientes monedas.\n");
                     Sleep(1000);
                 }
                 else
                 {
-                    myWallet.coins -= quantity * 6;
+                    (*ptrWalletData)->coins -= quantity * 6;
                     root = insertNodePr(root, "Curitas", quantity, 6);
                     printf("Compra realizada con exito.\n");
                     Sleep(1000);
@@ -840,14 +838,14 @@ void healing(struct dataStateBars **ptrDataStateBars)
                 scanf("%u", &quantity);
                 fflush(stdin);
 
-                if (quantity * 10 > myWallet.coins)
+                if (quantity * 10 > (*ptrWalletData)->coins)
                 {
                     printf("No tienes suficientes monedas.\n");
                     Sleep(1000);
                 }
                 else
                 {
-                    myWallet.coins -= quantity * 10;
+                    (*ptrWalletData)->coins -= quantity * 10;
                     root = insertNodePr(root, "Pastillas", quantity, 10);
                     printf("Compra realizada con exito.\n");
                     Sleep(1000);
@@ -860,14 +858,14 @@ void healing(struct dataStateBars **ptrDataStateBars)
                 scanf("%u", &quantity);
                 fflush(stdin);
 
-                if (quantity * 50 > myWallet.coins)
+                if (quantity * 50 > (*ptrWalletData)->coins)
                 {
                     printf("No tienes suficientes monedas.\n");
                     Sleep(1000);
                 }
                 else
                 {
-                    myWallet.coins -= quantity * 50;
+                    (*ptrWalletData)->coins -= quantity * 50;
                     root = insertNodePr(root, "Inyeccion", quantity, 50);
                     printf("Compra realizada con exito.\n");
                     Sleep(1000);
@@ -1528,7 +1526,7 @@ int main()
                 system("cls");
                 break;
             case '2':
-                healing(&ptrDataStateBars);
+                healing(&ptrDataStateBars, &ptrWalletData);
                 system("cls");
                 break;
             case '3':
