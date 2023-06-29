@@ -904,16 +904,16 @@ void healing(struct dataStateBars **ptrDataStateBars)
                 // hago el aumento de la barra aquí ya que es más fácil pasar los datos de la estructura
 
                 // cuando se encuentra el elemento, dependiendo de que elemento sea y la cantidad consumida
-                // se incrementa la barra de salud
-                if (strcmp(productName, "Curitas") == 0 || (productName, "1") == 0)
+                // se incrementa la barra de salud, SOLO FUNCIONA CON EL NOMBRE DEL PRODUCTO, NO CON EL CODIGO
+                if (strcmp(productName, "Curitas") == 0)
                 { // las curitas curan 5 por unidad
                     (*ptrDataStateBars)->health += 5 * quantity;
                 }
-                else if (strcmp(productName, "Pastillas") == 0 || (productName, "2") == 0)
+                else if (strcmp(productName, "Pastillas") == 0)
                 { // las pastillas curan 10 por unidad
                     (*ptrDataStateBars)->health += 10 * quantity;
                 }
-                else if (strcmp(productName, "Inyeccion") == 0 || (productName, "3") == 0)
+                else if (strcmp(productName, "Inyeccion") == 0)
                 { // las inyecciones curan 25 por unidad
                     (*ptrDataStateBars)->health += 25 * quantity;
                 }
