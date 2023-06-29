@@ -358,10 +358,6 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
     struct node *root = NULL;
     char option;
 
-    // TIENE QUE RECIBIR COMO PARAMETRO LA VARIABLE COINS DE LA ESTRUCTURA WALLETS Y OPERAR CON ELLA, POSTERIORMENTE
-    // EN CADA FUNCION QUE SE OCUPE WALLETS SE DEBE GUARDAR LAS MONEDAS QUE QUEDARON
-    struct walletData myWallet;
-    myWallet.coins = 100;
     char productName[50];
     int unsigned quantity;
     int unsigned price;
@@ -373,10 +369,10 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
         system("cls");
 
         printf("------- MENU -------\n");
-        printf("Billetera: %u\n", myWallet.coins);
+        printf("Billetera: %u\n", (*ptrWalletData)->coins);
         printf("1. Comprar producto\n");
         printf("2. Mostrar inventario\n");
-        printf("3. COmer producto\n");
+        printf("3. Comer producto\n");
         printf("4. Salir\n");
         printf("Ingrese una opcion: ");
         option = getch();
@@ -388,7 +384,7 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
             system("cls");
 
             printf("------- COMPRAR PRODUCTO -------\n");
-            printf("Billetera: %u.\n", myWallet.coins);
+            printf("Billetera: %u.\n", (*ptrWalletData)->coins);
 
             printf("Seleccione el tipo de comida:\n");
             printf("1. Chatarra\n");
@@ -491,14 +487,14 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
                 break;
             }
 
-            if (price * quantity > myWallet.coins)
+            if (price * quantity > (*ptrWalletData)->coins)
             {
                 printf("No tienes suficiente dinero para comprar este producto.\n");
                 break;
             }
 
             // Consideracion: No se puede comprar mas productos de los que dispongas en cantidad de efectivo
-            int unsigned availableQuantity = myWallet.coins / price;
+            int unsigned availableQuantity = (*ptrWalletData)->coins / price;
             if (quantity > availableQuantity)
             {
                 printf("No puedes comprar mas de %u productos con la cantidad de efectivo disponible.\n", availableQuantity);
@@ -506,7 +502,7 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
             }
 
             root = insertNode(root, productName, quantity, price, foodType);
-            myWallet.coins -= price * quantity;
+            (*ptrWalletData)->coins -= price * quantity;
             break;
 
         case '2':
@@ -545,6 +541,32 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
                 {
                     root = deleteNode(root, productName);
                     Sleep(1000);
+                }
+
+                // incremento y decremento de las barras
+                if (strcmp(productName, "Ensalada") == 0)
+                {
+                    // ensalada h 15 s 3
+                }
+                else if (strcmp(productName, "Yogurt") == 0)
+                {
+                    // yogurt h 10 s 2
+                }
+                else if (strcmp(productName, "Frutas") == 0)
+                {
+                    // frutas h 6 s 1
+                }
+                else if (strcmp(productName, "Pizza") == 0)
+                {
+                    // Pizza h 20 s -1
+                }
+                else if (strcmp(productName, "Hamburguesa") == 0)
+                {
+                    // Hamburguesa h 30 s -3
+                }
+                else if (strcmp(productName, "Pancho") == 0)
+                {
+                    // Pancho h 25 s -2
                 }
             }
             else
@@ -785,7 +807,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
         fflush(stdin);
         system("cls");
 
-        printf(CYAN"------- MENU -------\n");
+        printf(CYAN "------- MENU -------\n");
         printf("Billetera: %d\n", (*ptrWalletData)->coins);
         printf("1. Comprar medicamento\n");
         printf("2. Mostrar inventario\n");
@@ -823,7 +845,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
 
                 if (quantity * 6 > (*ptrWalletData)->coins)
                 {
-                    printf(YELLOW"No tienes suficientes monedas.\n");
+                    printf(YELLOW "No tienes suficientes monedas.\n");
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -831,7 +853,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                 {
                     (*ptrWalletData)->coins -= quantity * 6;
                     root = insertNodePr(root, "Curitas", quantity, 6);
-                    printf(GREEN"Compra realizada con exito.\n");
+                    printf(GREEN "Compra realizada con exito.\n");
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -845,7 +867,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
 
                 if (quantity * 10 > (*ptrWalletData)->coins)
                 {
-                    printf(YELLOW"No tienes suficientes monedas.\n");
+                    printf(YELLOW "No tienes suficientes monedas.\n");
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -853,7 +875,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                 {
                     (*ptrWalletData)->coins -= quantity * 10;
                     root = insertNodePr(root, "Pastillas", quantity, 10);
-                    printf(GREEN"Compra realizada con exito.\n");
+                    printf(GREEN "Compra realizada con exito.\n");
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -867,7 +889,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
 
                 if (quantity * 50 > (*ptrWalletData)->coins)
                 {
-                    printf(YELLOW"No tienes suficientes monedas.\n");
+                    printf(YELLOW "No tienes suficientes monedas.\n");
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -875,13 +897,13 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                 {
                     (*ptrWalletData)->coins -= quantity * 50;
                     root = insertNodePr(root, "Inyeccion", quantity, 50);
-                    printf(GREEN"Compra realizada con exito.\n");
+                    printf(GREEN "Compra realizada con exito.\n");
                     printf(RESET);
                     Sleep(1000);
                 }
                 break;
             default:
-                printf(YELLOW"Opcion invalida.\n");
+                printf(YELLOW "Opcion invalida.\n");
                 printf(RESET);
                 Sleep(1000);
                 break;
@@ -916,7 +938,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
 
             if (consumeMedicine(root, productName, quantity))
             {
-                printf(GREEN"Medicamento consumido con exito.\n");
+                printf(GREEN "Medicamento consumido con exito.\n");
                 printf(RESET);
 
                 // hago el aumento de la barra aquí ya que es más fácil pasar los datos de la estructura
@@ -938,14 +960,14 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                 }
 
                 // no permite que la barra exceda los 100 puntos
-                if((*ptrDataStateBars)->health > 100)
+                if ((*ptrDataStateBars)->health > 100)
                 {
                     (*ptrDataStateBars)->health = 100;
                 }
             }
             else
             {
-                printf(YELLOW"No se encontro el medicamento en el inventario o la cantidad ingresada es invalida.\n");
+                printf(YELLOW "No se encontro el medicamento en el inventario o la cantidad ingresada es invalida.\n");
                 printf(RESET);
             }
 
@@ -956,7 +978,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
             printf("Saliendo de la tienda de medicamentos...\n");
             break;
         default:
-            printf(YELLOW"Opcion invalida.\n");
+            printf(YELLOW "Opcion invalida.\n");
             printf(RESET);
             Sleep(1000);
             break;
