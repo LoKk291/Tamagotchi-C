@@ -379,6 +379,7 @@ int alimentation()
         printf("4. Salir\n");
         printf("Ingrese una opcion: ");
         option = getch();
+        fflush(stdin);
 
         switch (option)
         {
@@ -393,6 +394,7 @@ int alimentation()
             printf("2. Saludable\n");
             printf("Ingrese una opcion: ");
             option = getch();
+            fflush(stdin);
 
             printf("\n");
 
@@ -514,7 +516,7 @@ int alimentation()
             printf("\n");
             printf("Presione enter para continuar...");
             getchar();
-            getchar();
+            
             break;
 
         case '3':
@@ -535,18 +537,21 @@ int alimentation()
                 if (node->quantity > 1)
                 {
                     node->quantity--;
+                     Sleep(1000);
                 }
                 else
                 {
                     root = deleteNode(root, productName);
+                     Sleep(1000);
                 }
             }
             else
             {
                 printf("No tienes ese producto en tu inventario.\n");
+                 Sleep(1000);
             }
 
-            Sleep(1000);
+           
 
             break;
 
