@@ -211,6 +211,9 @@ struct node *createNode(char itemName[], int unsigned quantity, int unsigned pri
 
     // copiar los valores al nodo
     strcpy(node->itemName, itemName);
+    node->quantity = quantity;
+    node->price = price;
+    strcpy(node->foodType, foodType);
 
     // Inicializar los punteros izquierdo y derecho como NULL
     node->left = NULL;
@@ -914,8 +917,9 @@ void healing(struct dataStateBars **ptrDataStateBars)
                     (*ptrDataStateBars)->health += 10 * quantity;
                 }
                 else if (strcmp(productName, "Inyeccion") == 0)
-                { // las inyecciones curan 25 por unidad
+                { // las inyecciones curan 25 por unidad y decrementan en 20 el animo
                     (*ptrDataStateBars)->health += 25 * quantity;
+                    (*ptrDataStateBars)->mood -= 20 * quantity;
                 }
             }
             else
