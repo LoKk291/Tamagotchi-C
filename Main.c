@@ -874,7 +874,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
             subOption = getchar();
             fflush(stdin);
             printf(RESET);
-            
+
             switch (subOption)
             {
             case '1':
@@ -1107,7 +1107,7 @@ void showStateBars(struct dataStateBars **ptrDataStateBars)
 }
 
 // arroja frases random contenidas en el archivo "phrases.txt"
-int randomPhrases()
+int randomPhrases(struct AssetsData *ptrAssetsData)
 {
     char phrase[M];
 
@@ -1129,13 +1129,14 @@ int randomPhrases()
     }
     fclose(filePhrases);
 
-    printf(GREEN "\n%s\n", phrase);
+    printf(MAGENTA "\n%s dice: ",ptrAssetsData->petName);
+    printf(GREEN"%s\n", phrase);
     printf(RESET);
     return 0;
 }
 
 // Muestra una pantalla de bienvenida al usuario
-void splashScreen()
+void splashScreen(struct AssetsData *ptrAssetsData)
 {
     char line[M];
 
@@ -1146,10 +1147,11 @@ void splashScreen()
         fgets(line, M, fileSplashScreen);
         printf("%s", line);
     }
-    printf(RESET "\n");
     fclose(fileSplashScreen);
+    printf(RESET "\n\n");
+    printf(GREEN"%s esta muy feliz de verte de nuevo!!!\n", ptrAssetsData->petName);
     Sleep(5000);
-    system("cls");
+    
 }
 
 // muestra el avatar seleccionado por el usuario
@@ -1564,7 +1566,7 @@ int main()
     eastergg de sonido "thoy dont know me son"
     */
 
-    // splashScreen();
+    splashScreen(ptrAssetsData);
 
     printf(GREEN "Hola de nuevo %s!\n", ptrAssetsData->userName);
     printf(RESET);
@@ -1592,7 +1594,7 @@ int main()
 
         // printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
         showAvatar(&ptrAssetsData);
-        randomPhrases();
+        randomPhrases(ptrAssetsData);
         showStateBars(&ptrDataStateBars);
 
         printf(CYAN "\n1. Alimentar\n");
