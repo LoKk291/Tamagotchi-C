@@ -62,8 +62,8 @@ struct product
     char productName[50];  // Nombre del producto
     unsigned int quantity; // Cantidad de unidades
     unsigned int price;    // Precio del producto(en monedas)
-    struct product *left;  // Puntero al subÃ¡rbol izquierdo
-    struct product *right; // Puntero al subÃ¡rbol derecho
+    struct product *left;  // Puntero al subarbol izquierdo
+    struct product *right; // Puntero al subarbol derecho
 };
 
 // chequea si es la primera vez que se abre el programa y pide las configuraciones inciales
@@ -634,7 +634,6 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
 }
 
 // IMPLEMENTACION DE ARBOLES BINARIOS A INVENTARIO Y GESTION DE MEDICINAS
-// por implementar: incremento o decremento de salud. [Encargado: David]
 
 // Funcion para crear un nuevo nodo del arbol
 struct product *createNodePr(char productName[], unsigned int quantity, unsigned int price)
@@ -834,7 +833,6 @@ int consumeMedicine(struct product *root, const char *productName, unsigned int 
 void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWalletData)
 {
     struct product *root = NULL;
-    // monedas de prueba hasta que david y yo implementemos el enlace de la variable wallet al archivo
     char option;
     char subOption;
     char productName[50];
@@ -1032,8 +1030,6 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
     } while (option != '4');
 }
 
-// FIN DE LOS ARBOLES BINARIOS
-
 // determina el color de las barras dependiendo de su estado
 // se pasa solo la PROPIEDAD del puntero. Ej: la propiedad ptrDataStateBars->health es un entero
 void colorBar(int propety)
@@ -1052,7 +1048,6 @@ void colorBar(int propety)
     }
 }
 
-// MODIFICAR PARA QUE SE VEA MAS ESTETICO
 //  dibuja las barras completas, lo que quiere decir que dibuja la barra en si y tambien su parte restante, como parametro
 // recibe el valor de la barra que se quiere dibujar
 void drawBars(int valueBar)
@@ -1440,7 +1435,6 @@ void deathScreen(struct AssetsData *ptrAssetsData)
     printf(RESET);
     system("pause");
 
-    // aqui debe ir el ascii de una calavera
 }
 
 // explica como usar y cuidar a la mascota
