@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <conio.h>
 #include <stdbool.h>
+#include "games/tikTakToe.c"
 
 #define N 15
 #define M 100
@@ -1428,18 +1429,19 @@ void tutorial()
 // NO FUNCIONA
 void gameExecute()
 {
-    /*char optGame;
+    char optGame;
 
     do
     {
         printf("ingrese el juego que desea jugar: \n");
         optGame = getch();
-    } while (optGame != 1 && optGame != 2);
+    } while (optGame != '1' && optGame != '2');
 
+    // CAMBIAR POR UN SWITCH Y SOLUCIONAR PROBLEMA DE QUE NO ABRE
     if (optGame == '1')
     {
-        system("../games/output/triviaMind.exe");
-    }*/
+        mainTikTakToe();
+    }
 }
 
 /* dependiendo del numero generado, la mascota se enferma o no, si se enferma, se guarda uno en el archivo sick
