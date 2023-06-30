@@ -197,11 +197,12 @@ int main()
     char board[R][C];
     char optAgain;
     int freeSpaces;
-    int userMoves = 0;
+    int userMoves;
 
     do
     {
         freeSpaces = 9;
+        userMoves = 0;
         resetBoard(board);
         while (freeSpaces != 0 && (checkWinner(board, freeSpaces) == 0))
         {
