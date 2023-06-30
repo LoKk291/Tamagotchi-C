@@ -852,10 +852,10 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
         printf("3. Consumir medicament\n");
         printf("4. Salir\n");
         printf("\nPresione la tecla de la opcion que desea realizar..");
-        printf(RESET);
 
         option = getchar();
         fflush(stdin);
+        printf(RESET);
 
         switch (option)
         {
@@ -870,10 +870,11 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
             printf("2. Pastillas (10 monedas)\n");
             printf("3. Inyeccion (50 monedas\n");
             printf("\nPresione la tecla de la opcion que desea realizar..");
-            printf(RESET);
+            
             subOption = getchar();
             fflush(stdin);
-
+            printf(RESET);
+            
             switch (subOption)
             {
             case '1':
