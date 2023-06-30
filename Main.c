@@ -5,22 +5,22 @@
 #include <windows.h>
 #include <conio.h>
 #include <stdbool.h>
-#include "games/tikTakToe.c"
+#include "games/tikTakToe.c" // incluye el juego tikTakToe en el archivo, asi se pueden llamar directamente las funciones
 
 #define N 15
 #define M 100
 
-// contiene la informacion PRINCIPAL en tiempo de ejecucion
+// contiene la informacion PRINCIPAL (contenida en el archivo assets) en tiempo de ejecucion
 struct AssetsData
 {
-    // tanto el nombre de la mascota como de usuario seran de maximo 12 caracteres
+    // tanto el nombre de la mascota como de usuario seran de maximo 14 caracteres
     char userName[N];
     char petName[N];
     int gameAvatar;
 
     int petInmortality;
     int gameDifficult;
-    int gameTryHard; // si esta opcion es verdadera, una vez que la mascota muera no se podra volver a jugar
+    int gameTryHard; // si esta opcion es verdadera, una vez que la mascota muera no se podra volver a jugar (NO IMPLEMENTADO AUN)
 };
 
 // almacena los datos de las barras de estado
@@ -77,7 +77,7 @@ int firstTime(time_t timeNow)
     fscanf(fileFirstOpen, "%i", &firstOpen);
     fclose(fileFirstOpen);
 
-    // si se abre por primera vez, se setea en 0 y se guarda el momento de la primera apertura
+    // si se abre por primera vez EL PROGRAMA, se setea en 0 y se guarda el momento de la primera apertura
     if (firstOpen == 1)
     {
         firstOpen = 0;
@@ -120,8 +120,8 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
     return 0;
 }
 
-// convierte los segundos de la variable timeResult de la funcion lastOpenGetterAndSaver horas/minutos/segundos
-// y almacena los datos procesados en struct elapsedTime
+// convierte los segundos de la variable timeResult de la funcion lastOpenGetterAndSaver en horas/minutos/segundos
+// y almacena los datos procesados en struct elapsedTime, para que no se tenga que abrir una y otra vez el archivo
 int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
 {
     int hours = 0;
@@ -131,7 +131,7 @@ int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
     hours = seconds / 3600;
     minutes = (seconds - hours * 3600) / 60;
     seconds = seconds - (hours * 3600 + minutes * 60);
-    // printf("\nla cantidad de segundos es: %i\n", seconds);
+    // printf("\nla cantidad de segundos es: %i\n", seconds); //PRUEBAS
     // printf("\n%i %i %i\n", hours, minutes, seconds);
 
     (*ptrElpasedTime)->hours = hours;
@@ -174,7 +174,8 @@ int lastOpenGetterAndSaver(int mode, time_t timeNow)
     return timeResult;
 }
 
-// carga los estados de la barra anterior y calcula el valor real en base al tiempo transcurrido
+// carga los estados de la barra anterior y calcula el valor real en base al tiempo transcurrido o gaurda los estados actuales
+//de las barras en el archivo lastSatateBars.txt (mode 1 = guarda | mode 0 = lee)
 int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
 {
     if (mode)
@@ -1144,7 +1145,7 @@ int randomPhrases(struct AssetsData *ptrAssetsData)
     return 0;
 }
 
-// Muestra una pantalla de bienvenida al usuario
+// Muestra una pantalla de bienvenida al usuario cada vez que se inicia el programa
 void splashScreen(struct AssetsData *ptrAssetsData)
 {
     char line[M];
@@ -1160,10 +1161,10 @@ void splashScreen(struct AssetsData *ptrAssetsData)
     printf(RESET "\n\n");
     printf(GREEN"%s esta muy feliz de verte de nuevo!!!\n", ptrAssetsData->petName);
     Sleep(5000);
-    
+    system("cls");
 }
 
-// muestra el avatar seleccionado por el usuario
+// muestra el avatar seleccionado por el usuario (informacion contenida en assets.txt)
 void showAvatar(struct AssetsData **ptrAssetsData)
 {
     char avatarPath[] = "../files/avatars/avatarX.txt";
@@ -1208,6 +1209,7 @@ void showAvatar(struct AssetsData **ptrAssetsData)
 }
 
 // genera un nombre aleatorio para la mascota
+// el numero aleatorio generado, sirve para establecer hasta que linea se recoore y por ende que frase dice la mascota
 void randomPetName(char petName[])
 {
     FILE *filePetNames = fopen("../files/petNames.txt", "r");
@@ -1238,7 +1240,7 @@ void randomPetName(char petName[])
 // tiene dos modos, mode = 1 permite modificiar los valores / mode = 0 es para cargar los valores iniciales
 int settings(int mode, struct AssetsData **ptrAssetsData)
 {
-    // almacenan temporalmente las preferencias actualizadas
+    // almacenan temporalmente las preferencias actualizadas para posteriormente guardarlas definitivamente
     char petName[N];
     char userName[N];
     int gameAvatar;
@@ -1308,7 +1310,7 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
 
         do
         {
-            printf("Avatar seleccionado (0/1/2/3/4/5/6): ");
+            printf("Avatar seleccionado (0/1/2/3/4/5): ");
             scanf("%i", &gameAvatar);
         } while (gameAvatar != 0 && gameAvatar != 1 && gameAvatar != 2 && gameAvatar != 3 && gameAvatar != 4 && gameAvatar != 5 && gameAvatar != 6);
 
@@ -1425,7 +1427,7 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
     // AREA DE MUESTRA PARA LA EXPOSICION
 }
 
-// muestra una pantalla de meurte cuado la salud es <= 0
+// muestra una pantalla de muerte cuado la salud es <= 0
 void deathScreen(struct AssetsData *ptrAssetsData)
 {
     printf("                       ______\n");
@@ -1451,7 +1453,7 @@ void deathScreen(struct AssetsData *ptrAssetsData)
 
 }
 
-// explica como usar y cuidar a la mascota
+// explica como usar y cuidar a la mascota en un texto
 void tutorial()
 {
 }

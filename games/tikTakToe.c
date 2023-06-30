@@ -222,7 +222,7 @@ int mainTikTakToe()
         printf(YELLOW "\nHas perdido, suerte la proxima..\n");
         printf(RESET);
     }
-
+    Sleep(1000);
     fflush(stdin);
 
     // ELIMINAR EL BUCLE QEU PERMITE VOLER A JUGAR PARA EVITAR BUGS
