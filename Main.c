@@ -1457,7 +1457,7 @@ void tutorial()
 
 // ejecuta los juegos seleccionados
 // NO FUNCIONA
-void gameExecute()
+void gameExecute(struct walletData **ptrWalletData)
 {
     char optGame;
 
@@ -1474,7 +1474,8 @@ void gameExecute()
     switch (optGame)
     {
     case '1':
-        mainTikTakToe();
+        (*ptrWalletData)->coins += mainTikTakToe(); //el juego retorna las monedas guardadas, por lo que luego solo se
+                                                    //suma lo ganado a la billetera
         break;
     case '2':
         printf(YELLOW "\nAun en construccion el juego 2\n");
@@ -1634,7 +1635,7 @@ int main()
                 system("cls");
                 break;
             case '3':
-                gameExecute();
+                gameExecute(&ptrWalletData);
                 system("cls");
                 break;
             case '4':

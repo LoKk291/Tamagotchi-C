@@ -75,7 +75,7 @@ void computerMove(char board[][C], int freeSpaces)
     int i;
     int j;
 
-    //solo ejecuta el movimiento si hay algun espacio disponible
+    // solo ejecuta el movimiento si hay algun espacio disponible
     if (freeSpaces > 0)
     {
         do
@@ -155,40 +155,33 @@ int checkWinner(char board[][C], int freeSpaces)
         {
             whosWhinner = 2;
         }
-        //printf("\nHay un ganador, es %i\n", whosWhinner);
+        // printf("\nHay un ganador, es %i\n", whosWhinner);
     }
 
     return whosWhinner;
 }
 
-//permite cargar 25 monedas al archivo wallet por cada partida ganada
-int rewardCoins(){
-    int coins;
 
+// permite cargar 25 monedas al archivo wallet por cada partida ganada
+int rewardCoins()
+{
+    int coins = 0;
+
+    // abre el archivo y lee la cantidad de monedas
     FILE *fileWallet = fopen("../../files/wallet.txt", "r");
-    if(fileWallet == NULL)
-    {
-        printf(RED"\nERROR AL ABRIR EL ARCHIVO PARA LECTURA..\n");
-        return 1;
-    }
     fscanf(fileWallet, "%i", &coins);
     fclose(fileWallet);
-    //printf("\nLa cantidad de monedas es: %i\n", coins);
-    
-    coins += 25; //si el jugador gana, se le dan 25 monedas como recompensa
+    // printf("\nLa cantidad de monedas es: %i\n", coins);
 
-    fileWallet = fopen("../../files/wallet.txt", "w");
-    if(fileWallet == NULL)
-    {
-        printf(RED"\nERROR AL ABRIR EL ARCHIVO PARA ESCRITURA..\n");
-        return 2;
-    }
-    fprintf(fileWallet, "%i", coins);
-    fclose(fileWallet);
+    coins += 25; // si el jugador gana, se le dan 25 monedas como recompensa
 
-    printf(GREEN"Felicidades, ganaste 25 monedas, no la uses en tonterias!!!\n");
+    FILE *fileWalletW = fopen("../../files/wallet.txt", "w");
+    fprintf(fileWalletW, "%i", coins);
+    fclose(fileWalletW);
+
+    printf(GREEN "\nFelicidades, ganaste 25 monedas, no la uses en tonterias!!!\n");
     printf(RESET);
-    return 0;
+    return coins;
 }
 
 // le coloco este nombre para poder ejecutarlo desde el main sin que ocurran problemas
@@ -199,6 +192,7 @@ int mainTikTakToe()
     char optAgain;
     int freeSpaces;
     int userMoves;
+    int coins;
 
     do
     {
@@ -210,7 +204,8 @@ int mainTikTakToe()
             playerMove(board);
             userMoves++;
             freeSpaces--;
-            if(!(userMoves >3)){
+            if (!(userMoves > 3))
+            {
                 computerMove(board, freeSpaces);
                 freeSpaces--;
             }
@@ -218,19 +213,24 @@ int mainTikTakToe()
             printBoard(board);
         }
 
-        if(checkWinner(board, freeSpaces) == 1){
-            printf(GREEN"\nHAS GANADO!!!\n");
-            rewardCoins();
+        if (checkWinner(board, freeSpaces) == 1)
+        {
+            printf(GREEN "\nHAS GANADO!!!\n");
             printf(RESET);
-        }else{
-            printf(YELLOW"\nHas perdido, suerte la proxima..\n");
+            coins = rewardCoins();
+        }
+        else
+        {
+            coins = 0;
+            printf(YELLOW "\nHas perdido, suerte la proxima..\n");
             printf(RESET);
         }
 
         fflush(stdin);
-        printf("Desea salir de 'tiktakToe'?\n('n' para salir): ");
-        scanf("%c", &optAgain);
+        printf("Desea jugar denuevo? (s/n): \n");
+        optAgain = getch();
     } while (optAgain != 'N' && optAgain != 'n');
+    //ELIMINAR EL BUCLE QEU PERMITE VOLER A JUGAR PARA EVITAR BUGS
 
-    return 0;
+    return coins;
 }
