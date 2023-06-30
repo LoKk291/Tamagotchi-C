@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <time.h>
 #include "../libraries/colors.h"
+#include <windows.h>
 
 #define USER 'X'
 #define PET 'O'
@@ -160,6 +161,36 @@ int checkWinner(char board[][C], int freeSpaces)
     return whosWhinner;
 }
 
+//permite cargar 25 monedas al archivo wallet por cada partida ganada
+int rewardCoins(){
+    int coins;
+
+    FILE *fileWallet = fopen("../../files/wallet.txt", "r");
+    if(fileWallet == NULL)
+    {
+        printf(RED"\nERROR AL ABRIR EL ARCHIVO PARA LECTURA..\n");
+        return 1;
+    }
+    fscanf(fileWallet, "%i", &coins);
+    fclose(fileWallet);
+    //printf("\nLa cantidad de monedas es: %i\n", coins);
+    
+    coins += 25; //si el jugador gana, se le dan 25 monedas como recompensa
+
+    fileWallet = fopen("../../files/wallet.txt", "w");
+    if(fileWallet == NULL)
+    {
+        printf(RED"\nERROR AL ABRIR EL ARCHIVO PARA ESCRITURA..\n");
+        return 2;
+    }
+    fprintf(fileWallet, "%i", coins);
+    fclose(fileWallet);
+
+    printf(GREEN"Felicidades, ganaste 25 monedas, no la uses en tonterias!!!\n");
+    printf(RESET);
+    return 0;
+}
+
 int main()
 {
     // el campo del juego será una matriz
@@ -187,6 +218,7 @@ int main()
 
         if(checkWinner(board, freeSpaces) == 1){
             printf(GREEN"\nHAS GANADO!!!\n");
+            rewardCoins();
             printf(RESET);
         }else{
             printf(YELLOW"\nHas perdido, suerte la proxima..\n");
