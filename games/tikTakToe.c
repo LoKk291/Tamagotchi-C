@@ -161,7 +161,6 @@ int checkWinner(char board[][C], int freeSpaces)
     return whosWhinner;
 }
 
-
 // permite cargar 25 monedas al archivo wallet por cada partida ganada
 int rewardCoins()
 {
@@ -194,43 +193,39 @@ int mainTikTakToe()
     int userMoves;
     int coins;
 
-    do
+    freeSpaces = 9;
+    userMoves = 0;
+    resetBoard(board);
+    while (freeSpaces != 0 && (checkWinner(board, freeSpaces) == 0))
     {
-        freeSpaces = 9;
-        userMoves = 0;
-        resetBoard(board);
-        while (freeSpaces != 0 && (checkWinner(board, freeSpaces) == 0))
+        playerMove(board);
+        userMoves++;
+        freeSpaces--;
+        if (!(userMoves > 3))
         {
-            playerMove(board);
-            userMoves++;
+            computerMove(board, freeSpaces);
             freeSpaces--;
-            if (!(userMoves > 3))
-            {
-                computerMove(board, freeSpaces);
-                freeSpaces--;
-            }
-
-            printBoard(board);
         }
 
-        if (checkWinner(board, freeSpaces) == 1)
-        {
-            printf(GREEN "\nHAS GANADO!!!\n");
-            printf(RESET);
-            coins = rewardCoins();
-        }
-        else
-        {
-            coins = 0;
-            printf(YELLOW "\nHas perdido, suerte la proxima..\n");
-            printf(RESET);
-        }
+        printBoard(board);
+    }
 
-        fflush(stdin);
-        printf("Desea jugar denuevo? (s/n): \n");
-        optAgain = getch();
-    } while (optAgain != 'N' && optAgain != 'n');
-    //ELIMINAR EL BUCLE QEU PERMITE VOLER A JUGAR PARA EVITAR BUGS
+    if (checkWinner(board, freeSpaces) == 1)
+    {
+        printf(GREEN "\nHAS GANADO!!!\n");
+        printf(RESET);
+        coins = rewardCoins();
+    }
+    else
+    {
+        coins = 0;
+        printf(YELLOW "\nHas perdido, suerte la proxima..\n");
+        printf(RESET);
+    }
+
+    fflush(stdin);
+
+    // ELIMINAR EL BUCLE QEU PERMITE VOLER A JUGAR PARA EVITAR BUGS
 
     return coins;
 }
