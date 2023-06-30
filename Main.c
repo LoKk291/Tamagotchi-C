@@ -17,6 +17,7 @@ struct AssetsData
     char userName[N];
     char petName[N];
     int gameAvatar;
+
     int petInmortality;
     int gameDifficult;
     int gameTryHard; // si esta opcion es verdadera, una vez que la mascota muera no se podra volver a jugar
@@ -860,7 +861,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
         printf("Billetera: %d\n", (*ptrWalletData)->coins);
         printf("1. Comprar medicamento\n");
         printf("2. Mostrar inventario\n");
-        printf("3. Consumir medicament\n");
+        printf("3. Consumir medicamento\n");
         printf("4. Salir\n");
         printf("\nPresione la tecla de la opcion que desea realizar..");
 
