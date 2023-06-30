@@ -196,6 +196,19 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
         //(*ptrDataStateBars)->hungry = 30;
         fclose(filelastStateBars);
 
+        //no permite que las barras tengan numeros negativos (no utilizamos un int unsigned para evitar problemas)
+        //no utilizo if anidados ya que necesito que las 3 condiciones se evaluen
+        if((*ptrDataStateBars)->health < 0){
+            (*ptrDataStateBars)->health = 0;
+        }
+        
+        if((*ptrDataStateBars)->mood < 0){
+            (*ptrDataStateBars)->mood = 0;
+        }
+
+        if((*ptrDataStateBars)->hungry < 0){
+            (*ptrDataStateBars)->hungry = 0;
+        }
         // printf("\n%i%i%i\n", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry); //PRUEBAS
         // printf("\nCarga finalizada..\n"); //PRUEBAS
     }
