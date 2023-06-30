@@ -191,7 +191,8 @@ int rewardCoins(){
     return 0;
 }
 
-int main()
+// le coloco este nombre para poder ejecutarlo desde el main sin que ocurran problemas
+int mainmainTikTakToe()
 {
     // el campo del juego será una matriz
     char board[R][C];
@@ -230,4 +231,6 @@ int main()
         printf("Desea volver a jugar: ");
         scanf("%c", &optAgain);
     } while (optAgain != 'N' && optAgain != 'n');
+
+    return 0;
 }
