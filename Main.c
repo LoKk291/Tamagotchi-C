@@ -369,13 +369,14 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
         fflush(stdin);
         system("cls");
 
-        printf("------- MENU -------\n");
+        printf(CYAN"------- MENU -------\n");
         printf("Billetera: %u\n", (*ptrWalletData)->coins);
         printf("1. Comprar producto\n");
         printf("2. Mostrar inventario\n");
         printf("3. Comer producto\n");
         printf("4. Salir\n");
-        printf("Ingrese una opcion: ");
+        printf("\nPresione la tecla de la opcion que desea realizar..");
+        printf(RESET);
         option = getch();
         fflush(stdin);
 
@@ -384,13 +385,14 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
         case '1':
             system("cls");
 
-            printf("------- COMPRAR PRODUCTO -------\n");
+            printf(CYAN"------- COMPRAR PRODUCTO -------\n");
             printf("Billetera: %u.\n", (*ptrWalletData)->coins);
 
             printf("Seleccione el tipo de comida:\n");
             printf("1. Chatarra\n");
             printf("2. Saludable\n");
-            printf("Ingrese una opcion: ");
+            printf("\nPresione la tecla de la opcion que desea realizar..");
+            printf(RESET);
             option = getch();
             fflush(stdin);
 
@@ -399,32 +401,36 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
             switch (option)
             {
             case '1':
-                printf("------- CHATARRA -------\n");
+                printf(CYAN"------- CHATARRA -------\n");
                 printf("Productos disponibles:\n");
                 printf("1. Pizza ($10)\n");
                 printf("2. Hamburguesa ($7)\n");
                 printf("3. Pancho ($5)\n");
+                printf(RESET);
                 break;
 
             case '2':
-                printf("------- SALUDABLE -------\n");
+                printf(CYAN"------- SALUDABLE -------\n");
                 printf("Productos disponibles:\n");
                 printf("1. Ensalada ($8)\n");
                 printf("2. Frutas ($4)\n");
                 printf("3. Yogurt ($6)\n");
+                printf(RESET);
                 break;
 
             default:
-                printf("Opcion invalida.\n");
+                printf(YELLOW"Opcion invalida.\n");
+                printf(RESET);
                 break;
             }
 
             printf("\n");
 
-            printf("Ingrese el nombre del producto: ");
+            printf(CYAN"Ingrese el nombre del producto: ");
             scanf("%s", productName);
             printf("Ingrese la cantidad: ");
             scanf("%d", &quantity);
+            printf(RESET);
 
             switch (option)
             {
@@ -450,7 +456,8 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
                     break;
 
                 default:
-                    printf("Opcion invalida. \n");
+                    printf(YELLOW"Opcion invalida. \n");
+                    printf(RESET);
                     break;
                 }
                 break;
@@ -477,20 +484,23 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
                     break;
 
                 default:
-                    printf("Opcion invalida. \n");
+                    printf(YELLOW"Opcion invalida. \n");
+                    printf(RESET);
                     break;
                 }
                 break;
 
                 break;
             default:
-                printf("Opcion invalida.\n");
+                printf(YELLOW"Opcion invalida.\n");
+                printf(RESET);
                 break;
             }
 
             if (price * quantity > (*ptrWalletData)->coins)
             {
-                printf("No tienes suficiente dinero para comprar este producto.\n");
+                printf(YELLOW"No tienes suficiente dinero para comprar este producto.\n");
+                printf(RESET);
                 break;
             }
 
@@ -498,7 +508,8 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
             int unsigned availableQuantity = (*ptrWalletData)->coins / price;
             if (quantity > availableQuantity)
             {
-                printf("No puedes comprar mas de %u productos con la cantidad de efectivo disponible.\n", availableQuantity);
+                printf(YELLOW"No puedes comprar mas de %u productos con la cantidad de efectivo disponible.\n", availableQuantity);
+                printf(RESET);
                 break;
             }
 
@@ -509,10 +520,11 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
         case '2':
             system("cls");
 
-            printf("------- MOSTRAR INVENTARIO -------\n");
+            printf(CYAN"------- MOSTRAR INVENTARIO -------\n");
             showInventory(root);
             printf("\n");
-            printf("Presione enter para continuar...");
+            system("pause");
+            printf(RESET);
 
             break;
 
@@ -520,7 +532,7 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
             system("cls");
             fflush(stdin);
 
-            printf("------- INVENTARIO -------\n");
+            printf(CYAN"------- INVENTARIO -------\n");
             showInventory(root);
             printf("--------------------------\n");
 
@@ -529,6 +541,7 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
             printf("Ingrese el nombre del producto a comer: ");
             scanf("%s", productName);
             fflush(stdin);
+            printf(RESET);
 
             struct node *node = searchNode(root, productName);
             if (node != NULL)
@@ -602,16 +615,17 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
             break;
 
         case '4':
-            printf("Saliendo del programa...\n");
+            printf(YELLOW"Saliendo del programa...\n");
+            printf(RESET);
             break;
         default:
-            printf("Opcion invalida.\n");
+            printf(YELLOW"Opcion invalida.\n");
+            printf(RESET);
             break;
         }
 
         printf("\n");
-        printf("Presione enter para continuar...");
-        getchar();
+        system("pause");
         fflush(stdin);
 
     } while (option != '4');
@@ -848,7 +862,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
         case '1':
             system("cls");
 
-            printf("------- TIENDA DE MEDICAMENTOS -------\n");
+            printf(CYAN"------- TIENDA DE MEDICAMENTOS -------\n");
             printf("Billetera: %d. \n", (*ptrWalletData)->coins);
 
             printf("Seleccione el tipo de medicamentos:\n");
@@ -856,15 +870,17 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
             printf("2. Pastillas (10 monedas)\n");
             printf("3. Inyeccion (50 monedas\n");
             printf("\nPresione la tecla de la opcion que desea realizar..");
+            printf(RESET);
             subOption = getchar();
             fflush(stdin);
 
             switch (subOption)
             {
             case '1':
-                printf("------- CURITAS -------\n");
+                printf(CYAN"------- CURITAS -------\n");
                 printf("Ingrese la cantidad de curitas a comprar: ");
                 scanf("%u", &quantity);
+                printf(RESET);
                 fflush(stdin);
 
                 if (quantity * 6 > (*ptrWalletData)->coins)
@@ -884,9 +900,10 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
 
                 break;
             case '2':
-                printf("------- PASTILLAS -------\n");
+                printf(CYAN"------- PASTILLAS -------\n");
                 printf("Ingrese la cantidad de pastillas a comprar: ");
                 scanf("%u", &quantity);
+                printf(RESET);
                 fflush(stdin);
 
                 if (quantity * 10 > (*ptrWalletData)->coins)
@@ -906,9 +923,10 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
 
                 break;
             case '3':
-                printf("------- INYECCION -------\n");
+                printf(CYAN"------- INYECCION -------\n");
                 printf("Ingrese la cantidad de inyecciones a comprar: ");
                 scanf("%u", &quantity);
+                printf(RESET);
                 fflush(stdin);
 
                 if (quantity * 50 > (*ptrWalletData)->coins)
@@ -937,18 +955,18 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
         case '2':
             system("cls");
 
-            printf("------- INVENTARIO -------\n");
+            printf(CYAN"------- INVENTARIO -------\n");
             showInventoryPr(root);
             printf("--------------------------\n");
-            printf("Presione enter para continuar...");
-            getchar();
+            system("pause");
+            printf(RESET);
             fflush(stdin);
 
             break;
         case '3':
             system("cls");
 
-            printf("------- INVENTARIO -------\n");
+            printf(CYAN"------- INVENTARIO -------\n");
             showInventoryPr(root);
             printf("--------------------------\n");
 
@@ -959,6 +977,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
 
             printf("Ingrese la cantidad a consumir: ");
             scanf("%u", &quantity);
+            printf(RESET);
 
             if (consumeMedicine(root, productName, quantity))
             {
@@ -999,7 +1018,8 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
 
             break;
         case '4':
-            printf("Saliendo de la tienda de medicamentos...\n");
+            printf(YELLOW"Saliendo de la tienda de medicamentos...\n");
+            printf(RESET);
             break;
         default:
             printf(YELLOW "Opcion invalida.\n");
@@ -1434,7 +1454,7 @@ void gameExecute()
     do
     {
         system("cls");
-        printf(CYAN"1. Tateti\n");
+        printf(CYAN "1. Tateti\n");
         printf("2. Trivia\n");
         printf("S. Salir\n");
         printf("ingrese el juego que desea jugar: \n");
@@ -1447,7 +1467,7 @@ void gameExecute()
         mainTikTakToe();
         break;
     case '2':
-        printf(YELLOW"\nAun en construccion el juego 2\n");
+        printf(YELLOW "\nAun en construccion el juego 2\n");
         printf(RESET);
         break;
     }
