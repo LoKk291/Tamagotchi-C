@@ -39,7 +39,7 @@ void playerMove(char board[][C])
             scanf("%i", &i);
             if (i > 3)
             {
-                printf("Casilla inválida, ingrese una casilla entre 1 y 3");
+                printf("Casilla invalida, ingrese una casilla entre 1 y 3");
             }
         } while (i > 3);
         i--;
@@ -57,7 +57,7 @@ void playerMove(char board[][C])
 
         if (board[i][j] != ' ')
         {
-            printf("La casilla ya está ocupada\n");
+            printf("La casilla ya esta ocupada\n");
         }
         else
         {
@@ -228,7 +228,7 @@ int mainTikTakToe()
         }
 
         fflush(stdin);
-        printf("Desea volver a jugar: ");
+        printf("Desea salir de 'tiktakToe'?\n('n' para salir): ");
         scanf("%c", &optAgain);
     } while (optAgain != 'N' && optAgain != 'n');
 

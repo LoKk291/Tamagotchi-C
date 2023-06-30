@@ -103,22 +103,26 @@ int main(void)
 
         printf("Respuesta (0 = Falso, i = Verdadero): ");
         scanf("%d", &answer);
+        fflush(stdin);
 
         if (answer == question[i].answer)
         {
             printf("¡Respuesta correcta!\n");
             points = points + 5;
+            Sleep(500);
         }
         else
         {
             printf("Respuesta incorrecta.\n");
             points = points - 5;
+            Sleep(500);
         }
         printf("\n");
     }
 
     // muuestra de puntaje final
     printf("\nPuntaje final: %d/%d\n", points, numQuestionsToShow);
+    Sleep(500);
 
     return 0;
 }
