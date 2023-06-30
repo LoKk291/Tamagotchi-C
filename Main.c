@@ -1433,14 +1433,23 @@ void gameExecute()
 
     do
     {
+        system("cls");
+        printf(CYAN"1. Tateti\n");
+        printf("2. Trivia\n");
+        printf("S. Salir\n");
         printf("ingrese el juego que desea jugar: \n");
         optGame = getch();
-    } while (optGame != '1' && optGame != '2');
+    } while (optGame != '1' && optGame != '2' && optGame != 's' && optGame != 'S');
 
-    // CAMBIAR POR UN SWITCH Y SOLUCIONAR PROBLEMA DE QUE NO ABRE
-    if (optGame == '1')
+    switch (optGame)
     {
+    case '1':
         mainTikTakToe();
+        break;
+    case '2':
+        printf(YELLOW"\nAun en construccion el juego 2\n");
+        printf(RESET);
+        break;
     }
 }
 

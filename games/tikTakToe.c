@@ -192,7 +192,7 @@ int rewardCoins(){
 }
 
 // le coloco este nombre para poder ejecutarlo desde el main sin que ocurran problemas
-int mainmainTikTakToe()
+int mainTikTakToe()
 {
     // el campo del juego será una matriz
     char board[R][C];
