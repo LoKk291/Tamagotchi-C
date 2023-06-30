@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
+#include "../libraries/colors.h"
 
 #define USER 'X'
 #define PET 'O'
@@ -53,7 +54,6 @@ void playerMove(char board[][C])
         } while (j > 3);
         j--;
 
-        // error de bucle infinito
         if (board[i][j] != ' ')
         {
             printf("La casilla ya está ocupada\n");
@@ -65,6 +65,26 @@ void playerMove(char board[][C])
         }
     } while (flag == 0);
     fflush(stdin);
+}
+
+// permite a la computadora rellenar una casilla vacia, generando un numero aleatorio de casilla (i;j)
+void computerMove(char board[][C], int freeSpaces)
+{
+    srand(time(NULL));
+    int i;
+    int j;
+
+    //solo ejecuta el movimiento si hay algun espacio disponible
+    if (freeSpaces > 0)
+    {
+        do
+        {
+            i = rand() % 3;
+            j = rand() % 3;
+        } while (board[i][j] != ' ');
+
+        board[i][j] = PET;
+    }
 }
 
 // reinicia todo el tablero (vacía las casillas)
@@ -88,10 +108,11 @@ int checkWinner(char board[][C], int freeSpaces)
 
     // identifica quien es el ganador
     int whosWhinner = 0;
-    
-    //para coemnzar con la verificacion, primero se debe ver que la cantidad de espacios
-    //sea <= 6, ya que esta es la cantidad de espacios minima que se ocupan para que haya un ganador
-    if(freeSpaces <= 6){
+
+    // para coemnzar con la verificacion, primero se debe ver que la cantidad de espacios
+    // sea <= 4, ya que esta es la cantidad de espacios minima que se ocupan para que haya un ganador
+    if (freeSpaces <= 4)
+    {
         // filas
         for (int i = 0; i < R; i++)
         {
@@ -122,7 +143,6 @@ int checkWinner(char board[][C], int freeSpaces)
             flagWinner = 1;
         }
     }
-    
 
     if (flagWinner)
     {
@@ -134,7 +154,7 @@ int checkWinner(char board[][C], int freeSpaces)
         {
             whosWhinner = 2;
         }
-        printf("\nHay un ganador, es %i\n", whosWhinner);
+        //printf("\nHay un ganador, es %i\n", whosWhinner);
     }
 
     return whosWhinner;
@@ -146,16 +166,31 @@ int main()
     char board[R][C];
     char optAgain;
     int freeSpaces;
+    int userMoves = 0;
 
     do
     {
         freeSpaces = 9;
         resetBoard(board);
-        while ( freeSpaces != 0 && (checkWinner(board, freeSpaces) == 0))
+        while (freeSpaces != 0 && (checkWinner(board, freeSpaces) == 0))
         {
             playerMove(board);
-            printBoard(board);
+            userMoves++;
             freeSpaces--;
+            if(!(userMoves >3)){
+                computerMove(board, freeSpaces);
+                freeSpaces--;
+            }
+
+            printBoard(board);
+        }
+
+        if(checkWinner(board, freeSpaces) == 1){
+            printf(GREEN"\nHAS GANADO!!!\n");
+            printf(RESET);
+        }else{
+            printf(YELLOW"\nHas perdido, suerte la proxima..\n");
+            printf(RESET);
         }
 
         fflush(stdin);
