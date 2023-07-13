@@ -37,22 +37,22 @@ void playerMove(char board[][C])
         {
             printf("Ingrese la fila: (1-3): ");
             scanf("%i", &i);
-            if (i > 3)
+            if (i > 3 || i < 0)
             {
                 printf("Casilla invalida, ingrese una casilla entre 1 y 3");
             }
-        } while (i > 3);
+        } while (i > 3 || i < 0);
         i--;
 
         do
         {
             printf("Ingrese la columna (1-3): ");
             scanf("%i", &j);
-            if (j > 3)
+            if (j > 3 || i < 0)
             {
                 printf("Casilla inválida, ingrese una casilla entre 1 y 3");
             }
-        } while (j > 3);
+        } while (j > 3 || i < 0);
         j--;
 
         if (board[i][j] != ' ')
