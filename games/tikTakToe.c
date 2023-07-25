@@ -14,6 +14,7 @@
 // muestra el tablero en pantalla
 void printBoard(char board[][C])
 {
+    printf(ORANGE);
     printf(" %c | %c | %c ", board[0][0], board[0][1], board[0][2]);
     printf("\n---|---|---\n");
     printf(" %c | %c | %c ", board[1][0], board[1][1], board[1][2]);
@@ -21,6 +22,7 @@ void printBoard(char board[][C])
     printf(" %c | %c | %c ", board[2][0], board[2][1], board[2][2]);
     printf("\n");
     fflush(stdin);
+    printf(RESET);
 }
 
 // permite al jugador poner su "ficha"
@@ -33,26 +35,32 @@ void playerMove(char board[][C])
     do
     {
         flag = 0;
+
+        // para que el juego sea más amigable con el usuario, se puede elegir las casillas empezando desde el 1 en vez del 0
+        // validador de filas
         do
         {
-            printf("Ingrese la fila: (1-3): ");
+            printf("Ingrese la fila donde quiere colocar la ficha (1-3): ");
             scanf("%i", &i);
-            if (i > 3 || i < 0)
+            if (i < 1 && i > 3)
             {
-                printf("Casilla invalida, ingrese una casilla entre 1 y 3");
+                printf(YELLOW "Fila invalida, ingrese una casilla (1-3): ");
+                printf(RESET);
             }
-        } while (i > 3 || i < 0);
+        } while (i < 1 || i > 3);
         i--;
 
+        // validador de columnas
         do
         {
-            printf("Ingrese la columna (1-3): ");
+            printf("Ingrese la columna donde quiere colocar la ficha (1-3): ");
             scanf("%i", &j);
-            if (j > 3 || i < 0)
+            if (i < 1 && i > 3)
             {
-                printf("Casilla inválida, ingrese una casilla entre 1 y 3");
+                printf(YELLOW "Columna invalida, ingrese una casilla (1-3): ");
+                printf(RESET);
             }
-        } while (j > 3 || i < 0);
+        } while (i < 1 || i > 3);
         j--;
 
         if (board[i][j] != ' ')
@@ -188,13 +196,13 @@ int mainTikTakToe()
 {
     // el campo del juego será una matriz
     char board[R][C];
-    char optAgain;
-    int freeSpaces;
-    int userMoves;
+    int freeSpaces = 9;
+    int userMoves = 0;
     int coins;
 
-    freeSpaces = 9;
-    userMoves = 0;
+    printf(GREEN "TU eres X y la MASCOTA es O\n");
+    printf(RESET);
+
     resetBoard(board);
     while (freeSpaces != 0 && (checkWinner(board, freeSpaces) == 0))
     {
@@ -222,10 +230,8 @@ int mainTikTakToe()
         printf(YELLOW "\nHas perdido, suerte la proxima..\n");
         printf(RESET);
     }
-    Sleep(1000);
+    Sleep(3000);
     fflush(stdin);
-
-    // ELIMINAR EL BUCLE QEU PERMITE VOLER A JUGAR PARA EVITAR BUGS
 
     return coins;
 }
