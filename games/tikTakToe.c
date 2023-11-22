@@ -47,7 +47,7 @@ void playerMove(char board[][C])
                 printf(YELLOW "Fila invalida, ingrese una casilla (1-3): ");
                 printf(RESET);
             }
-        } while (i < 1 || i > 3);
+        } while (i < 1 && i > 3);
         i--;
 
         // validador de columnas
@@ -60,7 +60,7 @@ void playerMove(char board[][C])
                 printf(YELLOW "Columna invalida, ingrese una casilla (1-3): ");
                 printf(RESET);
             }
-        } while (j < 1 || j > 3);
+        } while (j < 1 && j > 3);
         j--;
 
         if (board[i][j] != ' ')

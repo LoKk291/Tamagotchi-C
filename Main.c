@@ -1474,8 +1474,8 @@ void deathScreen(struct AssetsData *ptrAssetsData)
     printf("     (_/                                    \\_)\n\n");
 
     printf(RED "%s eres un IRRESPONSABLE!!! Dejaste que al pobre %s le diera un cortocircuito :(\n", ptrAssetsData->userName, ptrAssetsData->petName);
-    printf(WHITE "%s ahora descansa en el");
-    printf(GREEN " paraiso electronico...\n", ptrAssetsData->petName);
+    printf(WHITE "%s ahora descansa en el", ptrAssetsData->petName);
+    printf(GREEN " paraiso electronico...\n");
     printf(RESET);
     system("pause");
 }
@@ -1499,7 +1499,6 @@ void tutorial()
 }
 
 // ejecuta los juegos seleccionados
-// NO FUNCIONA
 void gameExecute(struct walletData **ptrWalletData)
 {
     char optGame;
@@ -1606,16 +1605,6 @@ int main()
 
     sickPet(0, ptrSickPetStatus);
     // printf("\nEl valor de la variable sickPetStatus es %i\n", sickPetStatus);
-
-    /*
-    //esteregg "time since 1970"
-    time_t since1970 = time(NULL);
-    printf("\n%ld\n", since1970);
-    */
-
-    /*
-    eastergg de sonido "thoy dont know me son"
-    */
 
     splashScreen(ptrAssetsData);
 
