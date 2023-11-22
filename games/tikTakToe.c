@@ -42,7 +42,7 @@ void playerMove(char board[][C])
         {
             printf("Ingrese la fila donde quiere colocar la ficha (1-3): ");
             scanf("%i", &i);
-            if (i < 1 && i > 3)
+            if (i < 1 || i > 3)
             {
                 printf(YELLOW "Fila invalida, ingrese una casilla (1-3): ");
                 printf(RESET);
@@ -55,12 +55,12 @@ void playerMove(char board[][C])
         {
             printf("Ingrese la columna donde quiere colocar la ficha (1-3): ");
             scanf("%i", &j);
-            if (i < 1 && i > 3)
+            if (j < 1 || j > 3)
             {
                 printf(YELLOW "Columna invalida, ingrese una casilla (1-3): ");
                 printf(RESET);
             }
-        } while (i < 1 || i > 3);
+        } while (j < 1 || j > 3);
         j--;
 
         if (board[i][j] != ' ')
@@ -118,7 +118,7 @@ int checkWinner(char board[][C], int freeSpaces)
     // identifica quien es el ganador
     int whosWhinner = 0;
 
-    // para coemnzar con la verificacion, primero se debe ver que la cantidad de espacios
+    // para comenzar con la verificacion, primero se debe ver que la cantidad de espacios
     // sea <= 4, ya que esta es la cantidad de espacios minima que se ocupan para que haya un ganador
     if (freeSpaces <= 4)
     {

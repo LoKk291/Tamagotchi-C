@@ -1471,7 +1471,7 @@ void deathScreen(struct AssetsData *ptrAssetsData)
     printf("      _     _.=\"_.=\"\\          /\"=._\"=._     _\n");
     printf("     ( \\_.=\"_.=\"     `--------`     \"=._\"=._/ )\n");
     printf("      > _.=\"                            \"=._ <\n");
-    printf("     (_/                                    \\_)\n");
+    printf("     (_/                                    \\_)\n\n");
 
     printf(RED "%s eres un IRRESPONSABLE!!! Dejaste que al pobre %s le diera un cortocircuito :(\n", ptrAssetsData->userName, ptrAssetsData->petName);
     printf(WHITE "%s ahora descansa en el");
