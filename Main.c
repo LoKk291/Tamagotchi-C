@@ -873,7 +873,7 @@ int consumeMedicine(struct product *root, const char *productName, unsigned int 
 }
 
 // Funcion principal de inventario y gestion de medicamentos
-void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWalletData)
+void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWalletData, int **ptrSickPetStatus)
 {
     struct product *root = NULL;
     char option;
@@ -1042,6 +1042,8 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                 { // las inyecciones curan 25 por unidad y decrementan en 20 el animo
                     (*ptrDataStateBars)->health += 25 * quantity;
                     (*ptrDataStateBars)->mood -= 20 * quantity;
+                    sickPet(2, &ptrSickPetStatus);
+                    
                 }
 
                 // no permite que la barra exceda los 100 puntos
@@ -1413,7 +1415,7 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
 
 // determina en cuanto se deben decrementar las barras dependiendo del tiempo transcurrido y de
 // la dificultad seleccionada por el usuario
-void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData)
+void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBars **ptrDataStateBars, struct AssetsData **ptrAssetsData, int **ptrSickPetStatus)
 {
     int decrementHealth;
     int decrementMood;
@@ -1428,18 +1430,30 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
             decrementHealth = 2;
             decrementMood = 5;
             decrementHungry = 10;
+
+            if(*ptrSickPetStatus == 1){
+                decrementHealth = 5;
+            }
         }
         else if ((*ptrAssetsData)->gameDifficult == 1)
         { // medio
             decrementHealth = 5;
             decrementMood = 10;
             decrementHungry = 15;
+
+            if(*ptrSickPetStatus == 1){
+                decrementHealth = 10;
+            }
         }
         else
         { // dificl
             decrementHealth = 10;
             decrementMood = 15;
             decrementHungry = 25;
+
+            if(*ptrSickPetStatus == 1){
+                decrementHealth = 20;
+            }
         }
 
         // decrementa dependiendo de la dificultad que ha seleccionado el usuario
@@ -1526,12 +1540,12 @@ void gameExecute(struct walletData **ptrWalletData)
     }
 }
 
-/* dependiendo del numero generado, la mascota se enferma o no, si se enferma, se guarda uno en el archivo sick
-ademas la funcion se encarga de leer el estado desde el archivo sickPet (si ya estaba enferma o no) y
-guardar el nuevo valor en caso de que se enferme cuando se ejecute la enfermedad o que se cure con una vacuna
-como el valor no es importante en todo momento de la ejecucion, no se crea una estructura para empaquetar el dato
+/* Dependiendo del numero generado (si es multiplo de 3), la mascota se enferma. Cuando se enferma guarda 1 en el
+archivo sickPet. La funcion tambien lee el estado del archivo para saber si estaba o no enferma
+
+Como el valor no es importante en todo momento de la ejecucion, no se crea una estructura para empaquetar el dato
 si no que solo se crea un puntero en el main.
-mode 0 = lee mode 1 = guarda*/
+mode 0 = guarda mode 1 = lee mode = 2 guarda cuando se sana*/
 void sickPet(int mode, int *sickPetStatus)
 {
     srand(time(NULL));
@@ -1543,8 +1557,8 @@ void sickPet(int mode, int *sickPetStatus)
     // randNum = 123;
 
     // si el modo es 0 lee, si el modo es 1 guarda
-    if (!mode)
-    { // mode 0
+    if (mode == 1)
+    { // mode 1
         if (randNum % 3 == 0)
         {
             // printf("\nLa mascota se enferma\n");
@@ -1553,11 +1567,16 @@ void sickPet(int mode, int *sickPetStatus)
             fprintf(fileSickPet, "%i", sickPetStatus);
             fclose(fileSickPet);
         }
+    } else if(mode == 2){
+        sickPetStatus = 0;
+        FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
+        fprintf(fileSickPet, "%i", sickPetStatus);
+        fclose(fileSickPet);
     }
     else
-    { // mode 1
+    { // mode 0
         FILE *fileSickPet = fopen("../files/sickPet.txt", "r");
-        fscanf(fileSickPet, "%i", sickPetStatus); // no uso el & porque sickPetStatus ya es un puntero
+        fscanf(fileSickPet, "%i", &sickPetStatus);
         fclose(fileSickPet);
     }
 }
@@ -1599,11 +1618,11 @@ int main()
 
     stateBarsGetterAndSaver(0, &ptrDataStateBars);
 
-    stateBarsDecrement(&ptrElpasedTime, &ptrDataStateBars, &ptrAssetsData);
+    stateBarsDecrement(&ptrElpasedTime, &ptrDataStateBars, &ptrAssetsData, &ptrSickPetStatus);
 
     walletGetterAndSaver(0, &ptrWalletData);
 
-    sickPet(0, ptrSickPetStatus);
+    sickPet(0, &ptrSickPetStatus);
     // printf("\nEl valor de la variable sickPetStatus es %i\n", sickPetStatus);
 
     splashScreen(ptrAssetsData);
@@ -1663,7 +1682,7 @@ int main()
                 system("cls");
                 break;
             case '2':
-                healing(&ptrDataStateBars, &ptrWalletData);
+                healing(&ptrDataStateBars, &ptrWalletData, &ptrSickPetStatus);
                 system("cls");
                 break;
             case '3':
