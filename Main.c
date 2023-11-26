@@ -229,7 +229,7 @@ struct node *createNode(char itemName[], int unsigned quantity, int unsigned pri
     struct node *node = (struct node *)malloc(sizeof(struct node));
 
     // copiar los valores al nodo
-    
+
     /*ACÁ SE ENVIAN LOS DATOS DEL ALIMENTO AL ÁRBOL*/
 
     strcpy(node->itemName, itemName);
@@ -348,7 +348,7 @@ struct node *deleteNode(struct node *root, char itemName[])
         if (root->quantity > 1)
         {
 
-                /*ACÁ SE DECREMENTA LA CANTIDAD DE ELEMENTOS DEL NODO EN 1*/
+            /*ACÁ SE DECREMENTA LA CANTIDAD DE ELEMENTOS DEL NODO EN 1*/
 
             root->quantity--;
         }
@@ -673,7 +673,7 @@ struct product *createNodePr(char productName[], unsigned int quantity, unsigned
     struct product *node = (struct product *)malloc(sizeof(struct product));
 
     // copiar los valores al nodo
-    
+
     /*ACÁ SE ENVIAN LOS DATOS DE LAS MEDICINAS AL ÁRBOL*/
 
     strcpy(node->productName, productName);
@@ -909,7 +909,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
             printf("Seleccione el tipo de medicamentos:\n");
             printf("1. Curitas (6 monedas)\n");
             printf("2. Pastillas (10 monedas)\n");
-            printf("3. Inyeccion (50 monedas\n");
+            printf("3. Inyeccion (50 monedas)\n");
             printf("\nPresione la tecla de la opcion que desea realizar..");
 
             subOption = getchar();
@@ -1043,7 +1043,6 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                     (*ptrDataStateBars)->health += 25 * quantity;
                     (*ptrDataStateBars)->mood -= 20 * quantity;
                     sickPet(2, &ptrSickPetStatus);
-                    
                 }
 
                 // no permite que la barra exceda los 100 puntos
@@ -1131,6 +1130,7 @@ void drawBars(int valueBar)
 // muestra finalmente las barras
 void showStateBars(struct dataStateBars **ptrDataStateBars)
 {
+
     // salud
     printf("Salud:    |");
     drawBars((*ptrDataStateBars)->health);
@@ -1431,7 +1431,8 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
             decrementMood = 5;
             decrementHungry = 10;
 
-            if(*ptrSickPetStatus == 1){
+            if (*ptrSickPetStatus == 1)
+            {
                 decrementHealth = 5;
             }
         }
@@ -1441,7 +1442,8 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
             decrementMood = 10;
             decrementHungry = 15;
 
-            if(*ptrSickPetStatus == 1){
+            if (*ptrSickPetStatus == 1)
+            {
                 decrementHealth = 10;
             }
         }
@@ -1451,7 +1453,8 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
             decrementMood = 15;
             decrementHungry = 25;
 
-            if(*ptrSickPetStatus == 1){
+            if (*ptrSickPetStatus == 1)
+            {
                 decrementHealth = 20;
             }
         }
@@ -1541,7 +1544,8 @@ void gameExecute(struct walletData **ptrWalletData)
 }
 
 /* Dependiendo del numero generado (si es multiplo de 3), la mascota se enferma. Cuando se enferma guarda 1 en el
-archivo sickPet. La funcion tambien lee el estado del archivo para saber si estaba o no enferma
+archivo sickPet. La funcion tambien lee el estado del archivo para saber si estaba o no enferma. Esto se produce cada
+vez que se abre nuevamente la aplicacion
 
 Como el valor no es importante en todo momento de la ejecucion, no se crea una estructura para empaquetar el dato
 si no que solo se crea un puntero en el main.
@@ -1567,7 +1571,9 @@ void sickPet(int mode, int *sickPetStatus)
             fprintf(fileSickPet, "%i", sickPetStatus);
             fclose(fileSickPet);
         }
-    } else if(mode == 2){
+    }
+    else if (mode == 2)
+    {
         sickPetStatus = 0;
         FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
         fprintf(fileSickPet, "%i", sickPetStatus);
@@ -1622,8 +1628,8 @@ int main()
 
     walletGetterAndSaver(0, &ptrWalletData);
 
-    sickPet(0, &ptrSickPetStatus);
-    // printf("\nEl valor de la variable sickPetStatus es %i\n", sickPetStatus);
+    sickPet(1, ptrSickPetStatus);
+    //printf("\nEl valor de la variable sickPetStatus es %i\n", sickPetStatus);
 
     splashScreen(ptrAssetsData);
 
