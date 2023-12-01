@@ -914,7 +914,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
             printf("1. Curitas (6 monedas)\n");
             printf("2. Pastillas (10 monedas)\n");
             printf("3. Inyeccion (50 monedas)\n");
-            printf("\nPresione la tecla de la opcion que desea realizar..");
+            printf("\nSeleccione el medicamento: ");
 
             subOption = getchar();
             fflush(stdin);
@@ -931,7 +931,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
 
                 if (quantity * 6 > (*ptrWalletData)->coins)
                 {
-                    printf(YELLOW "No tienes suficientes monedas.\n");
+                    printf(YELLOW "No tienes suficientes monedas\n");
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -939,7 +939,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                 {
                     (*ptrWalletData)->coins -= quantity * 6;
                     root = insertNodePr(root, "Curitas", quantity, 6);
-                    printf(GREEN "Compra realizada con exito.\n");
+                    printf(GREEN "Compra realizada con exito \n");
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -954,7 +954,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
 
                 if (quantity * 10 > (*ptrWalletData)->coins)
                 {
-                    printf(YELLOW "No tienes suficientes monedas.\n");
+                    printf(YELLOW "No tienes suficientes monedas \n");
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -962,7 +962,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                 {
                     (*ptrWalletData)->coins -= quantity * 10;
                     root = insertNodePr(root, "Pastillas", quantity, 10);
-                    printf(GREEN "Compra realizada con exito.\n");
+                    printf(GREEN "Compra realizada con exito \n");
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -977,7 +977,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
 
                 if (quantity * 50 > (*ptrWalletData)->coins)
                 {
-                    printf(YELLOW "No tienes suficientes monedas.\n");
+                    printf(YELLOW "No tienes suficientes monedas \n");
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -985,13 +985,13 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                 {
                     (*ptrWalletData)->coins -= quantity * 50;
                     root = insertNodePr(root, "Inyeccion", quantity, 50);
-                    printf(GREEN "Compra realizada con exito.\n");
+                    printf(GREEN "Compra realizada con exito \n");
                     printf(RESET);
                     Sleep(1000);
                 }
                 break;
             default:
-                printf(YELLOW "Opcion invalida.\n");
+                printf(YELLOW "Opcion invalida\n");
                 printf(RESET);
                 Sleep(1000);
                 break;
@@ -1057,7 +1057,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
             }
             else
             {
-                printf(YELLOW "No se encontro el medicamento en el inventario o la cantidad ingresada es invalida.\n");
+                printf(YELLOW "No se encontro el medicamento en el inventario o la cantidad ingresada es invalida \n");
                 printf(RESET);
             }
 
@@ -1316,7 +1316,7 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
         do
         {
 
-            printf("Por favor, rellena los siguientes datos para tu mascota: ");
+            printf(GREEN "Por favor, rellena los siguientes datos para tu mascota: \n");
 
             do
             {
@@ -1381,7 +1381,7 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
         }
         printf(RESET);
     }
-
+    printf(RESET);
     return 0;
 }
 
@@ -1615,7 +1615,6 @@ int main()
     {
         printf(GREEN, "Bienvenido al centro de adopción de mascotas virtuales.\n");
         settings(0, &ptrAssetsData);
-
     }
 
     if (assetsLoad(&ptrAssetsData))
@@ -1646,23 +1645,20 @@ int main()
     {
 
         // si en las configuraciones la inmortalidad esta activada, la mascota no puede morir
-        if (ptrAssetsData->petInmortality != 1)
+        if (ptrDataStateBars->health <= 0)
         {
-            if (ptrDataStateBars->health <= 0)
+            if (ptrAssetsData->petInmortality != 1)
             {
-                // printf("\n La salud es: %i\n", ptrDataStateBars->health);
                 deathScreen(ptrAssetsData);
 
-                // El archivo firstOpen se vuelve a 1, lo que reinicia todos los archivos cuando la mascota se vuelva a abrir
+                // Cuando la mascota muere se setea en 1 el archivo firstOpen, asi la proxima que se abra el programa se
+                // reescriben los datos
                 FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "w");
                 fprintf(fileFirstOpen, "%i", 1);
                 fclose(fileFirstOpen);
                 return 1;
             }
-        }
-        else
-        {
-            if (ptrDataStateBars->health <= 0)
+            else
             {
                 printf(RED "Tienes suerte de que %s sea inmortal...", ptrAssetsData->petName);
                 system("pause");
