@@ -1648,6 +1648,12 @@ int main()
                 deathScreen(ptrAssetsData);
                 return 1;
             }
+        }else{
+           if (ptrDataStateBars->health <= 0)
+            {
+                printf(RED "Tienes suerte de que %s sea inmortal...", ptrAssetsData->petName);
+                system("pause");
+            } 
         }
 
         // cada vez que se ejecuta el bucle, se guardan los datos en los archivos
