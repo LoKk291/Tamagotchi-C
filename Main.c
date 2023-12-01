@@ -89,10 +89,15 @@ int firstTime(time_t timeNow)
         fprintf(fileStateBars, "%i %i %i", 100, 100, 100);
         fclose(fileStateBars);
 
-        // se setea el archivo wallet en 250
-        FILE *fileWallet = fopen("../files/lastStateBars.txt", "w");
+        // se setea el archivo wallet en 250 coins
+        FILE *fileWallet = fopen("../files/wallet.txt", "w");
         fprintf(fileWallet, "%i", 250); // cantidad de oro inicial para el jugador
         fclose(fileWallet);
+
+        // se setea el archivo sickPet en 0
+        FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
+        fprintf(fileSickPet, "%i", 0);
+        fclose(fileSickPet);
 
         return 1;
     }
@@ -1308,54 +1313,52 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
     // AGREGAR LA COMPROBACION DE DATOS
     if (optChange == 's' || optChange == 'S' || mode == 0)
     {
-        if (mode)
-        {
-            printf("\nIngrese los nuevos valores que desea agregar:\n");
-        }
-        else
-        {
-            printf("\nIngrese los datos que desea:\n");
-        }
-
         do
         {
-            printf("Nombre del usuario (no puede ser mayor a 14 caracteres): ");
-            scanf("%s", userName);
-        } while (strlen(userName) > 14);
 
-        do
-        {
-            printf("Nombre de la mascota (no puede ser mayor a 14 caracteres) (1 = Generar nombre de forma aleatoria): ");
-            scanf("%s", petName);
-        } while (strlen(petName) > 14 && petName[0] != '1');
+            printf("Por favor, rellena los siguientes datos para tu mascota: ");
 
-        if (petName[0] == '1')
-        {
-            // se genera el nombre de forma aleatoria
-            randomPetName(petName);
-        }
+            do
+            {
+                printf("Nombre del usuario (no puede ser mayor a 14 caracteres): ");
+                scanf("%s", userName);
+            } while (strlen(userName) > 14);
 
-        do
-        {
-            printf("Avatar seleccionado (0/1/2/3/4/5): ");
-            scanf("%i", &gameAvatar);
-        } while (gameAvatar != 0 && gameAvatar != 1 && gameAvatar != 2 && gameAvatar != 3 && gameAvatar != 4 && gameAvatar != 5 && gameAvatar != 6);
+            do
+            {
+                printf("Nombre de la mascota (no puede ser mayor a 14 caracteres) (1 = Generar nombre de forma aleatoria): ");
+                scanf("%s", petName);
+            } while (strlen(petName) > 14 && petName[0] != '1');
 
-        do
-        {
-            printf("Inmortalidad de la mascota: (0 = no / 1 = si): ");
-            scanf("%i", &petInmortality);
-        } while (petInmortality != 0 && petInmortality != 1);
+            if (petName[0] == '1')
+            {
+                // se genera el nombre de forma aleatoria
+                randomPetName(petName);
+            }
 
-        do
-        {
-            printf("Dicifultad del juego (0 = facil / 1 = medio / 2= dificil): ");
-            scanf("%i", &gameDifficult);
-        } while (gameDifficult != 0 && gameDifficult != 1 && gameDifficult != 2);
+            do
+            {
+                printf("Avatar seleccionado (0/1/2/3/4/5): ");
+                scanf("%i", &gameAvatar);
+            } while (gameAvatar != 0 && gameAvatar != 1 && gameAvatar != 2 && gameAvatar != 3 && gameAvatar != 4 && gameAvatar != 5 && gameAvatar != 6);
 
-        fflush(stdin);
-        printf(BLUE "SEGURO QUE DESEAS APLICAR LOS CAMBIOS? (s/n): \n");
-        optChange = getch();
+            do
+            {
+                printf("Inmortalidad de la mascota: (0 = no / 1 = si): ");
+                scanf("%i", &petInmortality);
+            } while (petInmortality != 0 && petInmortality != 1);
+
+            do
+            {
+                printf("DiFifultad del juego (0 = facil / 1 = medio / 2= dificil): ");
+                scanf("%i", &gameDifficult);
+            } while (gameDifficult != 0 && gameDifficult != 1 && gameDifficult != 2);
+
+            fflush(stdin);
+            printf(RED "SEGURO QUE DESEAS APLICAR LOS CAMBIOS? (S/N): \n");
+            optChange = getch();
+            printf(RESET);
+        } while (optChange == 'n' || optChange == 'N');
 
         // se guardan las opciones
         if (optChange == 's' || optChange == 'S' || mode == 0)
@@ -1481,9 +1484,10 @@ void deathScreen(struct AssetsData *ptrAssetsData)
     printf("      > _.=\"                            \"=._ <\n");
     printf("     (_/                                    \\_)\n\n");
 
-    printf(RED "%s eres un IRRESPONSABLE!!! Dejaste que al pobre %s le diera un cortocircuito :(\n", ptrAssetsData->userName, ptrAssetsData->petName);
+    printf(RED "%s eres un irresponsable!! Dejaste que al pobre %s le diera un cortocircuito :(\n", ptrAssetsData->userName, ptrAssetsData->petName);
     printf(WHITE "%s ahora descansa en el", ptrAssetsData->petName);
     printf(GREEN " paraiso electronico...\n");
+    printf(ORANGE "Como la mascota ha muerto, se reiniciaran todos los datos....\n");
     printf(RESET);
     system("pause");
 }
@@ -1609,7 +1613,9 @@ int main()
     // si es la primera vez que se abre el programa, pedira las confg iniciales
     if (firstTime(timeNow) != 0)
     {
+        printf(GREEN, "Bienvenido al centro de adopción de mascotas virtuales.\n");
         settings(0, &ptrAssetsData);
+
     }
 
     if (assetsLoad(&ptrAssetsData))
@@ -1646,14 +1652,21 @@ int main()
             {
                 // printf("\n La salud es: %i\n", ptrDataStateBars->health);
                 deathScreen(ptrAssetsData);
+
+                // El archivo firstOpen se vuelve a 1, lo que reinicia todos los archivos cuando la mascota se vuelva a abrir
+                FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "w");
+                fprintf(fileFirstOpen, "%i", 1);
+                fclose(fileFirstOpen);
                 return 1;
             }
-        }else{
-           if (ptrDataStateBars->health <= 0)
+        }
+        else
+        {
+            if (ptrDataStateBars->health <= 0)
             {
                 printf(RED "Tienes suerte de que %s sea inmortal...", ptrAssetsData->petName);
                 system("pause");
-            } 
+            }
         }
 
         // cada vez que se ejecuta el bucle, se guardan los datos en los archivos
