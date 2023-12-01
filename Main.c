@@ -119,7 +119,8 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
 
     // lee los datos del archivo y los carga en la estructura
     fflush(stdin);
-    fscanf(fileAssets, "%s%s%i%i%i", &(*ptrAssetsData)->userName, &(*ptrAssetsData)->petName, &(*ptrAssetsData)->gameAvatar, &(*ptrAssetsData)->petInmortality, &(*ptrAssetsData)->gameDifficult);
+    // Se coloca el [0] para solucionar los warnings ocasionados
+    fscanf(fileAssets, "%s%s%i%i%i", &(*ptrAssetsData)->userName[0], &(*ptrAssetsData)->petName[0], &(*ptrAssetsData)->gameAvatar, &(*ptrAssetsData)->petInmortality, &(*ptrAssetsData)->gameDifficult);
     fclose(fileAssets);
     return 0;
 }
@@ -222,6 +223,50 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
         // printf("\nCarga finalizada..\n"); //PRUEBAS
     }
     return 0;
+}
+
+/* Dependiendo del numero generado (si es multiplo de 3), la mascota se enferma. Cuando se enferma guarda 1 en el
+archivo sickPet. La funcion tambien lee el estado del archivo para saber si estaba o no enferma. Esto se produce cada
+vez que se abre nuevamente la aplicacion
+
+Como el valor no es importante en todo momento de la ejecucion, no se crea una estructura para empaquetar el dato
+si no que solo se crea un puntero en el main.
+mode 0 = guarda mode 1 = lee mode = 2 guarda cuando se sana*/
+void sickPet(int mode, int *sickPetStatus)
+{
+    srand(time(NULL));
+    int randNum = rand() % (99999);
+
+    // si el numero generado, multiplicado por 2 y restandole 7, es divisible por 3, entonces la mascota se enferma
+    randNum = (randNum * 2) - 7;
+    // printf("\nEl numero random es: %i\n", randNum); //PRUEBAS
+    // randNum = 123;
+
+    // si el modo es 0 lee, si el modo es 1 guarda
+    if (mode == 1)
+    { // mode 1
+        if (randNum % 3 == 0)
+        {
+            // printf("\nLa mascota se enferma\n");
+            sickPetStatus = 1;
+            FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
+            fprintf(fileSickPet, "%i", sickPetStatus);
+            fclose(fileSickPet);
+        }
+    }
+    else if (mode == 2)
+    {
+        sickPetStatus = 0;
+        FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
+        fprintf(fileSickPet, "%i", sickPetStatus);
+        fclose(fileSickPet);
+    }
+    else
+    { // mode 0
+        FILE *fileSickPet = fopen("../files/sickPet.txt", "r");
+        fscanf(fileSickPet, "%i", &sickPetStatus);
+        fclose(fileSickPet);
+    }
 }
 
 // FUNCIONES NECESARIAS PARA LA IMPLEMENTACION DE ARBOLES BINARIOSS
@@ -874,6 +919,7 @@ int consumeMedicine(struct product *root, const char *productName, unsigned int 
             current = current->right;
         }
     }
+    return 7; // warning
 }
 
 // Funcion principal de inventario y gestion de medicamentos
@@ -1405,6 +1451,7 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
 
         // printf("\nLa cantidad de monedas de la ultima sesion es: %i\n", (*ptrWalletData)->coins);
     }
+    return 7; //warning
 }
 
 // determina en cuanto se deben decrementar las barras dependiendo del tiempo transcurrido y de
@@ -1545,50 +1592,6 @@ void gameExecute(struct walletData **ptrWalletData, struct dataStateBars **ptrDa
     }
 
     reward = 0;
-}
-
-/* Dependiendo del numero generado (si es multiplo de 3), la mascota se enferma. Cuando se enferma guarda 1 en el
-archivo sickPet. La funcion tambien lee el estado del archivo para saber si estaba o no enferma. Esto se produce cada
-vez que se abre nuevamente la aplicacion
-
-Como el valor no es importante en todo momento de la ejecucion, no se crea una estructura para empaquetar el dato
-si no que solo se crea un puntero en el main.
-mode 0 = guarda mode 1 = lee mode = 2 guarda cuando se sana*/
-void sickPet(int mode, int *sickPetStatus)
-{
-    srand(time(NULL));
-    int randNum = rand() % (99999);
-
-    // si el numero generado, multiplicado por 2 y restandole 7, es divisible por 3, entonces la mascota se enferma
-    randNum = (randNum * 2) - 7;
-    // printf("\nEl numero random es: %i\n", randNum); //PRUEBAS
-    // randNum = 123;
-
-    // si el modo es 0 lee, si el modo es 1 guarda
-    if (mode == 1)
-    { // mode 1
-        if (randNum % 3 == 0)
-        {
-            // printf("\nLa mascota se enferma\n");
-            sickPetStatus = 1;
-            FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
-            fprintf(fileSickPet, "%i", sickPetStatus);
-            fclose(fileSickPet);
-        }
-    }
-    else if (mode == 2)
-    {
-        sickPetStatus = 0;
-        FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
-        fprintf(fileSickPet, "%i", sickPetStatus);
-        fclose(fileSickPet);
-    }
-    else
-    { // mode 0
-        FILE *fileSickPet = fopen("../files/sickPet.txt", "r");
-        fscanf(fileSickPet, "%i", &sickPetStatus);
-        fclose(fileSickPet);
-    }
 }
 
 int main()
