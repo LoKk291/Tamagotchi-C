@@ -20,7 +20,6 @@ struct AssetsData
 
     int petInmortality;
     int gameDifficult;
-    int gameTryHard; // si esta opcion es verdadera, una vez que la mascota muera no se podra volver a jugar (NO IMPLEMENTADO AUN)
 };
 
 // almacena los datos de las barras de estado
@@ -115,7 +114,7 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
 
     // lee los datos del archivo y los carga en la estructura
     fflush(stdin);
-    fscanf(fileAssets, "%s%s%i%i%i%i", &(*ptrAssetsData)->userName, &(*ptrAssetsData)->petName, &(*ptrAssetsData)->gameAvatar, &(*ptrAssetsData)->petInmortality, &(*ptrAssetsData)->gameDifficult, &(*ptrAssetsData)->gameTryHard);
+    fscanf(fileAssets, "%s%s%i%i%i", &(*ptrAssetsData)->userName, &(*ptrAssetsData)->petName, &(*ptrAssetsData)->gameAvatar, &(*ptrAssetsData)->petInmortality, &(*ptrAssetsData)->gameDifficult);
     fclose(fileAssets);
     return 0;
 }
@@ -1276,7 +1275,6 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
     int gameAvatar;
     int petInmortality;
     int gameDifficult;
-    int gameTryHard;
 
     char optChange;
 
@@ -1295,8 +1293,7 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
         printf("Nombre de la mascota: %s\n", (*ptrAssetsData)->petName);
         printf("Avatar seleccionado: %i\n", (*ptrAssetsData)->gameAvatar);
         printf("Inmortalidad de la inmortalidad: %i\n", (*ptrAssetsData)->petInmortality);
-        printf("Dicifultad del juego: %i\n", (*ptrAssetsData)->gameDifficult);
-        printf("Modo TryHard: %i\n", (*ptrAssetsData)->gameTryHard);
+        printf("Dificultad del juego: %i\n", (*ptrAssetsData)->gameDifficult);
 
         fclose(fileAssets);
 
@@ -1356,12 +1353,6 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
             scanf("%i", &gameDifficult);
         } while (gameDifficult != 0 && gameDifficult != 1 && gameDifficult != 2);
 
-        do
-        {
-            printf("Modo TryHard (0 = no / 1= si):");
-            scanf("%i", &gameTryHard);
-        } while (gameTryHard != 0 && gameTryHard != 1);
-
         fflush(stdin);
         printf(BLUE "SEGURO QUE DESEAS APLICAR LOS CAMBIOS? (s/n): \n");
         optChange = getch();
@@ -1374,7 +1365,7 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
             {
                 return 1;
             }
-            fprintf(fileAssets, "%s\n%s\n%i\n%i\n%i\n%i", userName, petName, gameAvatar, petInmortality, gameDifficult, gameTryHard);
+            fprintf(fileAssets, "%s\n%s\n%i\n%i\n%i", userName, petName, gameAvatar, petInmortality, gameDifficult);
             fclose(fileAssets);
 
             printf(GREEN "\nDatos guardados...\n");
@@ -1508,7 +1499,7 @@ void tutorial()
         printf("%s", line); // Imprime la línea leída
     }
     printf(RESET);
-    
+
     fclose(fileTutorial);
 
     system("pause");
