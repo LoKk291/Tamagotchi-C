@@ -1,0 +1,30 @@
+---------------------------------------------------------------------------------------------------------
+Para mantener a tu mascota contenta y saludable, es esencial alimentarla. 
+
+En la seccion de alimentacion, tendras la opcion de elegir entre diferentes tipos de comida. 
+Principalmente, tendras dos opciones: comida saludable y comida chatarra.
+
+Comida saludable: Aumentara un poco la saciedad y la vida de tu mascota.
+Comida chatarra: Incrementara mucho la saciedad pero disminuira un poco la vida.
+
+Recuerda: Una alimentacion adecuada mantendra a tu mascota sana y feliz.
+Observa sus barras de estado para determinar que tipo de comida necesitara en un momento dado.
+---------------------------------------------------------------------------------------------------------
+La diversion es clave para el bienestar de tu mascota! 
+
+En la seccion de juegos, podras interactuar con ella jugando diferentes mini juegos. 
+Por ejemplo, podrias tener juegos como "TikTakToe"
+
+Ganar juegos mejorara el animo de tu mascota y fortalecera el vinculo entre ustedes.
+Al jugar ganaras monedas virtuales que te permitiran comprar comida o medicinas para tu mascota.
+---------------------------------------------------------------------------------------------------------
+La salud de tu mascota es crucial. 
+
+Si su barra de salud disminuye, podras administrarle medicamentos. 
+En la seccion de curacion, elige el medicamento adecuado para ayudar a tu mascota a recuperarse.
+---------------------------------------------------------------------------------------------------------
+Observa regularmente las barras de estado para asegurarte de que tu mascota este satisfecha, feliz y saludable.
+Manten un equilibrio entre jugar, alimentar y curar para cuidar de todos los aspectos de la vida de tu mascota virtual.
+Recuerda, el objetivo es mantener a tu mascota feliz y sana para disfrutar juntos de esta experiencia virtual!
+
+

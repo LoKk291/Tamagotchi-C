@@ -1497,22 +1497,21 @@ void deathScreen(struct AssetsData *ptrAssetsData)
     system("pause");
 }
 
-// explica como usar y cuidar a la mascota en un texto
+// explica como usar y cuidar a la mascota en un texto desde un archivo txt externo
 void tutorial()
 {
-    printf("1. Inicio: Al ejecutar el programa, se mostrara la pantalla de inicio donde se dara la bienvenida al usuario y se presentara la mascota virtual. Puede ser un avatar en ASCII o una imagen grafica.\n");
+    char line[200];
+    FILE *fileTutorial = fopen("../files/tutorial.txt", "r");
+    printf(GREEN);
+    while (fgets(line, 200, fileTutorial) != NULL)
+    {
+        printf("%s", line); // Imprime la línea leída
+    }
+    printf(RESET);
+    
+    fclose(fileTutorial);
 
-    printf("2. Menu principal: Despues de la pantalla de inicio, se mostrara el avatar de la mascota, una frase que ella te dira y las barras de estado, se mostrara un menu con diferentes opciones para interactuar con tu mascota virtual. Estas opciones son:\n\n");
-
-    printf("- Alimentar: Selecciona esta opcion para proporcionar comida a tu mascota virtual. Puedes elegir entre diferentes tipos de alimentos, principalmente entre dos tipos, saludable y chatarra: La saludable incrementara un poco la saciedad y la vida, la chatarra incrementara mucho la saciedad pero decrementara un poco la vida. La alimentacion adecuada mantendra a tu mascota sana y feliz.\n");
-
-    printf("- Curar: Cuando la barra de salud disminuya, podras administrarle medicamentos. Selecciona esta opcion y elige el medicamento adecuado.\n");
-
-    printf("- Juegos: Diviertete con tu mascota virtual jugando diferentes minijuegos! (por ahora solo estara disponible el tateti). Ganar los juegos mejorara el estado de animo (el incremento del estado de animo aun esta en construccion) de tu mascota y fortalecera tu vInculo con ella, ademas de que los juegos te permitiran ganar monedas para comprar comida o medicinas.\n");
-
-    printf("- Barras de estado: Aqui podras consultar el estado actual de tu mascota. Podras ver su nivel de saciedad, animo y salud. Si alguno de estos indicadores esta bajo, deberas tomar medidas para satisfacer las necesidades de tu mascota.\n\n");
-
-    printf("3. Ciclo de vida: Una vez tu mascota muera, ya no podras revivirla.\n");
+    system("pause");
 }
 
 // ejecuta los juegos seleccionados
@@ -1536,12 +1535,13 @@ void gameExecute(struct walletData **ptrWalletData, struct dataStateBars **ptrDa
         // Si se retorna un numero distinto de 0 entonces se actualiza el puntero de la barra de diversion
         reward = mainTikTakToe();
 
-        if(reward != 0){
+        if (reward != 0)
+        {
             (*ptrDataStateBars)->mood += 25;
         }
 
         (*ptrWalletData)->coins += reward; // el juego retorna las monedas guardadas, por lo que luego solo se
-                                                    // suma lo ganado a la billetera
+                                           // suma lo ganado a la billetera
         break;
     case '2':
         printf(YELLOW "\nAun en construccion el juego 2\n");
@@ -1638,7 +1638,7 @@ int main()
     walletGetterAndSaver(0, &ptrWalletData);
 
     sickPet(1, ptrSickPetStatus);
-    //printf("\nEl valor de la variable sickPetStatus es %i\n", sickPetStatus);
+    // printf("\nEl valor de la variable sickPetStatus es %i\n", sickPetStatus);
 
     splashScreen(ptrAssetsData);
 
@@ -1688,7 +1688,7 @@ int main()
         {
             switch (keyOptMenu)
             {
-            case 0:
+            case '0':
                 tutorial();
                 system("cls");
                 break;
