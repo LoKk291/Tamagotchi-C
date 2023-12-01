@@ -1516,10 +1516,10 @@ void tutorial()
 }
 
 // ejecuta los juegos seleccionados
-void gameExecute(struct walletData **ptrWalletData)
+void gameExecute(struct walletData **ptrWalletData, struct dataStateBars **ptrDataStateBars)
 {
     char optGame;
-
+    int reward = 0;
     do
     {
         system("cls");
@@ -1533,7 +1533,14 @@ void gameExecute(struct walletData **ptrWalletData)
     switch (optGame)
     {
     case '1':
-        (*ptrWalletData)->coins += mainTikTakToe(); // el juego retorna las monedas guardadas, por lo que luego solo se
+        // Si se retorna un numero distinto de 0 entonces se actualiza el puntero de la barra de diversion
+        reward = mainTikTakToe();
+
+        if(reward != 0){
+            (*ptrDataStateBars)->mood += 25;
+        }
+
+        (*ptrWalletData)->coins += reward; // el juego retorna las monedas guardadas, por lo que luego solo se
                                                     // suma lo ganado a la billetera
         break;
     case '2':
@@ -1541,6 +1548,8 @@ void gameExecute(struct walletData **ptrWalletData)
         printf(RESET);
         break;
     }
+
+    reward = 0;
 }
 
 /* Dependiendo del numero generado (si es multiplo de 3), la mascota se enferma. Cuando se enferma guarda 1 en el
@@ -1692,7 +1701,7 @@ int main()
                 system("cls");
                 break;
             case '3':
-                gameExecute(&ptrWalletData);
+                gameExecute(&ptrWalletData, &ptrDataStateBars);
                 system("cls");
                 break;
             case '4':

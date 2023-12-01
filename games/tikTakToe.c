@@ -198,7 +198,7 @@ int mainTikTakToe()
     char board[R][C];
     int freeSpaces = 9;
     int userMoves = 0;
-    int coins;
+    int coins = 0;
 
     printf(GREEN "TU eres X y la MASCOTA es O\n");
     printf(RESET);
