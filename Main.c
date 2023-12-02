@@ -1182,6 +1182,7 @@ void showStateBars(struct dataStateBars **ptrDataStateBars)
 {
 
     // salud
+    
     printf("Salud:    |");
     drawBars((*ptrDataStateBars)->health);
 
