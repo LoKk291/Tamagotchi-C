@@ -43,7 +43,7 @@ int generateRandomNumber(int min, int max)
     return min + rand() % (max - min + 1);
 }
 
-int main(void)
+int triviaMindmain(void)
 {
     // utilizo la funcion time dentro de srand asi defino una semilla aleatoria distinta en cada ejecucion del programa
     srand(time(NULL));

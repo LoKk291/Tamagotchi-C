@@ -6,6 +6,7 @@
 #include <conio.h>
 #include <stdbool.h>
 #include "games/tikTakToe.c" // incluye el juego tikTakToe en el archivo, asi se pueden llamar directamente las funciones
+#include "games/triviaMind.c"
 
 #define N 15
 #define M 100
