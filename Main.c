@@ -1579,6 +1579,9 @@ void gameExecute(struct walletData **ptrWalletData, struct dataStateBars **ptrDa
         if (reward != 0)
         {
             (*ptrDataStateBars)->mood += 25;
+            if((*ptrDataStateBars)->mood > 100){ // limita a  la barra
+                (*ptrDataStateBars)->mood = 100;
+            }
         }
 
         (*ptrWalletData)->coins += reward; // el juego retorna las monedas guardadas, por lo que luego solo se
