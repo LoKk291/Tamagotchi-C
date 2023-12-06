@@ -1658,6 +1658,8 @@ int main()
                 FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "w");
                 fprintf(fileFirstOpen, "%i", 1);
                 fclose(fileFirstOpen);
+
+                lastOpenGetterAndSaver(1, timeNow); // cada vez
                 return 1;
             }
             else
