@@ -522,19 +522,22 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
                     price = 10;
                     strcpy(foodType, "Chatarra");
                     break;
+                      //acá van las lineas de guardado de nodos al archivo (clave)
 
                 case '2':
                     strcpy(productName, "Hamburguesa");
                     price = 7;
                     strcpy(foodType, "Chatarra");
                     break;
+                      //acá van las lineas de guardado de nodos al archivo
 
                 case '3':
                     strcpy(productName, "Pancho");
                     price = 5;
                     strcpy(foodType, "Chatarra");
                     break;
-
+                      //acá van las lineas de guardado de nodos al archivo
+                    
                 default:
                     printf(YELLOW "Opcion invalida. \n");
                     printf(RESET);
@@ -542,6 +545,7 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
                 }
                 break;
 
+                   
             case '2':
                 switch (productName[0])
                 {
@@ -551,17 +555,23 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
                     strcpy(foodType, "Saludable");
                     break;
 
+                      //acá van las lineas de guardado de nodos al archivo
+
                 case '2':
                     strcpy(productName, "Frutas");
                     price = 4;
                     strcpy(foodType, "Saludable");
                     break;
 
+                      //acá van las lineas de guardado de nodos al archivo
+
                 case '3':
                     strcpy(productName, "Yogurt");
                     price = 6;
                     strcpy(foodType, "Saludable");
                     break;
+
+                      //acá van las lineas de guardado de nodos al archivo
 
                 default:
                     printf(YELLOW "Opcion invalida. \n");
@@ -629,10 +639,12 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
                 if (node->quantity > 1)
                 {
                     node->quantity--;
+                    //aca sobreescribe la cantidad del archivo
                     Sleep(1000);
                 }
                 else
                 {
+                    //aca elimina la linea del producto
                     root = deleteNode(root, productName);
                     Sleep(1000);
                 }
@@ -848,6 +860,7 @@ struct product *deleteNodePr(struct product *root, char productName[])
 
             /*ACÁ SE DECREMENTA EN 1 LA CANTIDAD DE MEDICINA*/
 
+            
             root->quantity--;
         }
         else
@@ -986,6 +999,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                     (*ptrWalletData)->coins -= quantity * 6;
                     root = insertNodePr(root, "Curitas", quantity, 6);
                     printf(GREEN "Compra realizada con exito \n");
+                    //aca se copian los valores del nodo al archivo
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -1009,6 +1023,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                     (*ptrWalletData)->coins -= quantity * 10;
                     root = insertNodePr(root, "Pastillas", quantity, 10);
                     printf(GREEN "Compra realizada con exito \n");
+                    //aca se copian los valores del nodo al archivo
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -1032,6 +1047,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                     (*ptrWalletData)->coins -= quantity * 50;
                     root = insertNodePr(root, "Inyeccion", quantity, 50);
                     printf(GREEN "Compra realizada con exito \n");
+                    //aca se copian los valores del nodo al archivo
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -1074,12 +1090,14 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
             if (consumeMedicine(root, productName, quantity))
             {
                 printf(GREEN "Medicamento consumido con exito.\n");
+                //aca eliminamos la linea actual del archivo
+
                 printf(RESET);
 
                 // hago el aumento de la barra aquí ya que es más fácil pasar los datos de la estructura
-
                 // cuando se encuentra el elemento, dependiendo de que elemento sea y la cantidad consumida
                 // se incrementa la barra de salud, SOLO FUNCIONA CON EL NOMBRE DEL PRODUCTO, NO CON EL CODIGO
+
                 if (strcmp(productName, "Curitas") == 0)
                 { // las curitas curan 5 por unidad
                     (*ptrDataStateBars)->health += 5 * quantity;
