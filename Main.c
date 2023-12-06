@@ -1180,9 +1180,7 @@ void drawBars(int valueBar)
 // muestra finalmente las barras
 void showStateBars(struct dataStateBars **ptrDataStateBars)
 {
-
-    // salud
-    
+    //salud
     printf("Salud:    |");
     drawBars((*ptrDataStateBars)->health);
 
@@ -1452,7 +1450,7 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
 
         // printf("\nLa cantidad de monedas de la ultima sesion es: %i\n", (*ptrWalletData)->coins);
     }
-    return 7; //warning
+    return 7; // warning
 }
 
 // determina en cuanto se deben decrementar las barras dependiendo del tiempo transcurrido y de
@@ -1688,6 +1686,10 @@ int main()
         printf("0. Como cuidar la mascota\n");
         printf("S. Salir\n");
         printf(RESET);
+
+        if (sickPetStatus == 0){
+            printf("lol\n");
+        }
 
         fflush(stdin);
         printf("\nPresione la tecla de la opcion que desea realizar..");
