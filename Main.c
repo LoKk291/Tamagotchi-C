@@ -1692,10 +1692,6 @@ int main()
         printf("S. Salir\n");
         printf(RESET);
 
-        if (sickPetStatus == 0){
-            printf("lol\n");
-        }
-
         fflush(stdin);
         printf("\nPresione la tecla de la opcion que desea realizar..");
         keyOptMenu = getch();
