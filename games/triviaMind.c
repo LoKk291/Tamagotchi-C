@@ -120,9 +120,11 @@ int triviaMindmain(void)
         printf("\n");
     }
 
-    // muuestra de puntaje final
+    // muestra de puntaje final
     printf("\nPuntaje final: %d/%d\n", points, numQuestionsToShow);
     Sleep(500);
 
+    // Retorna la cantidad de puntos, y en el Main.c se verifica esta cantidad y en base a ella se orotga el aumento de la
+    // barra de diversion
     return 0;
 }
