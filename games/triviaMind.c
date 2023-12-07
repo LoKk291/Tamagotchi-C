@@ -50,11 +50,12 @@ int triviaMindmain(void)
 
     printf("---------------Trivia Mind-------------\n");
 
-    FILE *archive = fopen("../../files/triviaMind.csv", "r"); // aca va la direccion del archivo
+    FILE *archive = fopen("../files/triviaMind.csv", "r");
 
     if (archive == NULL)
     {
         printf(RED "Error, no se pudo abrir el archivo seleccionado...\n");
+        printf(RESET);
         system("pause");
         return 1;
     }
@@ -67,7 +68,8 @@ int triviaMindmain(void)
 
     printf(GREEN "\nLLEGA\n"); // <--- PUNTOS DE CONTROL
     // Leo las preguntas y respuestas del archivo y las almaceno en el arreglo 'question'
-    // ACA ES DONDE NO CRASHEA EL JUEGO
+    
+    // ACA ES DONDE CRASHEA EL JUEGO
     while (fgets(line, sizeof(line), archive))
     {
         separateQuestionsAnswers(line, &question[totalquestions]);
@@ -126,5 +128,5 @@ int triviaMindmain(void)
 
     // Retorna la cantidad de puntos, y en el Main.c se verifica esta cantidad y en base a ella se orotga el aumento de la
     // barra de diversion
-    return 0;
+    return  points;
 }

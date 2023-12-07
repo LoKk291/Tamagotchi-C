@@ -1597,7 +1597,7 @@ void gameExecute(struct walletData **ptrWalletData, struct dataStateBars **ptrDa
 
         if (reward != 0)
         {
-            (*ptrDataStateBars)->mood += 25;
+            (*ptrDataStateBars)->mood += 10;
             if((*ptrDataStateBars)->mood > 100){ // limita a  la barra
                 (*ptrDataStateBars)->mood = 100;
             }
@@ -1607,8 +1607,17 @@ void gameExecute(struct walletData **ptrWalletData, struct dataStateBars **ptrDa
                                            // suma lo ganado a la billetera
         break;
     case '2':
-        printf(YELLOW "\nAun en construccion el juego 2\n");
-        printf(RESET);
+        reward = triviaMindmain();
+
+        if (reward != 0)
+        {
+            (*ptrDataStateBars)->mood += 20;
+            if((*ptrDataStateBars)->mood > 100){
+                (*ptrDataStateBars)->mood = 100;
+            }
+        }
+
+        (*ptrWalletData)->coins += reward/10; 
         break;
     }
 
