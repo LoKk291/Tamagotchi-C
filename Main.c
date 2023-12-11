@@ -125,8 +125,8 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
     return 0;
 }
 
-// convierte los segundos de la variable timeResult de la funcion lastOpenGetterAndSaver en horas/minutos/segundos
-// y almacena los datos procesados en struct elapsedTime, para que no se tenga que abrir una y otra vez el archivo
+/* convierte los segundos de la variable timeResult de la funcion lastOpenGetterAndSaver en horas/minutos/segundos
+ y almacena los datos procesados en struct elapsedTime, para que no se tenga que abrir una y otra vez el archivo*/
 int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
 {
     int hours = 0;
@@ -279,8 +279,6 @@ struct node *createNode(char itemName[], int unsigned quantity, int unsigned pri
 
     // copiar los valores al nodo
 
-    /*ACÁ SE ENVIAN LOS DATOS DEL ALIMENTO AL ÁRBOL*/
-
     strcpy(node->itemName, itemName);
     node->quantity = quantity;
     node->price = price;
@@ -316,7 +314,6 @@ struct node *insertNode(struct node *root, char itemName[], int quantity, int pr
     }
     else
     {
-        /* ACÁ SE INCREMENTA LA CANTIDAD EN 1*/
 
         // si el nombre es igual, incrementar la cantidad en el nodo actual
         root->quantity += quantity;
@@ -396,27 +393,20 @@ struct node *deleteNode(struct node *root, char itemName[])
     {
         if (root->quantity > 1)
         {
-
-            /*ACÁ SE DECREMENTA LA CANTIDAD DE ELEMENTOS DEL NODO EN 1*/
-
             root->quantity--;
         }
         else
         {
 
-            /*ACÁ SE ELIMINAN LOS DATOS DEL NODO ACTUAL*/
-
             if (root->left == NULL)
             {
                 struct node *temp = root->right;
                 free(root);
-                /*ACÁ HAY QUE ELIMINAR LOS DATOS ACTUALES DEL NODO EN EL ARCHIVO*/
                 return temp;
             }
             else if (root->right == NULL)
             {
                 struct node *temp = root->left;
-                /*ACÁ HAY QUE ELIMINAR LOS DATOS ACTUALES DEL NODO EN EL ARCHIVO*/
                 free(root);
                 return temp;
             }
@@ -574,21 +564,18 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
                     price = 10;
                     strcpy(foodType, "Chatarra");
                     break;
-                    // acá van las lineas de guardado de nodos al archivo (clave)
 
                 case '2':
                     strcpy(productName, "Hamburguesa");
                     price = 7;
                     strcpy(foodType, "Chatarra");
                     break;
-                    // acá van las lineas de guardado de nodos al archivo
 
                 case '3':
                     strcpy(productName, "Pancho");
                     price = 5;
                     strcpy(foodType, "Chatarra");
                     break;
-                    // acá van las lineas de guardado de nodos al archivo
 
                 default:
                     printf(YELLOW "Opcion invalida. \n");
@@ -606,23 +593,17 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
                     strcpy(foodType, "Saludable");
                     break;
 
-                    // acá van las lineas de guardado de nodos al archivo
-
                 case '2':
                     strcpy(productName, "Frutas");
                     price = 4;
                     strcpy(foodType, "Saludable");
                     break;
 
-                    // acá van las lineas de guardado de nodos al archivo
-
                 case '3':
                     strcpy(productName, "Yogurt");
                     price = 6;
                     strcpy(foodType, "Saludable");
                     break;
-
-                    // acá van las lineas de guardado de nodos al archivo
 
                 default:
                     printf(YELLOW "Opcion invalida. \n");
@@ -645,7 +626,6 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
                 break;
             }
 
-            // Consideracion: No se puede comprar mas productos de los que dispongas en cantidad de efectivo
             int unsigned availableQuantity = (*ptrWalletData)->coins / price;
             if (quantity > availableQuantity)
             {
@@ -690,7 +670,6 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
                 if (node->quantity > 1)
                 {
                     node->quantity--;
-                    // aca sobreescribe la cantidad del archivo
                     Sleep(1000);
                 }
                 else
@@ -786,8 +765,6 @@ struct product *createNodePr(char productName[], unsigned int quantity, unsigned
 
     // copiar los valores al nodo
 
-    /*ACÁ SE ENVIAN LOS DATOS DE LAS MEDICINAS AL ÁRBOL*/
-
     strcpy(node->productName, productName);
     node->quantity = quantity;
     node->price = price;
@@ -824,8 +801,6 @@ struct product *insertNodePr(struct product *root, char productName[], unsigned 
     else
     {
         // Si el nombre es igual, incrementar la cantidad en el nodo actual
-
-        /*ACÁ SE INCREMENTA LA CANTIDAD EN 1*/
 
         root->quantity += quantity;
     }
@@ -909,8 +884,6 @@ struct product *deleteNodePr(struct product *root, char productName[])
         if (root->quantity > 1)
         {
 
-            /*ACÁ SE DECREMENTA EN 1 LA CANTIDAD DE MEDICINA*/
-
             root->quantity--;
         }
         else
@@ -920,13 +893,11 @@ struct product *deleteNodePr(struct product *root, char productName[])
             {
                 struct product *temp = root->right;
                 free(root);
-                /*ACÁ SE ELIMINAN LOS DATOS DEL NODO DEL ARCHIVO*/
                 return (temp);
             }
             else if (root->right == NULL)
             {
                 struct product *temp = root->left;
-                /*ACÁ SE ELIMINAN LOS DATOS DEL NODO DEL ARCHVO*/
                 free(root);
                 return (temp);
             }
@@ -958,7 +929,6 @@ int consumeMedicine(struct product *root, const char *productName, unsigned int 
         {
             if (quantity <= current->quantity)
             {
-                /*ACÁ SE DECREMENTA LA CANTIDAD DE MEDICINA EN 1*/
                 current->quantity -= quantity;
 
                 if (current->quantity == 0)
@@ -1049,7 +1019,6 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                     (*ptrWalletData)->coins -= quantity * 6;
                     root = insertNodePr(root, "Curitas", quantity, 6);
                     printf(GREEN "Compra realizada con exito \n");
-                    // aca se copian los valores del nodo al archivo
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -1073,7 +1042,6 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                     (*ptrWalletData)->coins -= quantity * 10;
                     root = insertNodePr(root, "Pastillas", quantity, 10);
                     printf(GREEN "Compra realizada con exito \n");
-                    // aca se copian los valores del nodo al archivo
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -1097,7 +1065,6 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                     (*ptrWalletData)->coins -= quantity * 50;
                     root = insertNodePr(root, "Inyeccion", quantity, 50);
                     printf(GREEN "Compra realizada con exito \n");
-                    // aca se copian los valores del nodo al archivo
                     printf(RESET);
                     Sleep(1000);
                 }
