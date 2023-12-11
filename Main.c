@@ -448,7 +448,7 @@ void saveReadInventoryA(int mode, struct node *root)
             // Recorrer el subarbol izquierdo
             saveReadInventoryA(0, root->left);
 
-            fprintf(fileAlimentationInventory, "%s %i %i %s",
+            fprintf(fileAlimentationInventory, "%s %i %i %s\n",
                     root->itemName, root->quantity, root->price, root->foodType);
 
             // Recorrer el subarbol derecho
@@ -471,8 +471,7 @@ void saveReadInventoryA(int mode, struct node *root)
             // Utilizando sscanf para extraer palabras individuales de la línea
             if (sscanf(linea, "%s %i %i %s", itemName, &quantity, &price, foodType) == 4)
             {
-                printf(linea);
-                // insertNode(root, itemName, quantity, price, foodType);
+                root = insertNode(root, itemName, quantity, price, foodType);
             }
         }
     }
