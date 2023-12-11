@@ -484,7 +484,7 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
     int unsigned price;
     char foodType[20];
 
-    // saveReadInventoryA(1, root); // carga el arbol desde el archivo
+    saveReadInventoryA(1, root); // carga el arbol desde el archivo
 
     do
     {
