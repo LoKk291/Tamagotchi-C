@@ -27,10 +27,12 @@ void separateQuestionsAnswers(char *line, struct question *question)
     char *token = strtok((char *)line, ";");
     if (token != NULL)
     {
+        printf("Token 1 (Pregunta): %s\n", token);
         strcpy(question->question, token);
         token = strtok(NULL, ";");
         if (token != NULL)
         {
+            printf("Token 2 (Respuesta): %s\n", token);
             // copio la pregunta en la estructura y convierto la respuesta a un entero utilizando atoi();
             question->answer = atoi(token);
               printf(GREEN "\nLLEGA4\n"); // <--- PUNTOS DE CONTROL
@@ -76,6 +78,7 @@ int triviaMindmain(void)
     {
         separateQuestionsAnswers(line, &question[totalquestions]);
         totalquestions++;
+        printf("Leí una línea del archivo.\n"); // Punto de control para verificar la lectura
     }
 
     fclose(archive);
