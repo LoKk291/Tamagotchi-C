@@ -76,7 +76,6 @@ int triviaMindmain(void)
     {
         separateQuestionsAnswers(line, &question[totalquestions]);
         totalquestions++;
-        printf(GREEN "\nLLEGA 1.2");
     }
 
     fclose(archive);
