@@ -21,18 +21,19 @@ struct question
 };
 
 /*con esta funcion, separo en cada linea, las preguntas de las respuestas de cada linea leida;
-La funcion strlok divide la cadena en subcadenas utilizando un delimitaodr específico*/
+La funcion strlok divide la cadena en subcadenas utilizando un delimitador específico*/
 void separateQuestionsAnswers(char *line, struct question *question)
 {
     char *token = strtok((char *)line, ";");
     if (token != NULL)
     {
         strcpy(question->question, token);
-        token = strtok(NULL, ",");
+        token = strtok(NULL, ";");
         if (token != NULL)
         {
             // copio la pregunta en la estructura y convierto la respuesta a un entero utilizando atoi();
             question->answer = atoi(token);
+              printf(GREEN "\nLLEGA4\n"); // <--- PUNTOS DE CONTROL
         }
     }
 }
@@ -47,6 +48,12 @@ int triviaMindmain(void)
 {
     // utilizo la funcion time dentro de srand asi defino una semilla aleatoria distinta en cada ejecucion del programa
     srand(time(NULL));
+    
+    // generacion de estructuras y variables necesarias para la implementacion del conteo de puntos y preguntas
+    struct question question[AMOUNT];
+    int totalquestions = 0;
+    char line[MAX_LINE_LENGTH];
+
 
     printf("---------------Trivia Mind-------------\n");
 
@@ -59,32 +66,28 @@ int triviaMindmain(void)
         system("pause");
         return 1;
     }
-    // printf(GREEN"\nSe abre el archivo\n"); // <--- PUNTOS DE CONTROL
+    printf(GREEN"\nSe abre el archivo\n"); // <--- PUNTOS DE CONTROL
 
-    // generacion de estructuras y variables necesarias para la implementacion del conteo de puntos y preguntas
-    struct question question[AMOUNT];
-    int totalquestions = 0;
-    char line[MAX_LINE_LENGTH];
-
-    printf(GREEN "\nLLEGA\n"); // <--- PUNTOS DE CONTROL
-    // Leo las preguntas y respuestas del archivo y las almaceno en el arreglo 'question'
-    
+    printf(GREEN "\nLLEGA1\n"); // <--- PUNTOS DE CONTROL
+   
     // ACA ES DONDE CRASHEA EL JUEGO
+    // Leo las preguntas y respuestas del archivo y las almaceno en el arreglo 'question'
     while (fgets(line, sizeof(line), archive))
     {
         separateQuestionsAnswers(line, &question[totalquestions]);
         totalquestions++;
+        printf(GREEN "\nLLEGA 1.2");
     }
 
     fclose(archive);
-    printf(GREEN "\nLLEGA\n"); // <--- PUNTOS DE CONTROL
+    printf(GREEN "\nLLEGA2\n"); // <--- PUNTOS DE CONTROL
 
     // permutar las preguntas aleatoriamente
     /*utilizo el algoritmo de Fisher-Yates:Comienzo en la ultima posicion del arreglo y en cada iteracion
     intercambio la pregunta actual con una pregunta aleatoria anterior a ella.*/
     for (int i = totalquestions - 1; i > 0; i--)
     {
-        // printf(GREEN"\nLLEGA\n"); // <--- PUNTOS DE CONTROL
+         printf(GREEN"\nLLEGA3\n"); // <--- PUNTOS DE CONTROL
         int j = generateRandomNumber(0, i);
         struct question temp = question[i];
         question[i] = question[j];

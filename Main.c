@@ -270,7 +270,7 @@ void sickPet(int mode, int *sickPetStatus)
     }
 }
 
-// FUNCIONES NECESARIAS PARA LA IMPLEMENTACION DE ARBOLES BINARIOS
+// FUNCIONES NECESARIAS PARA LA IMPLEMENTACION DE ARBOLES BINARIOSS
 
 // crea el nuevo nodo del arbol
 struct node *createNode(char itemName[], int unsigned quantity, int unsigned price, char foodType[])
@@ -434,69 +434,16 @@ struct node *deleteNode(struct node *root, char itemName[])
     return root;
 }
 
-// administra el contenido del archivo de inventario de la tienda de alimentos
-// si el modo = 0: guarda los elementos del arbol. si el modo = 1: carga los elementos del archivo al arbol
-// modo = 2: borra todo el contenido del archivo, se usa este modo luego de cargar el contenido del archivo al arbol
-// (como la funcion usa recursividad es necesario un modo aparte para limpiar el archivo)
-void saveReadInventoryA(int mode, struct node *root)
-{
-    // carga cada una de las ramas en el archivo
-    if (mode == 0)
-    {
-        FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "a");
-        if (root != NULL)
-        {
-            // Recorrer el subarbol izquierdo
-            saveReadInventoryA(0, root->left);
-
-            fprintf(fileAlimentationInventory, "%s %i %i %s",
-                    root->itemName, root->quantity, root->price, root->foodType);
-
-            // Recorrer el subarbol derecho
-            saveReadInventoryA(0, root->right);
-        }
-        fclose(fileAlimentationInventory);
-    }
-    else if (mode == 1)
-    {
-        FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "r");
-
-        char linea[100]; // Buffer para almacenar la línea leída
-        printf("Llega");
-        // Leer y procesar todas las líneas del archivo
-        while (fgets(linea, sizeof(linea), fileAlimentationInventory) != NULL)
-        {
-            char itemName[50], foodType[50];
-            int quantity, price;
-            printf("Llega");
-            // Utilizando sscanf para extraer palabras individuales de la línea
-            if (sscanf(linea, "%s %i %i %s", itemName, &quantity, &price, foodType) == 4)
-            {   
-                printf(linea);
-                // insertNode(root, itemName, quantity, price, foodType);
-            }
-        }
-    }
-    else
-    {
-        // elimina todo lo anterior del archivo
-        FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "w");
-        fclose(fileAlimentationInventory);
-    }
-}
-
 // Implementacion de arboles Binarios mediante un sistema de gestion de alimentacion
-void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWalletData)
+int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWalletData)
 {
-    struct node *root = NULL; // se debe cambiar la ubicacion de la declaracion del nodo
+    struct node *root = NULL;
     char option;
 
     char productName[50];
     int unsigned quantity;
     int unsigned price;
     char foodType[20];
-
-    //saveReadInventoryA(1, root); // carga el arbol desde el archivo
 
     do
     {
@@ -560,9 +507,9 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
 
             printf("\n");
 
-            printf(CYAN "Ingrese el numero del producto: ");
+            printf(CYAN "Ingrese el nombre del producto: ");
             scanf("%s", productName);
-            printf("Ingrese la cantidad que desea comprar: ");
+            printf("Ingrese la cantidad: ");
             scanf("%d", &quantity);
             printf(RESET);
 
@@ -576,22 +523,22 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
                     price = 10;
                     strcpy(foodType, "Chatarra");
                     break;
-                    // acá van las lineas de guardado de nodos al archivo (clave)
+                      //acá van las lineas de guardado de nodos al archivo (clave)
 
                 case '2':
                     strcpy(productName, "Hamburguesa");
                     price = 7;
                     strcpy(foodType, "Chatarra");
                     break;
-                    // acá van las lineas de guardado de nodos al archivo
+                      //acá van las lineas de guardado de nodos al archivo
 
                 case '3':
                     strcpy(productName, "Pancho");
                     price = 5;
                     strcpy(foodType, "Chatarra");
                     break;
-                    // acá van las lineas de guardado de nodos al archivo
-
+                      //acá van las lineas de guardado de nodos al archivo
+                    
                 default:
                     printf(YELLOW "Opcion invalida. \n");
                     printf(RESET);
@@ -599,6 +546,7 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
                 }
                 break;
 
+                   
             case '2':
                 switch (productName[0])
                 {
@@ -608,7 +556,7 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
                     strcpy(foodType, "Saludable");
                     break;
 
-                    // acá van las lineas de guardado de nodos al archivo
+                      //acá van las lineas de guardado de nodos al archivo
 
                 case '2':
                     strcpy(productName, "Frutas");
@@ -616,7 +564,7 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
                     strcpy(foodType, "Saludable");
                     break;
 
-                    // acá van las lineas de guardado de nodos al archivo
+                      //acá van las lineas de guardado de nodos al archivo
 
                 case '3':
                     strcpy(productName, "Yogurt");
@@ -624,10 +572,10 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
                     strcpy(foodType, "Saludable");
                     break;
 
-                    // acá van las lineas de guardado de nodos al archivo
+                      //acá van las lineas de guardado de nodos al archivo
 
                 default:
-                    printf(YELLOW "Opcion invalida \n");
+                    printf(YELLOW "Opcion invalida. \n");
                     printf(RESET);
                     break;
                 }
@@ -635,14 +583,14 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
 
                 break;
             default:
-                printf(YELLOW "Opcion invalida \n");
+                printf(YELLOW "Opcion invalida.\n");
                 printf(RESET);
                 break;
             }
 
             if (price * quantity > (*ptrWalletData)->coins)
             {
-                printf(YELLOW "No tienes suficiente dinero para comprar este producto \n");
+                printf(YELLOW "No tienes suficiente dinero para comprar este producto.\n");
                 printf(RESET);
                 break;
             }
@@ -651,7 +599,7 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
             int unsigned availableQuantity = (*ptrWalletData)->coins / price;
             if (quantity > availableQuantity)
             {
-                printf(YELLOW "No puedes comprar mas de %u productos con la cantidad de efectivo disponible \n", availableQuantity);
+                printf(YELLOW "No puedes comprar mas de %u productos con la cantidad de efectivo disponible.\n", availableQuantity);
                 printf(RESET);
                 break;
             }
@@ -692,12 +640,12 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
                 if (node->quantity > 1)
                 {
                     node->quantity--;
-                    // aca sobreescribe la cantidad del archivo
+                    //aca sobreescribe la cantidad del archivo
                     Sleep(1000);
                 }
                 else
                 {
-                    // aca elimina la linea del producto
+                    //aca elimina la linea del producto
                     root = deleteNode(root, productName);
                     Sleep(1000);
                 }
@@ -774,7 +722,8 @@ void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **p
         fflush(stdin);
 
     } while (option != '4');
-    saveReadInventoryA(0, root);
+
+    return 0;
 }
 
 // IMPLEMENTACION DE ARBOLES BINARIOS A INVENTARIO Y GESTION DE MEDICINAS
@@ -912,6 +861,7 @@ struct product *deleteNodePr(struct product *root, char productName[])
 
             /*ACÁ SE DECREMENTA EN 1 LA CANTIDAD DE MEDICINA*/
 
+            
             root->quantity--;
         }
         else
@@ -1050,7 +1000,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                     (*ptrWalletData)->coins -= quantity * 6;
                     root = insertNodePr(root, "Curitas", quantity, 6);
                     printf(GREEN "Compra realizada con exito \n");
-                    // aca se copian los valores del nodo al archivo
+                    //aca se copian los valores del nodo al archivo
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -1074,7 +1024,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                     (*ptrWalletData)->coins -= quantity * 10;
                     root = insertNodePr(root, "Pastillas", quantity, 10);
                     printf(GREEN "Compra realizada con exito \n");
-                    // aca se copian los valores del nodo al archivo
+                    //aca se copian los valores del nodo al archivo
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -1098,7 +1048,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
                     (*ptrWalletData)->coins -= quantity * 50;
                     root = insertNodePr(root, "Inyeccion", quantity, 50);
                     printf(GREEN "Compra realizada con exito \n");
-                    // aca se copian los valores del nodo al archivo
+                    //aca se copian los valores del nodo al archivo
                     printf(RESET);
                     Sleep(1000);
                 }
@@ -1141,7 +1091,7 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
             if (consumeMedicine(root, productName, quantity))
             {
                 printf(GREEN "Medicamento consumido con exito.\n");
-                // aca eliminamos la linea actual del archivo
+                //aca eliminamos la linea actual del archivo
 
                 printf(RESET);
 
@@ -1249,7 +1199,7 @@ void drawBars(int valueBar)
 // muestra finalmente las barras
 void showStateBars(struct dataStateBars **ptrDataStateBars)
 {
-    // salud
+    //salud
     printf("Salud:    |");
     drawBars((*ptrDataStateBars)->health);
 
@@ -1464,7 +1414,7 @@ int settings(int mode, struct AssetsData **ptrAssetsData)
 
             do
             {
-                printf("Dificultad del juego (0 = facil / 1 = medio / 2= dificil): ");
+                printf("DiFifultad del juego (0 = facil / 1 = medio / 2= dificil): ");
                 scanf("%i", &gameDifficult);
             } while (gameDifficult != 0 && gameDifficult != 1 && gameDifficult != 2);
 
@@ -1648,8 +1598,7 @@ void gameExecute(struct walletData **ptrWalletData, struct dataStateBars **ptrDa
         if (reward != 0)
         {
             (*ptrDataStateBars)->mood += 10;
-            if ((*ptrDataStateBars)->mood > 100)
-            { // limita a  la barra
+            if((*ptrDataStateBars)->mood > 100){ // limita a  la barra
                 (*ptrDataStateBars)->mood = 100;
             }
         }
@@ -1663,13 +1612,12 @@ void gameExecute(struct walletData **ptrWalletData, struct dataStateBars **ptrDa
         if (reward != 0)
         {
             (*ptrDataStateBars)->mood += 20;
-            if ((*ptrDataStateBars)->mood > 100)
-            {
+            if((*ptrDataStateBars)->mood > 100){
                 (*ptrDataStateBars)->mood = 100;
             }
         }
 
-        (*ptrWalletData)->coins += reward / 10;
+        (*ptrWalletData)->coins += reward/10; 
         break;
     }
 
