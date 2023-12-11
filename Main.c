@@ -441,26 +441,25 @@ void saveReadInventoryA(int mode, struct node *root)
     // carga cada una de las ramas en el archivo
     if (mode == 0)
     {
-        FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "w");
+        FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "a");
         if (root != NULL)
         {
             // Recorrer el subarbol izquierdo
             saveReadInventoryA(0, root->left);
 
             
-            fprintf(fileAlimentationInventory, "%s %i %i %s",
+            fprintf(fileAlimentationInventory, "%s %i %i %s\n",
                    root->itemName, root->quantity, root->price, root->foodType);
 
             // Recorrer el subarbol derecho
             saveReadInventoryA(0, root->right);
         }
+        fclose(fileAlimentationInventory);
     }
-    // debe tenerse en cuenta que si ya existe el elemento debe solo actualizarse la cantidad del elemento
-
 }
 
 // Implementacion de arboles Binarios mediante un sistema de gestion de alimentacion
-int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWalletData)
+void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWalletData)
 {
     struct node *root = NULL;
     char option;
@@ -747,7 +746,6 @@ int alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **pt
 
     } while (option != '4');
     saveReadInventoryA(0, root);
-    return 0;
 }
 
 // IMPLEMENTACION DE ARBOLES BINARIOS A INVENTARIO Y GESTION DE MEDICINAS
