@@ -35,7 +35,7 @@ void separateQuestionsAnswers(char *line, struct question *question)
             printf("Token 2 (Respuesta): %s\n", token);
             // copio la pregunta en la estructura y convierto la respuesta a un entero utilizando atoi();
             question->answer = atoi(token);
-              printf(GREEN "\nLLEGA4\n"); // <--- PUNTOS DE CONTROL
+            //printf(GREEN "\nLLEGA4\n"); // <--- PUNTOS DE CONTROL
         }
     }
 }
@@ -70,26 +70,25 @@ int triviaMindmain(void)
     }
     printf(GREEN"\nSe abre el archivo\n"); // <--- PUNTOS DE CONTROL
 
-    printf(GREEN "\nLLEGA1\n"); // <--- PUNTOS DE CONTROL
+   // printf(GREEN "\nLLEGA1\n"); // <--- PUNTOS DE CONTROL
    
-    // ACA ES DONDE CRASHEA EL JUEGO
     // Leo las preguntas y respuestas del archivo y las almaceno en el arreglo 'question'
     while (fgets(line, sizeof(line), archive))
     {
         separateQuestionsAnswers(line, &question[totalquestions]);
         totalquestions++;
-        printf("Leí una línea del archivo.\n"); // Punto de control para verificar la lectura
+        //printf("Lee una linea del archivo.\n"); // Punto de control para verificar la lectura
     }
 
     fclose(archive);
-    printf(GREEN "\nLLEGA2\n"); // <--- PUNTOS DE CONTROL
+    //printf(GREEN "\nLLEGA2\n"); // <--- PUNTOS DE CONTROL
 
     // permutar las preguntas aleatoriamente
     /*utilizo el algoritmo de Fisher-Yates:Comienzo en la ultima posicion del arreglo y en cada iteracion
     intercambio la pregunta actual con una pregunta aleatoria anterior a ella.*/
     for (int i = totalquestions - 1; i > 0; i--)
     {
-         printf(GREEN"\nLLEGA3\n"); // <--- PUNTOS DE CONTROL
+        //printf(GREEN"\nLLEGA3\n"); // <--- PUNTOS DE CONTROL
         int j = generateRandomNumber(0, i);
         struct question temp = question[i];
         question[i] = question[j];
