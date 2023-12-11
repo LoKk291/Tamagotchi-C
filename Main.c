@@ -360,7 +360,7 @@ void showInventory(struct node *root)
         // Mostrar los detalles del articulo en el nodo actual
         printf("Nombre: %s, Cantidad: %u, Precio: %u, Tipo: %s\n",
                root->itemName, root->quantity, root->price, root->foodType);
-          
+
         // Recorrer el subarbol derecho
         showInventory(root->right);
     }
@@ -434,8 +434,10 @@ struct node *deleteNode(struct node *root, char itemName[])
     return root;
 }
 
-// funcion para abrir el archivo que almacenara el inventario
-// si el modo = 0: guarda los elementos del arbol. si el modo = 1: carga los elementos del archivo al barrio
+// administra el contenido del archivo de inventario de la tienda de alimentos
+// si el modo = 0: guarda los elementos del arbol. si el modo = 1: carga los elementos del archivo al arbol
+// modo = 2: borra todo el contenido del archivo, se usa este modo luego de cargar el contenido del archivo al arbol
+// (como la funcion usa recursividad es necesario un modo aparte para limpiar el archivo)
 void saveReadInventoryA(int mode, struct node *root)
 {
     // carga cada una de las ramas en el archivo
@@ -447,13 +449,38 @@ void saveReadInventoryA(int mode, struct node *root)
             // Recorrer el subarbol izquierdo
             saveReadInventoryA(0, root->left);
 
-            
-            fprintf(fileAlimentationInventory, "%s %i %i %s\n",
-                   root->itemName, root->quantity, root->price, root->foodType);
+            fprintf(fileAlimentationInventory, "%s %i %i %s",
+                    root->itemName, root->quantity, root->price, root->foodType);
 
             // Recorrer el subarbol derecho
             saveReadInventoryA(0, root->right);
         }
+        fclose(fileAlimentationInventory);
+    }
+    else if (mode == 1)
+    {
+        FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "r");
+
+        char linea[100]; // Buffer para almacenar la línea leída
+        printf("Llega");
+        // Leer y procesar todas las líneas del archivo
+        while (fgets(linea, sizeof(linea), fileAlimentationInventory) != NULL)
+        {
+            char itemName[50], foodType[50];
+            int quantity, price;
+            printf("Llega");
+            // Utilizando sscanf para extraer palabras individuales de la línea
+            if (sscanf(linea, "%s %i %i %s", itemName, &quantity, &price, foodType) == 4)
+            {   
+                printf(linea);
+                // insertNode(root, itemName, quantity, price, foodType);
+            }
+        }
+    }
+    else
+    {
+        // elimina todo lo anterior del archivo
+        FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "w");
         fclose(fileAlimentationInventory);
     }
 }
@@ -461,13 +488,15 @@ void saveReadInventoryA(int mode, struct node *root)
 // Implementacion de arboles Binarios mediante un sistema de gestion de alimentacion
 void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWalletData)
 {
-    struct node *root = NULL;
+    struct node *root = NULL; // se debe cambiar la ubicacion de la declaracion del nodo
     char option;
 
     char productName[50];
     int unsigned quantity;
     int unsigned price;
     char foodType[20];
+
+    //saveReadInventoryA(1, root); // carga el arbol desde el archivo
 
     do
     {
