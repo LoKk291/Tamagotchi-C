@@ -1107,7 +1107,6 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
             if (consumeMedicine(root, productName, quantity))
             {
                 printf(GREEN "Medicamento consumido con exito.\n");
-                // aca eliminamos la linea actual del archivo
 
                 printf(RESET);
 
@@ -1544,7 +1543,6 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
         }
     }
 
-    // AREA DE MUESTRA PARA LA EXPOSICION
 }
 
 // muestra una pantalla de muerte cuado la salud es <= 0
