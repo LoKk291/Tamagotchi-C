@@ -1,5 +1,5 @@
-sujeto2
-Mascota2
-3
+Sujeto1
+Masctoa1
+1
 0
 1
