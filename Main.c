@@ -73,6 +73,11 @@ int firstTime(time_t timeNow)
 
     // cuando se abre por primera vez, el archivo firstOpen solo guardara un entero "1"
     FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "r");
+    if (fileFirstOpen == NULL)
+    {
+        printf(RED "ERROR AL ABRIR EL ARCHIVO 'firstOpen.txt'");
+        exit(1);
+    }
     fscanf(fileFirstOpen, "%i", &firstOpen);
     fclose(fileFirstOpen);
 
@@ -81,16 +86,27 @@ int firstTime(time_t timeNow)
     {
         firstOpen = 0;
         FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "w");
+        if (fileFirstOpen == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'firstOpen.txt'");
+            exit(1);
+        }
         fprintf(fileFirstOpen, "%i\n%ld", firstOpen, timeNow);
         fclose(fileFirstOpen);
 
         // se setea el archivo lastStateBars en 100
         FILE *fileStateBars = fopen("../files/lastStateBars.txt", "w");
+        if (fileStateBars == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'lastStateBars.txt'");
+            exit(1);
+        }
         fprintf(fileStateBars, "%i %i %i", 100, 100, 100);
         fclose(fileStateBars);
 
         // se setea el archivo wallet en 250 coins
         FILE *fileWallet = fopen("../files/wallet.txt", "w");
+        
         fprintf(fileWallet, "%i", 250); // cantidad de oro inicial para el jugador
         fclose(fileWallet);
 
@@ -448,15 +464,17 @@ void saveReadInventoryA(int mode, struct node *root)
     }
     else if (mode == 1)
     {
-        
+
         FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "r");
 
-        if(fileAlimentationInventory == NULL){
+        if (fileAlimentationInventory == NULL)
+        {
             printf(RED, "No se pude abrir el archivo");
+            exit(1);
         }
 
         char linea[50]; // Buffer para almacenar la línea leída
-       
+
         // Leer y procesar todas las líneas del archivo
         fflush(stdin);
         while (fgets(linea, sizeof(linea), fileAlimentationInventory) != NULL)
@@ -464,7 +482,7 @@ void saveReadInventoryA(int mode, struct node *root)
             fflush(stdin);
             char itemName[20], foodType[20];
             int quantity, price;
-            
+
             // Utilizando sscanf para extraer palabras individuales de la línea
             sscanf(linea, "%s %u %u %s", itemName, &quantity, &price, foodType);
             root = insertNode(root, itemName, quantity, price, foodType);
@@ -1250,6 +1268,12 @@ int randomPhrases(struct AssetsData *ptrAssetsData)
     // printf("\nEl valor aleatorio es: %d", indexRandomMax);
 
     FILE *filePhrases = fopen("../files/phrases.txt", "r");
+    if (filePhrases == NULL)
+    {
+        printf(RED "ERROR AL ABRIR EL ARCHIVO 'phrases.txt'");
+        exit(1);
+    }
+    
     while (index <= indexRandomMax)
     {
         fgets(phrase, M, filePhrases);
@@ -1547,7 +1571,6 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
             (*ptrDataStateBars)->hungry = (*ptrDataStateBars)->hungry - decrementHungry;
         }
     }
-
 }
 
 // muestra una pantalla de muerte cuado la salud es <= 0
@@ -1638,7 +1661,7 @@ void gameExecute(struct walletData **ptrWalletData, struct dataStateBars **ptrDa
             }
         }
 
-        (*ptrWalletData)->coins += reward/10;
+        (*ptrWalletData)->coins += reward / 10;
         break;
     }
 
