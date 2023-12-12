@@ -1260,7 +1260,10 @@ void colorBar(int propety)
 void drawBars(int valueBar)
 {
     int rest = 100;
-
+    
+    if(valueBar <= 0){
+        valueBar = 0;
+    }
     /* Ya que no se pudo agregar caracteres assci extendidos, lo que se hace es rellenar las barras con el
     caracter # en un determinado color dado por la funcion colorBar() y luego el resto de la barra se dibuja
     con el mismo caracter pero de color gris, asi el usuario entiende que la barra no esta llena*/
@@ -1614,7 +1617,7 @@ void stateBarsDecrement(struct elpasedTime **ptrElpasedTime, struct dataStateBar
 
             if (*ptrSickPetStatus == 1)
             {
-                decrementHealth = 5;
+                decrementHealth = 30;
             }
         }
         else if ((*ptrAssetsData)->gameDifficult == 1)
