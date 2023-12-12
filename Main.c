@@ -448,22 +448,26 @@ void saveReadInventoryA(int mode, struct node *root)
     }
     else if (mode == 1)
     {
+        
         FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "r");
 
-        char linea[100]; // Buffer para almacenar la línea leída
+        if(fileAlimentationInventory == NULL){
+            printf(RED, "No se pude abrir el archivo");
+        }
+
+        char linea[50]; // Buffer para almacenar la línea leída
        
         // Leer y procesar todas las líneas del archivo
+        fflush(stdin);
         while (fgets(linea, sizeof(linea), fileAlimentationInventory) != NULL)
         {
-            printf("LLEGA\n");
-            char itemName[50], foodType[50];
+            fflush(stdin);
+            char itemName[20], foodType[20];
             int quantity, price;
             
             // Utilizando sscanf para extraer palabras individuales de la línea
-            sscanf(linea, "%s %i %i %s", itemName, &quantity, &price, foodType);
-            
+            sscanf(linea, "%s %u %u %s", itemName, &quantity, &price, foodType);
             root = insertNode(root, itemName, quantity, price, foodType);
-            
         }
     }
     else
