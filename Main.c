@@ -101,17 +101,27 @@ int firstTime(time_t timeNow)
             printf(RED "ERROR AL ABRIR EL ARCHIVO 'lastStateBars.txt'");
             exit(1);
         }
+
         fprintf(fileStateBars, "%i %i %i", 100, 100, 100);
         fclose(fileStateBars);
 
         // se setea el archivo wallet en 250 coins
         FILE *fileWallet = fopen("../files/wallet.txt", "w");
-        
+        if (fileWallet == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'wallet.txt'");
+            exit(1);
+        }
         fprintf(fileWallet, "%i", 250); // cantidad de oro inicial para el jugador
         fclose(fileWallet);
 
         // se setea el archivo sickPet en 0
         FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
+        if (fileSickPet == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'sickPet.txt'");
+            exit(1);
+        }
         fprintf(fileSickPet, "%i", 0);
         fclose(fileSickPet);
 
@@ -173,6 +183,11 @@ int lastOpenGetterAndSaver(int mode, time_t timeNow)
     {
         // guarda el instante de salida en el archivo "lastClose.txt"
         FILE *fileLastClose = fopen("../files/lastClose.txt", "w");
+        if (fileLastClose == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'lastClose.txt'");
+            exit(1);
+        }
         fprintf(fileLastClose, "%ld", timeNow);
         fclose(fileLastClose);
         // printf("\nGuardado finalizado..\n");
@@ -181,6 +196,11 @@ int lastOpenGetterAndSaver(int mode, time_t timeNow)
     {
         // lee el contenido
         FILE *fileLastClose = fopen("../files/lastClose.txt", "r");
+        if (fileLastClose == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'lastClose.txt'");
+            exit(1);
+        }
         fscanf(fileLastClose, "%ld", &timeLast);
         fclose(fileLastClose);
 
@@ -203,6 +223,11 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
     {
         // guarda los estados actuales
         FILE *filelastStateBars = fopen("../files/lastStateBars.txt", "w");
+        if (filelastStateBars == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'lastStateBars.txt'");
+            exit(1);
+        }
         fprintf(filelastStateBars, "%i %i %i", (*ptrDataStateBars)->health, (*ptrDataStateBars)->mood, (*ptrDataStateBars)->hungry);
         fclose(filelastStateBars);
 
@@ -213,6 +238,11 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
     {
         // lee los estados anteriores
         FILE *filelastStateBars = fopen("../files/lastStateBars.txt", "r");
+        if (filelastStateBars == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'lastStateBars.txt'");
+            exit(1);
+        }
         fscanf(filelastStateBars, "%i %i %i", &(*ptrDataStateBars)->health, &(*ptrDataStateBars)->mood, &(*ptrDataStateBars)->hungry);
         //(*ptrDataStateBars)->health = 20;
         //(*ptrDataStateBars)->mood = 40;       //PRUEBAS
@@ -266,6 +296,12 @@ void sickPet(int mode, int *sickPetStatus)
             // printf("\nLa mascota se enferma\n");
             sickPetStatus = 1;
             FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
+            if (fileSickPet == NULL)
+            {
+                printf(RED "ERROR AL ABRIR EL ARCHIVO 'sickPet.txt'");
+                exit(1);
+            }
+
             fprintf(fileSickPet, "%i", sickPetStatus);
             fclose(fileSickPet);
         }
@@ -274,12 +310,22 @@ void sickPet(int mode, int *sickPetStatus)
     {
         sickPetStatus = 0;
         FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
+        if (fileSickPet == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'sickPet.txt'");
+            exit(1);
+        }
         fprintf(fileSickPet, "%i", sickPetStatus);
         fclose(fileSickPet);
     }
     else
     { // mode 0
         FILE *fileSickPet = fopen("../files/sickPet.txt", "r");
+        if (fileSickPet == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'sickPet.txt'");
+            exit(1);
+        }
         fscanf(fileSickPet, "%i", &sickPetStatus);
         fclose(fileSickPet);
     }
@@ -449,6 +495,12 @@ void saveReadInventoryA(int mode, struct node *root)
     if (mode == 0)
     {
         FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "a");
+        if (fileAlimentationInventory == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'alimentationInventory.txt'");
+            exit(1);
+        }
+
         if (root != NULL)
         {
             // Recorrer el subarbol izquierdo
@@ -466,10 +518,9 @@ void saveReadInventoryA(int mode, struct node *root)
     {
 
         FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "r");
-
         if (fileAlimentationInventory == NULL)
         {
-            printf(RED, "No se pude abrir el archivo");
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'alimentationInventory.txt'");
             exit(1);
         }
 
@@ -492,6 +543,11 @@ void saveReadInventoryA(int mode, struct node *root)
     {
         // elimina todo lo anterior del archivo
         FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "w");
+        if (fileAlimentationInventory == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'alimentationInventory.txt'");
+            exit(1);
+        }
         fclose(fileAlimentationInventory);
     }
 }
@@ -1273,7 +1329,7 @@ int randomPhrases(struct AssetsData *ptrAssetsData)
         printf(RED "ERROR AL ABRIR EL ARCHIVO 'phrases.txt'");
         exit(1);
     }
-    
+
     while (index <= indexRandomMax)
     {
         fgets(phrase, M, filePhrases);
@@ -1294,6 +1350,12 @@ void splashScreen(struct AssetsData *ptrAssetsData)
 
     printf(ORANGE);
     FILE *fileSplashScreen = fopen("../files/splashScreen.txt", "r");
+    if (fileSplashScreen == NULL)
+    {
+        printf(RED "ERROR AL ABRIR EL ARCHIVO 'splashScreen.txt'");
+        exit(1);
+    }
+
     while (!feof(fileSplashScreen))
     {
         fgets(line, M, fileSplashScreen);
@@ -1355,6 +1417,12 @@ void showAvatar(struct AssetsData **ptrAssetsData)
 void randomPetName(char petName[])
 {
     FILE *filePetNames = fopen("../files/petNames.txt", "r");
+    if (filePetNames == NULL)
+    {
+        printf(RED "ERROR AL ABRIR EL ARCHIVO 'petNames.txt'");
+        exit(1);
+    }
+
     int indexRandomMax;
     int index = 0;
     char optGenerate;
@@ -1501,6 +1569,11 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
     {
         // guarda la cantidad de monedas del usuario al momento de cerrar la sesion
         FILE *fileWallet = fopen("../files/wallet.txt", "w");
+        if (fileWallet == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'wallet.txt'");
+            exit(1);
+        }
         fprintf(fileWallet, "%i", (*ptrWalletData)->coins);
         fclose(fileWallet);
     }
@@ -1508,6 +1581,11 @@ int walletGetterAndSaver(int mode, struct walletData **ptrWalletData)
     {
         // carga la cantidad de monedas del usuario de la sesion anterior
         FILE *fileWallet = fopen("../files/wallet.txt", "r");
+        if (fileWallet == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'wallet.txt'");
+            exit(1);
+        }
         fscanf(fileWallet, "%i", &(*ptrWalletData)->coins);
         fclose(fileWallet);
 
@@ -1604,6 +1682,11 @@ void tutorial()
 {
     char line[200];
     FILE *fileTutorial = fopen("../files/tutorial.txt", "r");
+    if (fileTutorial == NULL)
+    {
+        printf(RED "ERROR AL ABRIR EL ARCHIVO 'tutorial.txt'");
+        exit(1);
+    }
     printf(GREEN);
     while (fgets(line, 200, fileTutorial) != NULL)
     {
@@ -1731,6 +1814,11 @@ int main()
                 // Cuando la mascota muere se setea en 1 el archivo firstOpen, asi la proxima que se abra el programa se
                 // reescriben los datos
                 FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "w");
+                if (fileFirstOpen == NULL)
+                {
+                    printf(RED "ERROR AL ABRIR EL ARCHIVO 'firstOpen.txt'");
+                    exit(1);
+                }
                 fprintf(fileFirstOpen, "%i", 1);
                 fclose(fileFirstOpen);
 
