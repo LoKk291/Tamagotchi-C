@@ -6,7 +6,6 @@
 #include <conio.h>
 #include <stdbool.h>
 #include "games/tikTakToe.c"  // incluye el juego tikTakToe en el archivo, asi se pueden llamar directamente las funciones
-#include "games/triviaMind.c" // incluye el juego triviaMind en el archivo, asi se pueden llamar directamente las funciones
 
 #define N 15
 #define M 100
@@ -1711,11 +1710,10 @@ void gameExecute(struct walletData **ptrWalletData, struct dataStateBars **ptrDa
     {
         system("cls");
         printf(CYAN "1. Tateti\n");
-        printf("2. Trivia\n");
         printf("S. Salir\n");
         printf("ingrese el juego que desea jugar: \n");
         optGame = getch();
-    } while (optGame != '1' && optGame != '2' && optGame != 's' && optGame != 'S');
+    } while (optGame != '1' && optGame != 's' && optGame != 'S');
 
     switch (optGame)
     {
@@ -1735,23 +1733,9 @@ void gameExecute(struct walletData **ptrWalletData, struct dataStateBars **ptrDa
         (*ptrWalletData)->coins += reward; // el juego retorna las monedas guardadas, por lo que luego solo se
                                            // suma lo ganado a la billetera
         break;
-    case '2':
-        reward = triviaMindmain();
-
-        if (reward != 0)
-        {
-            (*ptrDataStateBars)->mood += 20;
-            if ((*ptrDataStateBars)->mood > 100)
-            {
-                (*ptrDataStateBars)->mood = 100;
-            }
-        }
-
-        (*ptrWalletData)->coins += reward / 10;
-        break;
-    }
 
     reward = 0;
+    }
 }
 
 int main()
@@ -1849,7 +1833,7 @@ int main()
 
         printf(CYAN "\n1. Alimentar\n");
         printf("2. Curar\n");
-        printf("3. Juegos\n");
+        printf("3. Jugar\n");
         printf("4. Configuraciones\n");
         printf("0. Como cuidar la mascota\n");
         printf("S. Salir\n");
