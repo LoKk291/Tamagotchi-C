@@ -551,7 +551,71 @@ void saveReadInventoryA(int mode, struct node *root)
     }
 }
 
-// Implementacion de arboles Binarios mediante un sistema de gestion de alimentacion
+void saveReadInventoryB(int mode, struct product *root)
+{
+    // carga cada una de las ramas en el archivo
+    if (mode == 0)
+    {
+        FILE *fileHealthInventory = fopen("../files/healthInventory.txt", "a");
+        if (fileHealthInventory == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'healthInventory.txt'");
+            exit(1);
+        }
+
+        if (root != NULL)
+        {
+            // Recorrer el subarbol izquierdo
+            saveReadInventoryB(0, root->left);
+
+            fprintf(fileHealthInventory, "%s %i %i\n",
+                    root->productName, root->quantity, root->price);
+
+            // Recorrer el subarbol derecho
+            saveReadInventoryB(0, root->right);
+        }
+        fclose(fileHealthInventory);
+    }
+    else if (mode == 1)
+    {
+
+        FILE *fileHealthInventory = fopen("../files/healthInventory.txt", "r");
+        if (fileHealthInventory == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'healthInventory.txt'");
+            exit(1);
+        }
+
+        char linea[50]; // Buffer para almacenar la línea leída
+
+        // Leer y procesar todas las líneas del archivo
+        fflush(stdin);
+        while (fgets(linea, sizeof(linea), fileHealthInventory) != NULL)
+        {
+            fflush(stdin);
+            char productName[20];
+            int quantity, price;
+
+            // Utilizando sscanf para extraer palabras individuales de la línea
+            sscanf(linea, "%s %u %u", productName, &quantity, &price);
+            //root = insertNodePr(root, itemName, quantity, price);
+        }
+    }
+    else
+    {
+        // elimina todo lo anterior del archivo
+        FILE *fileHealthInventory = fopen("../files/healthInventory.txt", "w");
+        if (fileHealthInventory == NULL)
+        {
+            printf(RED "ERROR AL ABRIR EL ARCHIVO 'healthInventory.txt'");
+            exit(1);
+        }
+        fclose(fileHealthInventory);
+    }
+}
+
+
+// Implementacion de arboles Binarios para un sistema de gestion de alimentacion
 void alimentation(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWalletData)
 {
     struct node *root = NULL; // se debe cambiar la ubicacion de la declaracion del nodo
@@ -1234,6 +1298,8 @@ void healing(struct dataStateBars **ptrDataStateBars, struct walletData **ptrWal
         }
 
     } while (option != '4');
+
+    saveReadInventoryB(0, root);
 }
 
 // determina el color de las barras dependiendo de su estado
