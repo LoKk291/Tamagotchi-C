@@ -9,11 +9,16 @@
 
 #define N 15
 #define M 100
+// Observaciones: 
+// - Las lineas comentadas con //PRUEBA sos testeos rápidos de funcionalidad para el desarrollador
 
-// contiene la informacion PRINCIPAL (contenida en el archivo assets) en tiempo de ejecucion
+// -- ESTRCUTURAS PARA GUARDAR/EDITAR EN TIEMPO DE EJECUCIÓN DATOS DE LOS ARCHIVOS --
+// Se opta por utilizar estrcturas para almacenar y modificar los datos ya que esto es mucho más práctico y seguro
+// a la hora ded manejar los datos de la aplicación
+
+// Contiene la informacion PRINCIPAL (contenida en el archivo assets)
 struct AssetsData
 {
-    // tanto el nombre de la mascota como de usuario seran de maximo 14 caracteres
     char userName[N];
     char petName[N];
     int gameAvatar;
@@ -22,7 +27,7 @@ struct AssetsData
     int gameDifficult;
 };
 
-// almacena los datos de las barras de estado
+// Contiene los datos de las barras de estado
 struct dataStateBars
 {
     int health;
@@ -30,7 +35,7 @@ struct dataStateBars
     int hungry;
 };
 
-// almacena las horas/minutos/segundos que transcurrieron desde la ultima sesion de juego
+// Contiene las horas/minutos/segundos que transcurrieron desde la ultima sesion de juego
 struct elpasedTime
 {
     int seconds;
@@ -38,11 +43,13 @@ struct elpasedTime
     int hours;
 };
 
-// contiene las monedas del usuario
+// Contiene las monedas del usuario
 struct walletData
 {
     int unsigned coins;
 };
+
+// -- ESTRUCTURAS DE LOS NODOS DE LOS ARBOLES --
 
 // nodo del arbol binario
 struct node
@@ -65,12 +72,16 @@ struct product
     struct product *right; // Puntero al subarbol derecho
 };
 
-// chequea si es la primera vez que se abre el programa y pide las configuraciones inciales
+// Chequea si es la primera vez que se abre el programa, en caso de ser así pide las configuraciones inciales
+// de la mascota además, de reiniciar todos los archivos a sus valores predeterminados cada vez que las mascota muere
+// (cuando muere la mascota el programa interpreta que el proximo inicio de la aplicación como la primera vez que se ejecuta)
+ 
 int firstTime(time_t timeNow)
 {
     int firstOpen;
 
-    // cuando se abre por primera vez, el archivo firstOpen solo guardara un entero "1"
+    // Cuando se abre por primera vez, el archivo firstOpen solo contendrá un entero "1" para indicar que es la 
+    // primera vez que se ejecuta la aplicación
     FILE *fileFirstOpen = fopen("../files/firstOpen.txt", "r");
     if (fileFirstOpen == NULL)
     {
@@ -80,7 +91,7 @@ int firstTime(time_t timeNow)
     fscanf(fileFirstOpen, "%i", &firstOpen);
     fclose(fileFirstOpen);
 
-    // si se abre por primera vez EL PROGRAMA, se setea en 0 y se guarda el momento de la primera apertura
+    // En caso de ser la primera vez que se ejecuta la aplicación el archivo se setea en '0'
     if (firstOpen == 1)
     {
         firstOpen = 0;
@@ -93,7 +104,7 @@ int firstTime(time_t timeNow)
         fprintf(fileFirstOpen, "%i\n%ld", firstOpen, timeNow);
         fclose(fileFirstOpen);
 
-        // se setea el archivo lastStateBars en 100
+        // Los valores por defecto de las barras seran de 100 en las 3
         FILE *fileStateBars = fopen("../files/lastStateBars.txt", "w");
         if (fileStateBars == NULL)
         {
@@ -104,17 +115,17 @@ int firstTime(time_t timeNow)
         fprintf(fileStateBars, "%i %i %i", 100, 100, 100);
         fclose(fileStateBars);
 
-        // se setea el archivo wallet en 250 coins
+        // El valor por defecto de la billetera será de 250 monedas
         FILE *fileWallet = fopen("../files/wallet.txt", "w");
         if (fileWallet == NULL)
         {
             printf(RED "ERROR AL ABRIR EL ARCHIVO 'wallet.txt'");
             exit(1);
         }
-        fprintf(fileWallet, "%i", 250); // cantidad de oro inicial para el jugador
+        fprintf(fileWallet, "%i", 250); 
         fclose(fileWallet);
 
-        // se setea el archivo sickPet en 0
+        // El valor por defecto de sickPet es '0'(que indica si la mascota está enferma o no)
         FILE *fileSickPet = fopen("../files/sickPet.txt", "w");
         if (fileSickPet == NULL)
         {
@@ -130,19 +141,17 @@ int firstTime(time_t timeNow)
     return 0;
 }
 
-// esta funcion carga las configuraciones PRINCIPALES
+// Carga los assets (los datos principales de la mascota) desde el archivo assets.txt a la estrcutura AssetsData
 int assetsLoad(struct AssetsData **ptrAssetsData)
 {
     char ruta[] = "../files/assets.txt"; // se vuelve una carpeta para atras para que el .exe pueda abrir el archivo
 
-    // el archivo assets contiene las configuraciones PRINCIPALES
     FILE *fileAssets = fopen(ruta, "rb");
     if (fileAssets == NULL)
     {
         return 1;
     }
 
-    // lee los datos del archivo y los carga en la estructura
     fflush(stdin);
     // Se coloca el [0] para solucionar los warnings ocasionados
     fscanf(fileAssets, "%s%s%i%i%i", &(*ptrAssetsData)->userName[0], &(*ptrAssetsData)->petName[0], &(*ptrAssetsData)->gameAvatar, &(*ptrAssetsData)->petInmortality, &(*ptrAssetsData)->gameDifficult);
@@ -150,8 +159,8 @@ int assetsLoad(struct AssetsData **ptrAssetsData)
     return 0;
 }
 
-/* convierte los segundos de la variable timeResult de la funcion lastOpenGetterAndSaver en horas/minutos/segundos
- y almacena los datos procesados en struct elapsedTime, para que no se tenga que abrir una y otra vez el archivo*/
+// convierte los segundos de la variable timeResult de la funcion lastOpenGetterAndSaver en horas/minutos/segundos
+// y almacena los datos procesados en struct elapsedTime
 int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
 {
     int hours = 0;
@@ -161,26 +170,27 @@ int timeConverter(double timeResult, struct elpasedTime **ptrElpasedTime)
     hours = seconds / 3600;
     minutes = (seconds - hours * 3600) / 60;
     seconds = seconds - (hours * 3600 + minutes * 60);
-    // printf("\nla cantidad de segundos es: %i\n", seconds); //PRUEBAS
+    // printf("\nla cantidad de segundos es: %i\n", seconds); //PRUEBA
     // printf("\n%i %i %i\n", hours, minutes, seconds);
 
     (*ptrElpasedTime)->hours = hours;
     (*ptrElpasedTime)->minutes = minutes;
     (*ptrElpasedTime)->seconds = seconds;
 
-    // printf("\n%i %i %i\n", (*ptrElpasedTime)->hours, (*ptrElpasedTime)->minutes, (*ptrElpasedTime)->seconds);
+    // printf("\n%i %i %i\n", (*ptrElpasedTime)->hours, (*ptrElpasedTime)->minutes, (*ptrElpasedTime)->seconds); //PRUEBA
     return 0;
 }
 
-// esta funcion abrira el archivo "lastOpen" y dependiendo del modo, escribira en el u obtendra su contenido
+// Abre el archivo "lastOpen" y dependiendo del modo, escribira en el u obtendra su contenido
 // mode = 1 (guarda) mode = 0 (lee)
+// retorna la diferencia de tiempo entra la última vez que se ejecutó la aplicación y la ejecución actual
 int lastOpenGetterAndSaver(int mode, time_t timeNow)
 {
-    time_t timeLast; // guardara lo que contenga el archivo
+    time_t timeLast; // Guardara lo que contenga el archivo
     double timeResult = 0;
     if (mode)
     {
-        // guarda el instante de salida en el archivo "lastClose.txt"
+        // Guarda el instante de salida en el archivo "lastClose.txt"
         FILE *fileLastClose = fopen("../files/lastClose.txt", "w");
         if (fileLastClose == NULL)
         {
@@ -205,16 +215,16 @@ int lastOpenGetterAndSaver(int mode, time_t timeNow)
 
         /*Recibe dos variables de tipo time_t, calcula su diferencia
         y devuelve el resultado (double) expresado en segundos.*/
-        // guarda la diferencia entre la sesion anterior y el timeNow
+        // guarda la diferencia entre la sesion anterior y el timeNow (siendo timeNow la ejecución actual) 
         timeResult = difftime(timeNow, timeLast);
-        // printf("\nCarga finalizada..\n");
+        // printf("\nCarga finalizada..\n"); // PRUEBA
     }
 
-    // printf("\nLa diferencia de tiempo es: %f \n", timeResult);
+    // printf("\nLa diferencia de tiempo es: %f \n", timeResult); // PRUEBA
     return timeResult;
 }
 
-// carga los estados de la barra anterior y calcula el valor real en base al tiempo transcurrido o gaurda los estados actuales
+// Carga los estados de la barra anterior y calcula el valor real en base al tiempo transcurrido o guarda los estados actuales
 // de las barras en el archivo lastSatateBars.txt (mode 1 = guarda | mode 0 = lee)
 int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
 {
@@ -248,8 +258,8 @@ int stateBarsGetterAndSaver(int mode, struct dataStateBars **ptrDataStateBars)
         //(*ptrDataStateBars)->hungry = 30;
         fclose(filelastStateBars);
 
-        // no permite que las barras tengan numeros negativos (no utilizamos un int unsigned para evitar problemas)
-        // no utilizo if anidados ya que necesito que las 3 condiciones se evaluen
+        // No permite que las barras tengan numeros negativos (no utilizamos un int unsigned para evitar problemas)
+        // No utilizo if anidados ya que necesito que las 3 condiciones se evaluen
         if ((*ptrDataStateBars)->health < 0)
         {
             (*ptrDataStateBars)->health = 0;
@@ -484,7 +494,7 @@ struct node *deleteNode(struct node *root, char itemName[])
     return root;
 }
 
-// administra el contenido del archivo de inventario de la tienda de alimentos
+// Administra el contenido del archivo de inventario de la tienda de alimentos
 // si el modo = 0: guarda los elementos del arbol. si el modo = 1: carga los elementos del archivo al arbol
 // modo = 2: borra todo el contenido del archivo, se usa este modo luego de cargar el contenido del archivo al arbol
 // (como la funcion usa recursividad es necesario un modo aparte para limpiar el archivo)
@@ -540,7 +550,7 @@ void saveReadInventoryA(int mode, struct node *root)
     }
     else
     {
-        // elimina todo lo anterior del archivo
+        // Elimina todo lo anterior del archivo
         FILE *fileAlimentationInventory = fopen("../files/alimentationInventory.txt", "w");
         if (fileAlimentationInventory == NULL)
         {
@@ -553,7 +563,7 @@ void saveReadInventoryA(int mode, struct node *root)
 
 void saveReadInventoryB(int mode, struct product *root)
 {
-    // carga cada una de las ramas en el archivo
+    // Carga cada una de las ramas en el archivo
     if (mode == 0)
     {
         FILE *fileHealthInventory = fopen("../files/healthInventory.txt", "a");
@@ -598,7 +608,8 @@ void saveReadInventoryB(int mode, struct product *root)
 
             // Utilizando sscanf para extraer palabras individuales de la línea
             sscanf(linea, "%s %u %u", productName, &quantity, &price);
-            //root = insertNodePr(root, itemName, quantity, price);
+
+            //root = insertNodePr(root, itemName, quantity, price); //PRUEBAS
         }
     }
     else
@@ -905,7 +916,7 @@ struct product *createNodePr(char productName[], unsigned int quantity, unsigned
     // Asignar memoria al nuevo nodo
     struct product *node = (struct product *)malloc(sizeof(struct product));
 
-    // copiar los valores al nodo
+    // Copiar los valores al nodo
 
     strcpy(node->productName, productName);
     node->quantity = quantity;
@@ -1892,7 +1903,7 @@ int main()
         stateBarsGetterAndSaver(1, &ptrDataStateBars);
         walletGetterAndSaver(1, &ptrWalletData);
 
-        // printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente
+        // printf("\n%s\n", ptrAssetsData->petName); //para probar si los datos se cargaron correctamente //PRUEBAS
         showAvatar(&ptrAssetsData);
         randomPhrases(ptrAssetsData);
         showStateBars(&ptrDataStateBars);
